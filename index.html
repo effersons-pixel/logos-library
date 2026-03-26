@@ -138,14 +138,104 @@ nav{background:var(--navy);height:64px;display:flex;align-items:center;justify-c
 .sidecar-toggle-btn{background:var(--gold);color:var(--navy);border:none;padding:.3rem .75rem;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
 
 /* ── PDF PANE ── */
-.pdf-pane{flex:1;background:#3a3530;display:none;align-items:center;justify-content:center;}
+.pdf-pane{flex:1;background:#2a2520;display:none;flex-direction:column;align-items:stretch;justify-content:flex-start;}
 .pdf-pane.on{display:flex;}
-.pdf-pane iframe{width:100%;height:100%;border:none;}
-.no-pdf{text-align:center;color:rgba(255,255,255,.6);padding:3rem 2rem;max-width:480px;}
+/* PDF toolbar */
+.pdf-toolbar{background:#1a1510;border-bottom:1px solid rgba(184,136,42,.25);padding:.4rem 1rem;display:flex;align-items:center;gap:.6rem;flex-shrink:0;}
+.pdf-toolbar-title{font-family:'EB Garamond',serif;font-size:.82rem;color:rgba(249,245,237,.7);flex:1;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pdf-tb-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(249,245,237,.75);padding:.25rem .65rem;border-radius:5px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap;}
+.pdf-tb-btn:hover{background:rgba(184,136,42,.2);border-color:var(--gold);color:var(--parchment);}
+.pdf-tb-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+/* The iframe viewer */
+.pdf-frame-wrap{flex:1;position:relative;overflow:hidden;}
+.pdf-pane iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+/* Loading overlay */
+.pdf-loading{position:absolute;inset:0;background:#2a2520;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;transition:opacity .4s;}
+.pdf-loading.hidden{opacity:0;pointer-events:none;}
+.pdf-loading .spinner{width:32px;height:32px;border:3px solid rgba(184,136,42,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:.75rem;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pdf-loading p{font-size:.82rem;color:rgba(255,255,255,.5);}
+/* Error / placeholder */
+.no-pdf{text-align:center;color:rgba(255,255,255,.6);padding:2.5rem 2rem;max-width:520px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .no-pdf .icon{font-size:3rem;margin-bottom:1rem;}
 .no-pdf h3{font-family:'EB Garamond',serif;color:#fff;margin-bottom:.6rem;font-size:1.3rem;}
-.no-pdf p{font-size:.83rem;line-height:1.7;}
-.no-pdf code{background:rgba(255,255,255,.1);padding:.15rem .45rem;border-radius:3px;font-size:.75rem;color:var(--gold3);}
+.no-pdf p{font-size:.82rem;line-height:1.75;}
+.no-pdf code{background:rgba(255,255,255,.1);padding:.15rem .45rem;border-radius:3px;font-size:.73rem;color:var(--gold3);}
+/* Drive error state */
+.pdf-error{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:2.5rem;text-align:center;color:rgba(255,255,255,.65);}
+.pdf-error.show{display:flex;}
+.pdf-error .err-icon{font-size:2.5rem;margin-bottom:.85rem;}
+.pdf-error h3{font-family:'EB Garamond',serif;color:#fff;font-size:1.2rem;margin-bottom:.5rem;}
+.pdf-error p{font-size:.8rem;line-height:1.7;max-width:440px;}
+.pdf-error .err-actions{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;justify-content:center;}
+.pdf-err-btn{padding:.42rem 1rem;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;border:none;transition:all .15s;}
+.pdf-err-open{background:var(--gold);color:var(--navy);}
+.pdf-err-open:hover{background:var(--gold2);}
+.pdf-err-retry{background:rgba(255,255,255,.12);color:var(--parchment);border:1px solid rgba(255,255,255,.2);}
+.pdf-err-retry:hover{background:rgba(255,255,255,.2);}
+
+/* ── BOOK MANAGER PANEL ── */
+.bm-overlay{position:fixed;inset:0;background:rgba(10,18,30,.88);z-index:800;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+.bm-overlay.open{opacity:1;pointer-events:all;}
+.bm-modal{background:var(--paper);width:100%;max-width:780px;max-height:92vh;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:scale(.96);transition:transform .25s;}
+.bm-overlay.open .bm-modal{transform:scale(1);}
+.bm-head{background:var(--navy);padding:.8rem 1.4rem;display:flex;align-items:center;gap:1rem;border-bottom:2px solid var(--gold);}
+.bm-head-title{font-family:'EB Garamond',serif;font-size:1.1rem;color:var(--parchment);flex:1;font-style:italic;}
+.bm-close{background:none;border:none;color:var(--parchment);font-size:1.3rem;cursor:pointer;opacity:.65;}.bm-close:hover{opacity:1;}
+.bm-body{overflow-y:auto;padding:1.4rem;flex:1;}
+/* Tabs inside book manager */
+.bm-tabs{display:flex;gap:.4rem;margin-bottom:1.3rem;border-bottom:1px solid var(--dust);padding-bottom:.75rem;}
+.bm-tab{padding:.35rem .85rem;border-radius:6px;border:1.5px solid var(--dust);background:var(--paper);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .17s;font-family:'Nunito',sans-serif;color:var(--ink);}
+.bm-tab:hover,.bm-tab.on{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.bm-section{display:none;}.bm-section.on{display:block;}
+/* Add / Edit form */
+.bm-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.bm-field{display:flex;flex-direction:column;gap:.28rem;}
+.bm-field.full{grid-column:1/-1;}
+.bm-label{font-size:.71rem;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:.5px;}
+.bm-input,.bm-select{border:1.5px solid var(--dust);border-radius:6px;padding:.55rem .85rem;font-family:'Nunito',sans-serif;font-size:.85rem;background:var(--parchment);color:var(--ink);outline:none;width:100%;transition:border-color .18s;}
+.bm-input:focus,.bm-select:focus{border-color:var(--gold);}
+.bm-textarea{border:1.5px solid var(--dust);border-radius:6px;padding:.55rem .85rem;font-family:'Nunito',sans-serif;font-size:.82rem;background:var(--parchment);color:var(--ink);outline:none;width:100%;min-height:70px;resize:vertical;transition:border-color .18s;}
+.bm-textarea:focus{border-color:var(--gold);}
+/* Drive URL helper */
+.drive-url-helper{background:var(--linen);border:1px solid var(--dust);border-radius:8px;padding:.85rem 1rem;margin-top:.5rem;font-size:.79rem;line-height:1.7;}
+.drive-url-helper strong{color:var(--brown);}
+.drive-url-helper .url-step{display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.3rem;}
+.drive-url-helper .step-n{background:var(--navy);color:var(--parchment);border-radius:50%;width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;margin-top:.1rem;}
+/* URL preview / validator */
+.url-preview{background:var(--navy);border-radius:6px;padding:.5rem .85rem;margin-top:.4rem;display:none;}
+.url-preview.show{display:flex;align-items:center;gap:.5rem;}
+.url-status{font-size:.75rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;}
+.url-status.ok{background:rgba(74,92,42,.25);color:#8bc34a;}
+.url-status.warn{background:rgba(184,136,42,.2);color:var(--gold2);}
+.url-preview-text{font-size:.73rem;color:rgba(249,245,237,.6);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* Book list in manager */
+.bm-book-list{display:flex;flex-direction:column;gap:.55rem;}
+.bm-book-row{display:flex;align-items:center;gap:.75rem;background:var(--parchment);border:1px solid var(--dust);border-radius:8px;padding:.7rem .9rem;transition:box-shadow .15s;}
+.bm-book-row:hover{box-shadow:0 3px 12px var(--shadow);}
+.bm-book-cover{width:36px;height:48px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.bm-book-info{flex:1;min-width:0;}
+.bm-book-name{font-family:'EB Garamond',serif;font-size:.93rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bm-book-meta{font-size:.7rem;color:var(--brown);margin-top:.1rem;}
+.bm-book-url-badge{font-size:.65rem;font-weight:700;padding:.1rem .45rem;border-radius:4px;}
+.has-url{background:rgba(74,92,42,.12);color:var(--olive);border:1px solid rgba(74,92,42,.2);}
+.no-url{background:rgba(184,136,42,.1);color:var(--brown);border:1px solid rgba(184,136,42,.2);}
+.bm-book-actions{display:flex;gap:.35rem;flex-shrink:0;}
+.bm-btn{padding:.28rem .65rem;border-radius:5px;font-size:.71rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;transition:all .15s;}
+.bm-btn-edit{background:var(--navy);color:var(--parchment);}.bm-btn-edit:hover{background:var(--navy2);}
+.bm-btn-del{background:rgba(139,26,42,.1);color:var(--crimson);border:1px solid rgba(139,26,42,.2);}.bm-btn-del:hover{background:var(--crimson);color:#fff;}
+.bm-btn-test{background:rgba(184,136,42,.12);color:var(--brown);border:1px solid rgba(184,136,42,.3);}.bm-btn-test:hover{background:var(--gold);color:var(--navy);}
+.bm-add-btn{background:linear-gradient(135deg,var(--navy),var(--minister));color:var(--parchment);border:none;padding:.65rem 1.5rem;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.87rem;cursor:pointer;width:100%;margin-top:1rem;}
+.bm-add-btn:hover{opacity:.88;}
+/* Export/Import */
+.bm-export-box{background:var(--navy);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem;}
+.bm-export-title{font-family:'EB Garamond',serif;color:var(--parchment);font-size:.95rem;font-weight:700;margin-bottom:.5rem;}
+.bm-export-desc{font-size:.78rem;color:rgba(249,245,237,.55);margin-bottom:.75rem;line-height:1.6;}
+.bm-export-actions{display:flex;gap:.5rem;flex-wrap:wrap;}
+.bm-ex-btn{padding:.42rem 1rem;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;border:none;transition:all .15s;}
+.bm-ex-copy{background:var(--gold);color:var(--navy);}.bm-ex-copy:hover{background:var(--gold2);}
+.bm-ex-dl{background:rgba(255,255,255,.12);color:var(--parchment);border:1px solid rgba(255,255,255,.18);}.bm-ex-dl:hover{background:rgba(255,255,255,.22);}
+.bm-code{background:rgba(0,0,0,.4);border-radius:6px;padding:.65rem .85rem;font-size:.72rem;color:var(--gold3);font-family:monospace;max-height:180px;overflow-y:auto;margin-top:.6rem;white-space:pre;}
 
 /* ── REFERENCE PANE ── */
 .ref-pane{flex:1;display:none;flex-direction:column;overflow-y:auto;padding:1.4rem 1.8rem;background:var(--read-bg);transition:background .3s;color:var(--read-text);}
@@ -540,6 +630,7 @@ footer a{color:var(--gold2);text-decoration:none;}
     <button class="nl" onclick="showPage('thesis',this)" id="thesis-nav">✍️ <span>Thesis</span></button>
     <button class="nl subscriber-glow" onclick="showPage('subscribe',this)">⭐ <span>Subscribe</span></button>
     <button class="nl" onclick="showPage('giving',this)">🙏 <span>Give</span></button>
+    <button class="nl" onclick="openBookManager()" style="border:1px solid rgba(184,136,42,.4);color:var(--gold3);" title="Add books & link PDFs">🗂 <span>Books</span></button>
   </div>
   <div class="global-search-wrap">
     <span class="gs-icon">🔍</span>
@@ -579,9 +670,7 @@ footer a{color:var(--gold2);text-decoration:none;}
       <button class="chip" onclick="filterLib('Prophecy',this)">🔥 Prophecy</button>
     </div>
     <div class="sh">Collection</div>
-   <div id="book-grid" style="width:100%; height:80vh; border:2px solid var(--gold); border-radius:12px; overflow:hidden; background:var(--paper); margin-top: 20px;">
-  <iframe src="https://drive.google.com/embeddedfolderview?id=13ByRtynPn6zkCaPq8l7InyiNOHUFU-7F#list" style="width:100%; height:100%; border:none;"></iframe>
-</div>
+    <div class="grid" id="book-grid"></div>
   </div>
 </div>
 
@@ -885,12 +974,44 @@ footer a{color:var(--gold2);text-decoration:none;}
         <div class="sidecar-main">
           <!-- PDF pane -->
           <div class="pdf-pane on" id="pdf-pane">
+            <!-- No-URL placeholder -->
             <div class="no-pdf" id="pdf-ph">
               <div class="icon">📖</div>
               <h3 id="pdf-ph-title">Book Title</h3>
-              <p>Add your Google Drive preview URL to the <code>BOOKS</code> array.<br>Format: <code>https://drive.google.com/file/d/YOUR_ID/preview</code></p>
+              <p>No PDF linked yet.<br><br>
+              Click <strong>📚 Manage Books</strong> in the nav, find this book, and paste the Google Drive URL — or use the <strong>Book Manager</strong> to add any PDF link instantly.</p>
             </div>
-            <iframe id="pdf-frame" style="display:none" allowfullscreen></iframe>
+            <!-- Active viewer -->
+            <div id="pdf-active" style="display:none;flex-direction:column;width:100%;flex:1;">
+              <!-- Toolbar -->
+              <div class="pdf-toolbar">
+                <span class="pdf-toolbar-title" id="pdf-toolbar-title">Loading…</span>
+                <button class="pdf-tb-btn" id="pdf-btn-viewer" onclick="switchPdfViewer('gdrive')" title="Google Drive viewer">📄 Drive</button>
+                <button class="pdf-tb-btn" id="pdf-btn-pdfjs" onclick="switchPdfViewer('pdfjs')" title="PDF.js viewer (best for blocked files)">🔍 PDF.js</button>
+                <button class="pdf-tb-btn" id="pdf-btn-office" onclick="switchPdfViewer('office')" title="Office Online viewer">🌐 Office</button>
+                <button class="pdf-tb-btn" onclick="openDriveTab()" title="Open in new tab">↗ Open</button>
+              </div>
+              <!-- Frame wrapper -->
+              <div class="pdf-frame-wrap" id="pdf-frame-wrap">
+                <iframe id="pdf-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"></iframe>
+                <!-- Loading spinner -->
+                <div class="pdf-loading" id="pdf-loading">
+                  <div class="spinner"></div>
+                  <p>Loading PDF…</p>
+                </div>
+              </div>
+              <!-- Error fallback -->
+              <div class="pdf-error" id="pdf-error">
+                <div class="err-icon">⚠️</div>
+                <h3>PDF Preview Unavailable</h3>
+                <p id="pdf-error-msg">Google Drive couldn't embed this file. This usually means the file is in a <strong>Google Workspace account</strong> with embedding disabled, or the file is too large (&gt;25 MB). Try a different viewer below.</p>
+                <div class="err-actions">
+                  <button class="pdf-err-btn pdf-err-open" onclick="openDriveTab()">↗ Open in New Tab</button>
+                  <button class="pdf-err-btn pdf-err-retry" onclick="switchPdfViewer('pdfjs')">🔍 Try PDF.js Viewer</button>
+                  <button class="pdf-err-btn pdf-err-retry" onclick="switchPdfViewer('office')">🌐 Try Office Viewer</button>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- Ref pane -->
           <div class="ref-pane" id="ref-pane">
@@ -966,6 +1087,112 @@ footer a{color:var(--gold2);text-decoration:none;}
   ✝ Logos Library — Free Christian Resources for Every Believer &nbsp;·&nbsp;
   <a href="#" onclick="showPage('giving',document.querySelectorAll('.nl')[5]);return false">Support this ministry 🙏</a>
 </footer>
+<!-- ══ BOOK MANAGER MODAL ══ -->
+<div class="bm-overlay" id="bm-overlay" onclick="if(event.target===this)closeBookManager()">
+  <div class="bm-modal">
+    <div class="bm-head">
+      <div class="bm-head-title">📚 Book Manager — Add & Link PDFs</div>
+      <button class="bm-close" onclick="closeBookManager()">✕</button>
+    </div>
+    <div class="bm-body">
+      <div class="bm-tabs">
+        <button class="bm-tab on" onclick="bmTab('list',this)">📋 All Books</button>
+        <button class="bm-tab" onclick="bmTab('add',this)">➕ Add / Edit Book</button>
+        <button class="bm-tab" onclick="bmTab('export',this)">💾 Export / Import</button>
+        <button class="bm-tab" onclick="bmTab('guide',this)">❓ Drive Guide</button>
+      </div>
+
+      <!-- LIST TAB -->
+      <div class="bm-section on" id="bm-list">
+        <p style="font-size:.8rem;color:#888;margin-bottom:1rem;line-height:1.6;">
+          Click <strong>Edit</strong> to update a book's Drive URL. Changes are live immediately — no code editing needed.
+          Use <strong>Export</strong> to save changes permanently to your <code>index.html</code>.
+        </p>
+        <div class="bm-book-list" id="bm-book-list"></div>
+      </div>
+
+      <!-- ADD / EDIT TAB -->
+      <div class="bm-section" id="bm-add">
+        <div id="bm-edit-banner" style="display:none;background:rgba(184,136,42,.1);border:1px solid rgba(184,136,42,.3);border-radius:8px;padding:.65rem 1rem;margin-bottom:1rem;font-size:.8rem;color:var(--brown);font-weight:600;"></div>
+        <div class="bm-form-grid">
+          <div class="bm-field"><label class="bm-label">Title *</label><input class="bm-input" id="bm-title" placeholder="e.g. Halley's Bible Handbook"></div>
+          <div class="bm-field"><label class="bm-label">Author *</label><input class="bm-input" id="bm-author" placeholder="e.g. Henry H. Halley"></div>
+          <div class="bm-field"><label class="bm-label">Category</label>
+            <select class="bm-select" id="bm-category">
+              <option>Theology</option><option>Commentary</option><option>Leadership</option>
+              <option>Devotional</option><option>Prayer</option><option>Evangelism</option>
+              <option>Family</option><option>Prophecy</option>
+            </select>
+          </div>
+          <div class="bm-field"><label class="bm-label">Emoji Icon</label><input class="bm-input" id="bm-emoji" placeholder="e.g. 📖" maxlength="4" style="font-size:1.3rem;"></div>
+          <div class="bm-field full"><label class="bm-label">Description (1–2 sentences)</label><textarea class="bm-textarea" id="bm-desc" placeholder="Brief description of what this book is about…"></textarea></div>
+          <div class="bm-field full">
+            <label class="bm-label">Google Drive PDF URL</label>
+            <input class="bm-input" id="bm-url" placeholder="Paste any Google Drive link — all formats accepted" oninput="previewDriveUrl(this.value)">
+            <div class="url-preview" id="url-preview">
+              <span class="url-status" id="url-status">✓</span>
+              <span class="url-preview-text" id="url-preview-text"></span>
+              <button onclick="testDriveUrl()" style="background:var(--gold);color:var(--navy);border:none;padding:.18rem .6rem;border-radius:4px;font-size:.7rem;font-weight:700;cursor:pointer;">Test</button>
+            </div>
+            <!-- Drive URL instructions -->
+            <div class="drive-url-helper">
+              <strong>Accepted URL formats — paste any of these:</strong>
+              <div class="url-step"><span class="step-n">A</span><span><code style="font-size:.72rem;background:rgba(0,0,0,.07);padding:.1rem .35rem;border-radius:3px;">drive.google.com/file/d/FILE_ID/view</code> — standard share link</span></div>
+              <div class="url-step"><span class="step-n">B</span><span><code style="font-size:.72rem;background:rgba(0,0,0,.07);padding:.1rem .35rem;border-radius:3px;">drive.google.com/file/d/FILE_ID/preview</code> — embed link</span></div>
+              <div class="url-step"><span class="step-n">C</span><span><code style="font-size:.72rem;background:rgba(0,0,0,.07);padding:.1rem .35rem;border-radius:3px;">drive.google.com/open?id=FILE_ID</code> — open link</span></div>
+              <div style="margin-top:.4rem;font-size:.75rem;color:var(--crimson);font-weight:600;">⚠️ If preview fails: re-upload PDF using a <u>personal gmail.com</u> account (not a Google Workspace/org account)</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.6rem;margin-top:1rem;">
+          <button class="bm-add-btn" id="bm-save-btn" onclick="bmSaveBook()" style="margin-top:0;">✅ Save Book</button>
+          <button onclick="bmCancelEdit()" id="bm-cancel-btn" style="display:none;background:var(--linen);color:var(--brown);border:1.5px solid var(--dust);padding:.65rem 1.2rem;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.87rem;cursor:pointer;">Cancel</button>
+        </div>
+      </div>
+
+      <!-- EXPORT TAB -->
+      <div class="bm-section" id="bm-export">
+        <div class="bm-export-box">
+          <div class="bm-export-title">📤 Export BOOKS Array</div>
+          <div class="bm-export-desc">Copy the updated <code>BOOKS</code> array and paste it into your <code>index.html</code> to permanently save all changes (including Drive URLs you've added).</div>
+          <div class="bm-export-actions">
+            <button class="bm-ex-btn bm-ex-copy" onclick="bmCopyExport()">📋 Copy to Clipboard</button>
+            <button class="bm-ex-btn bm-ex-dl" onclick="bmDownloadExport()">⬇ Download as .js</button>
+          </div>
+          <div class="bm-code" id="bm-export-code"></div>
+        </div>
+        <div class="bm-export-box" style="margin-top:1rem;">
+          <div class="bm-export-title">📥 Import Books from JSON</div>
+          <div class="bm-export-desc">Upload a previously exported <code>.js</code> or <code>.json</code> books file to restore or merge your library.</div>
+          <input type="file" id="bm-import-file" accept=".js,.json" style="display:none" onchange="bmImport(event)">
+          <button class="bm-ex-btn bm-ex-dl" onclick="document.getElementById('bm-import-file').click()">📂 Choose File</button>
+        </div>
+      </div>
+
+      <!-- GUIDE TAB -->
+      <div class="bm-section" id="bm-guide">
+        <h3 style="font-family:'EB Garamond',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.85rem;">Why Google Drive embeds fail — and the fix</h3>
+        <div style="font-size:.83rem;line-height:1.8;color:var(--ink);">
+          <p style="margin-bottom:.75rem;"><strong>Root cause 1 — Google Workspace domain restriction (most common):</strong><br>
+          If your file is in a <em>work, school, or ministry</em> Google account (not a personal gmail.com), the organisation's admin can block external embedding — even when you set "Anyone with the link." The share settings look correct but embedding is silently blocked at the domain level.</p>
+          <p style="margin-bottom:.75rem;"><strong>Root cause 2 — X-Frame-Options header:</strong><br>
+          Google Drive's <code>/preview</code> endpoint sends <code>X-Frame-Options: SAMEORIGIN</code> for many files, which browsers refuse to embed in iframes. This is why all three URL formats (<code>/view</code>, <code>/preview</code>, <code>/uc?export=view</code>) produce the same error.</p>
+          <p style="margin-bottom:.75rem;"><strong>Root cause 3 — File too large (&gt;25 MB):</strong><br>
+          Google Drive's inline renderer won't process PDFs above ~25 MB. Large commentaries and study Bibles often hit this limit.</p>
+          <div style="background:var(--linen);border-left:4px solid var(--gold);padding:1rem 1.2rem;border-radius:0 8px 8px 0;margin-bottom:.75rem;">
+            <strong style="color:var(--brown);">✅ The definitive fix:</strong><br>
+            Download the PDF → sign in to a <strong>personal gmail.com account</strong> (not a Workspace account) → upload the PDF there → set sharing to "Anyone with the link" → copy the link → paste it here.
+          </div>
+          <p style="margin-bottom:.75rem;"><strong>This app's fallback system:</strong><br>
+          The reader automatically tries three viewers in order: <em>Google Drive → PDF.js (via Google Docs) → Office Online</em>. If the primary viewer fails, it switches automatically. The ↗ Open button always opens the file directly in a new tab as a last resort.</p>
+          <p><strong>Alternative: use Archive.org or your own host:</strong><br>
+          Public domain books (Tozer, Sanders, old commentaries) can be uploaded to <a href="https://archive.org" target="_blank" style="color:var(--gold);">archive.org</a> for free and embedded with no restrictions whatsoever.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -981,7 +1208,7 @@ const BOOKS = [
       {ref:"Book II, Ch.2",text:"A man who was merely a man and said the sort of things Jesus said would not be a great moral teacher. He would either be a lunatic or else he would be the Devil of Hell. You must make your choice."},
       {ref:"Book III, Ch.8",text:"Pride is the great sin — the sin that was the beginning of evil. Pride is essentially competitive — it is not having things that pleases the proud, but having more than the next person."}
     ]},
-  {id:2,title:"Matthew Henry Concise Bible Commentary.pdf",author:"Matthew Henry Concise",category:"Commentary",emoji:"📖",gradient:"linear-gradient(135deg,#3a1a08,#7a3a14)",driveUrl: driveUrl: "https://drive.google.com/uc?id=190nUBAA4K0v-X94yv3qFJlVGh_oW2W8_&export=view",
+  {id:2,title:"Halley's Bible Handbook",author:"Henry H. Halley",category:"Commentary",emoji:"📖",gradient:"linear-gradient(135deg,#3a1a08,#7a3a14)",driveUrl:"",
     description:"The authoritative guide to every book of the Bible — history, archaeology, maps and detailed notes on every passage.",
     keywords:["commentary","scripture","old testament","new testament","archaeology","genesis","revelation","prophecy","context"],
     toc:["The Old Testament","The Pentateuch","Historical Books","The Psalms","The Prophets","The New Testament","The Gospels","The Epistles","Revelation"],
@@ -1167,6 +1394,58 @@ function filterLib(cat, el) {
 // ═══════════════════════════════════════════════════════════
 // READER MODAL
 // ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// DRIVE URL UTILITIES
+// Why Google Drive embeds fail (and the fix):
+//   1. Workspace domain restrictions override "Anyone with link"
+//   2. /preview sends X-Frame-Options:SAMEORIGIN on many files
+//   3. Files >25 MB aren't rendered inline
+// Solution: extract the file ID and offer three viewer strategies.
+// ═══════════════════════════════════════════════════════════
+function getDriveFileId(url) {
+  if (!url) return null;
+  // Handles all Google Drive URL formats:
+  //   /file/d/ID/view  /file/d/ID/preview  /open?id=ID  /uc?id=ID
+  const patterns = [
+    /\/file\/d\/([a-zA-Z0-9_-]{20,})/,
+    /[?&]id=([a-zA-Z0-9_-]{20,})/,
+    /\/d\/([a-zA-Z0-9_-]{20,})/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+function getViewerUrls(rawUrl) {
+  const id = getDriveFileId(rawUrl);
+  if (!id) return null;
+  const directUrl = `https://drive.google.com/uc?export=download&id=${id}`;
+  return {
+    gdrive: `https://drive.google.com/file/d/${id}/preview`,
+    // PDF.js via Google Docs (most reliable for public Drive files)
+    pdfjs:  `https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(directUrl)}`,
+    // Office Online viewer — great fallback for publicly shared files
+    office: `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(directUrl)}`,
+  };
+}
+
+let currentViewerMode = 'gdrive';
+let currentDriveUrl = '';
+
+function getDriveDirectLink(rawUrl) {
+  const id = getDriveFileId(rawUrl);
+  return id ? `https://drive.google.com/file/d/${id}/view` : rawUrl;
+}
+
+function openDriveTab() {
+  if (curBook?.driveUrl) window.open(getDriveDirectLink(curBook.driveUrl), '_blank');
+}
+
+// ═══════════════════════════════════════════════════════════
+// READER
+// ═══════════════════════════════════════════════════════════
 function openReader(id, tab) {
   curBook = BOOKS.find(b => b.id === id);
   if (!curBook) return;
@@ -1177,34 +1456,146 @@ function openReader(id, tab) {
   thumb.style.background = curBook.gradient;
   thumb.textContent = curBook.emoji;
   document.getElementById('r-dl').onclick = () => {
-    if (curBook.driveUrl) window.open(curBook.driveUrl.replace('/preview', '/view'), '_blank');
-    else toast('Add the Google Drive URL for this book to enable downloading.');
+    if (curBook.driveUrl) window.open(getDriveDirectLink(curBook.driveUrl), '_blank');
+    else openBookManager(curBook.id);
   };
   switchTab(tab || 'pdf');
   document.getElementById('overlay').classList.add('open');
   applyReaderDark(readerDarkMode);
 }
 
-function switchTab(tab, el) {
+function switchTab(tab) {
   const tabs = ['pdf', 'ref', 'audio'];
   document.querySelectorAll('.rtab').forEach((t, i) => t.classList.toggle('on', tabs[i] === tab));
   document.getElementById('pdf-pane').classList.toggle('on', tab === 'pdf');
   document.getElementById('ref-pane').classList.toggle('on', tab === 'ref');
   document.getElementById('audio-pane').classList.toggle('on', tab === 'audio');
-  if (tab === 'pdf' && curBook) {
-    const fr = document.getElementById('pdf-frame'), ph = document.getElementById('pdf-ph');
-    if (curBook.driveUrl) { fr.src = curBook.driveUrl; fr.style.display = 'block'; ph.style.display = 'none'; }
-    else { fr.style.display = 'none'; ph.style.display = 'block'; document.getElementById('pdf-ph-title').textContent = curBook.title; }
-  }
+  if (tab === 'pdf' && curBook) loadPdfPane(curBook);
   if (tab === 'ref' && curBook) buildRef(curBook);
+}
+
+function loadPdfPane(book) {
+  const ph      = document.getElementById('pdf-ph');
+  const active  = document.getElementById('pdf-active');
+  const errBox  = document.getElementById('pdf-error');
+  const loading = document.getElementById('pdf-loading');
+  const frame   = document.getElementById('pdf-frame');
+
+  if (!book.driveUrl) {
+    ph.style.display = 'flex'; active.style.display = 'none';
+    document.getElementById('pdf-ph-title').textContent = book.title;
+    return;
+  }
+
+  ph.style.display = 'none';
+  active.style.display = 'flex';
+  errBox.classList.remove('show');
+  loading.classList.remove('hidden');
+  document.getElementById('pdf-toolbar-title').textContent = book.title;
+  currentDriveUrl = book.driveUrl;
+  currentViewerMode = 'gdrive';
+  _setPdfViewerBtns('gdrive');
+
+  const urls = getViewerUrls(book.driveUrl);
+  if (!urls) {
+    showPdfError('The URL provided does not appear to be a valid Google Drive link.', book.driveUrl);
+    return;
+  }
+
+  // Set iframe src — listen for load event
+  frame.src = urls.gdrive;
+
+  // Detect load failure: iframe fires load even on error pages,
+  // so we use a timeout + try a health-check heuristic
+  let loadTimer = setTimeout(() => {
+    // If still loading after 12 s, show fallback options
+    if (!loading.classList.contains('hidden')) {
+      showPdfError(
+        'Google Drive took too long to load. This is usually caused by a <strong>Workspace domain restriction</strong> or a large file. Try the PDF.js or Office viewers.',
+        book.driveUrl
+      );
+    }
+  }, 12000);
+
+  frame.onload = () => {
+    clearTimeout(loadTimer);
+    loading.classList.add('hidden');
+    // Try to detect Drive's own "sorry" error page via title
+    // (we can't read cross-origin content, but we can check for blank src)
+    try {
+      const inner = frame.contentDocument || frame.contentWindow?.document;
+      if (inner && inner.title && inner.title.toLowerCase().includes('sorry')) {
+        showPdfError(
+          'Google Drive returned an error page. This file may have <strong>Workspace sharing restrictions</strong> or is private. Try another viewer.',
+          book.driveUrl
+        );
+      }
+    } catch { /* cross-origin — that's fine, means it loaded */ }
+  };
+
+  frame.onerror = () => {
+    clearTimeout(loadTimer);
+    showPdfError('The iframe could not load this PDF.', book.driveUrl);
+  };
+}
+
+function showPdfError(msg, rawUrl) {
+  document.getElementById('pdf-loading').classList.add('hidden');
+  document.getElementById('pdf-error-msg').innerHTML = msg;
+  document.getElementById('pdf-error').classList.add('show');
+  // Auto-try PDF.js after 1.5 s
+  setTimeout(() => switchPdfViewer('pdfjs'), 1500);
+}
+
+function switchPdfViewer(mode) {
+  const book = curBook;
+  if (!book?.driveUrl) return;
+  const urls = getViewerUrls(book.driveUrl);
+  if (!urls) return;
+
+  const frame   = document.getElementById('pdf-frame');
+  const loading = document.getElementById('pdf-loading');
+  const errBox  = document.getElementById('pdf-error');
+
+  currentViewerMode = mode;
+  _setPdfViewerBtns(mode);
+  errBox.classList.remove('show');
+  loading.classList.remove('hidden');
+  frame.src = urls[mode];
+
+  let t = setTimeout(() => {
+    if (!loading.classList.contains('hidden')) {
+      loading.classList.add('hidden');
+      // If PDF.js also fails show final message
+      if (mode !== 'gdrive') {
+        document.getElementById('pdf-error-msg').innerHTML =
+          `The <strong>${mode === 'pdfjs' ? 'PDF.js' : 'Office'}</strong> viewer also couldn't embed this file. ` +
+          `The most reliable solution is to <strong>upload the PDF to a personal gmail.com account</strong> (not a Workspace account) and re-share. Then click "↗ Open" to read it directly.`;
+        errBox.classList.add('show');
+      }
+    }
+  }, 15000);
+
+  frame.onload = () => { clearTimeout(t); loading.classList.add('hidden'); };
+}
+
+function _setPdfViewerBtns(active) {
+  ['gdrive','pdfjs','office'].forEach(m => {
+    const el = document.getElementById(`pdf-btn-${m === 'gdrive' ? 'viewer' : m}`);
+    if (el) el.classList.toggle('active', m === active);
+  });
 }
 
 function closeReader() {
   document.getElementById('overlay').classList.remove('open');
   stopSpeech();
-  document.getElementById('pdf-frame').src = '';
-  document.getElementById('pdf-frame').style.display = 'none';
-  document.getElementById('pdf-ph').style.display = 'block';
+  // Clear iframe to stop network requests
+  const fr = document.getElementById('pdf-frame');
+  fr.src = 'about:blank';
+  document.getElementById('pdf-loading').classList.remove('hidden');
+  document.getElementById('pdf-error').classList.remove('show');
+  document.getElementById('pdf-ph').style.display = 'flex';
+  document.getElementById('pdf-active').style.display = 'none';
   document.getElementById('passage-box').classList.remove('show');
   document.getElementById('study-output').classList.remove('show');
   closeSidecar();
@@ -2005,19 +2396,263 @@ function toast(msg) {
 }
 
 // ═══════════════════════════════════════════════════════════
+// BOOK MANAGER — add/edit books + Drive URL management
+// Books are stored in localStorage so changes survive reload.
+// Use Export tab to get the updated BOOKS array for permanent
+// saving into your index.html.
+// ═══════════════════════════════════════════════════════════
+const BM_STORE_KEY = 'logos_books_overrides';
+let bmEditingId = null; // null = adding new, number = editing
+
+// Merge stored Drive URLs into BOOKS on startup
+function applyStoredOverrides() {
+  try {
+    const overrides = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
+    BOOKS.forEach(b => {
+      if (overrides[b.id] !== undefined) b.driveUrl = overrides[b.id];
+    });
+    // Also restore any user-added books
+    const userBooks = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
+    userBooks.forEach(ub => {
+      if (!BOOKS.find(b => b.id === ub.id)) BOOKS.push(ub);
+    });
+  } catch {}
+}
+
+function persistDriveUrl(bookId, url) {
+  try {
+    const overrides = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
+    overrides[bookId] = url;
+    localStorage.setItem(BM_STORE_KEY, JSON.stringify(overrides));
+  } catch {}
+}
+
+function openBookManager(focusId) {
+  document.getElementById('bm-overlay').classList.add('open');
+  bmTab('list', document.querySelector('.bm-tab'));
+  renderBmList();
+  if (focusId) setTimeout(() => bmEditBook(focusId), 200);
+}
+function closeBookManager() { document.getElementById('bm-overlay').classList.remove('open'); }
+
+function bmTab(name, el) {
+  document.querySelectorAll('.bm-section').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.bm-tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('bm-' + name).classList.add('on');
+  if (el) el.classList.add('on');
+  if (name === 'export') renderBmExport();
+}
+
+function renderBmList() {
+  const list = document.getElementById('bm-book-list');
+  list.innerHTML = BOOKS.map(b => `
+    <div class="bm-book-row">
+      <div class="bm-book-cover" style="background:${b.gradient}">${b.emoji}</div>
+      <div class="bm-book-info">
+        <div class="bm-book-name">${b.title}</div>
+        <div class="bm-book-meta">${b.author} · ${b.category}
+          <span class="bm-book-url-badge ${b.driveUrl ? 'has-url' : 'no-url'}" style="margin-left:.4rem;">
+            ${b.driveUrl ? '✓ PDF linked' : '⚠ No PDF'}
+          </span>
+        </div>
+      </div>
+      <div class="bm-book-actions">
+        ${b.driveUrl ? `<button class="bm-btn bm-btn-test" onclick="bmTestUrl(${b.id})" title="Test PDF viewer">▶ Test</button>` : ''}
+        <button class="bm-btn bm-btn-edit" onclick="bmEditBook(${b.id})">✏ Edit</button>
+        ${b.isUserAdded ? `<button class="bm-btn bm-btn-del" onclick="bmDeleteBook(${b.id})">🗑</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function bmEditBook(id) {
+  const b = BOOKS.find(x => x.id === id);
+  if (!b) return;
+  bmEditingId = id;
+  bmTab('add', document.querySelectorAll('.bm-tab')[1]);
+  document.getElementById('bm-title').value  = b.title;
+  document.getElementById('bm-author').value = b.author;
+  document.getElementById('bm-category').value = b.category;
+  document.getElementById('bm-emoji').value  = b.emoji;
+  document.getElementById('bm-desc').value   = b.description || '';
+  document.getElementById('bm-url').value    = b.driveUrl || '';
+  previewDriveUrl(b.driveUrl || '');
+  document.getElementById('bm-edit-banner').style.display = 'block';
+  document.getElementById('bm-edit-banner').textContent = `✏ Editing: "${b.title}"`;
+  document.getElementById('bm-cancel-btn').style.display = 'inline-block';
+  document.getElementById('bm-save-btn').textContent = '✅ Save Changes';
+  document.getElementById('bm-title').focus();
+}
+
+function bmCancelEdit() {
+  bmEditingId = null;
+  document.getElementById('bm-edit-banner').style.display = 'none';
+  document.getElementById('bm-cancel-btn').style.display = 'none';
+  document.getElementById('bm-save-btn').textContent = '✅ Save Book';
+  ['bm-title','bm-author','bm-url','bm-desc','bm-emoji'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('url-preview').classList.remove('show');
+}
+
+function bmSaveBook() {
+  const title  = document.getElementById('bm-title').value.trim();
+  const author = document.getElementById('bm-author').value.trim();
+  const url    = document.getElementById('bm-url').value.trim();
+  const desc   = document.getElementById('bm-desc').value.trim();
+  const emoji  = document.getElementById('bm-emoji').value.trim() || '📖';
+  const cat    = document.getElementById('bm-category').value;
+
+  if (!title) { toast('Please enter a book title.'); return; }
+
+  if (bmEditingId !== null) {
+    // Update existing
+    const b = BOOKS.find(x => x.id === bmEditingId);
+    if (b) {
+      b.title = title; b.author = author; b.description = desc;
+      b.emoji = emoji; b.category = cat;
+      b.driveUrl = url;
+      persistDriveUrl(b.id, url);
+    }
+    toast(`✅ "${title}" updated!`);
+  } else {
+    // Add new book
+    const newId = Math.max(...BOOKS.map(b => b.id), 100) + 1;
+    const GRADIENTS = [
+      'linear-gradient(135deg,#0e1b2e,#1a3a5c)',
+      'linear-gradient(135deg,#3a1a08,#7a3a14)',
+      'linear-gradient(135deg,#1a2e14,#2e5c1e)',
+      'linear-gradient(135deg,#2e2040,#4e3a70)',
+      'linear-gradient(135deg,#0a2030,#124060)',
+    ];
+    const newBook = {
+      id: newId, title, author, category: cat, emoji,
+      gradient: GRADIENTS[newId % GRADIENTS.length],
+      driveUrl: url, description: desc,
+      keywords: [cat.toLowerCase(), author.split(' ').pop().toLowerCase()],
+      toc: [], passages: [], isUserAdded: true,
+    };
+    BOOKS.unshift(newBook);
+    persistDriveUrl(newId, url);
+    // Persist user-added books
+    try {
+      const stored = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
+      stored.push(newBook);
+      localStorage.setItem('logos_user_books', JSON.stringify(stored));
+    } catch {}
+    toast(`✅ "${title}" added to the library!`);
+  }
+
+  renderLib();
+  renderBmList();
+  bmCancelEdit();
+  // If this was a focused edit from reader, auto-open reader
+  if (bmEditingId !== null && url) setTimeout(() => openReader(bmEditingId, 'pdf'), 400);
+  bmEditingId = null;
+}
+
+function bmDeleteBook(id) {
+  const b = BOOKS.find(x => x.id === id);
+  if (!b || !b.isUserAdded) return;
+  if (!confirm(`Delete "${b.title}" from the library?`)) return;
+  BOOKS.splice(BOOKS.indexOf(b), 1);
+  try {
+    const stored = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
+    localStorage.setItem('logos_user_books', JSON.stringify(stored.filter(x => x.id !== id)));
+  } catch {}
+  renderLib();
+  renderBmList();
+  toast(`"${b.title}" removed.`);
+}
+
+function bmTestUrl(id) {
+  const b = BOOKS.find(x => x.id === id);
+  if (b?.driveUrl) { openReader(b.id, 'pdf'); closeBookManager(); }
+}
+
+// Drive URL preview / validator
+function previewDriveUrl(val) {
+  const box    = document.getElementById('url-preview');
+  const status = document.getElementById('url-status');
+  const text   = document.getElementById('url-preview-text');
+  if (!val) { box.classList.remove('show'); return; }
+  box.classList.add('show');
+  const id = getDriveFileId(val);
+  if (id) {
+    status.textContent = '✓ Valid'; status.style.background = 'rgba(74,92,42,.3)'; status.style.color = '#8bc34a';
+    text.textContent = `File ID: ${id}`;
+  } else {
+    status.textContent = '⚠ Check URL'; status.style.background = 'rgba(184,136,42,.2)'; status.style.color = 'var(--gold2)';
+    text.textContent = 'Could not extract a Drive file ID — double check the link';
+  }
+}
+
+function testDriveUrl() {
+  const url = document.getElementById('bm-url').value.trim();
+  if (!url) { toast('Paste a Drive URL first.'); return; }
+  const urls = getViewerUrls(url);
+  if (!urls) { toast('Invalid Drive URL — could not extract file ID.'); return; }
+  window.open(urls.gdrive, '_blank');
+}
+
+// Export
+function renderBmExport() {
+  const code = 'const BOOKS = ' + JSON.stringify(BOOKS, null, 2) + ';';
+  document.getElementById('bm-export-code').textContent = code;
+}
+function bmCopyExport() {
+  renderBmExport();
+  const code = document.getElementById('bm-export-code').textContent;
+  navigator.clipboard.writeText(code).then(() => toast('📋 BOOKS array copied — paste it into your index.html script section.')).catch(() => toast('Copy failed — select the code manually.'));
+}
+function bmDownloadExport() {
+  renderBmExport();
+  const code = document.getElementById('bm-export-code').textContent;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], { type: 'text/javascript' }));
+  a.download = 'logos-books.js';
+  a.click();
+  toast('⬇ Downloaded logos-books.js');
+}
+function bmImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      let data = ev.target.result;
+      // Strip "const BOOKS = " prefix if present
+      data = data.replace(/^const\s+BOOKS\s*=\s*/, '').replace(/;\s*$/, '');
+      const imported = JSON.parse(data);
+      if (!Array.isArray(imported)) throw new Error('Not an array');
+      imported.forEach(ib => {
+        const existing = BOOKS.find(b => b.id === ib.id);
+        if (existing) { if (ib.driveUrl) { existing.driveUrl = ib.driveUrl; persistDriveUrl(ib.id, ib.driveUrl); } }
+        else { BOOKS.push({ ...ib, isUserAdded: true }); }
+      });
+      renderLib(); renderBmList();
+      toast(`✅ Imported ${imported.length} book entries.`);
+    } catch (err) { toast('Import failed: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+// ═══════════════════════════════════════════════════════════
 // INITIALISATION
 // ═══════════════════════════════════════════════════════════
 (function init() {
-// renderLib();  <-- Add these two slashes here
-renderBibleBookList();
-loadBibleChapter();
-renderTierCards();
-renderPaymentButtons();
+  applyStoredOverrides(); // Restore saved Drive URLs first
+  renderLib();
+  renderBibleBookList();
+  loadBibleChapter();
+  renderTierCards();
+  renderPaymentButtons();
   // Restore session
   try {
     const saved = localStorage.getItem('logos_member');
     if (saved) { currentMember = JSON.parse(saved); showMemberBanner(); }
   } catch (e) {}
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeReader(); closeBookManager(); }
+  });
 })();
 </script>
 </body>
