@@ -579,7 +579,9 @@ footer a{color:var(--gold2);text-decoration:none;}
       <button class="chip" onclick="filterLib('Prophecy',this)">🔥 Prophecy</button>
     </div>
     <div class="sh">Collection</div>
-    <div class="grid" id="book-grid"></div>
+   <div id="book-grid" style="width:100%; height:80vh; border:2px solid var(--gold); border-radius:12px; overflow:hidden; background:var(--paper); margin-top: 20px;">
+  <iframe src="https://drive.google.com/embeddedfolderview?id=13ByRtynPn6zkCaPq8l7InyiNOHUFU-7F#list" style="width:100%; height:100%; border:none;"></iframe>
+</div>
   </div>
 </div>
 
@@ -2006,11 +2008,11 @@ function toast(msg) {
 // INITIALISATION
 // ═══════════════════════════════════════════════════════════
 (function init() {
-  renderLib();
-  renderBibleBookList();
-  loadBibleChapter();
-  renderTierCards();
-  renderPaymentButtons();
+// renderLib();  <-- Add these two slashes here
+renderBibleBookList();
+loadBibleChapter();
+renderTierCards();
+renderPaymentButtons();
   // Restore session
   try {
     const saved = localStorage.getItem('logos_member');
