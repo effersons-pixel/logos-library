@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logos Library — Christian Digital Library</title>
+<style>
+/* ── FOLDER VIEW OVERRIDE ── */
+/* This makes the main library area show your entire folder instead of individual cards */
+.folder-container {
+    width: 100%;
+    height: 80vh;
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+}
+iframe.drive-folder {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+</style>
+</head>
+<body>
+
+<div id="page-library" class="page on">
+  <div class="wrap">
+    <div class="sh">My Digital Collection</div>
+    <p style="margin-bottom: 1.5rem; color: #666; font-style: italic;">
+        Click any file below to open it. New books added to your Google Drive folder appear here automatically.
+    </p>
+    
+    <div class="folder-container">
+      <iframe class="drive-folder" src="https://drive.google.com/embeddedfolderview?id=13ByRtynPn6zkCaPq8l7InyiNOHUFU-7F#list"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// NOTE: Since you are now using the Folder View, the renderLib() function 
+// at the bottom of your script is no longer needed to display books, 
+// but I have kept the core logic so your "Research" and "Thesis" tools 
+// still have data to work with.
+
+(function init() {
+  // We skip renderLib() for the UI but keep it for the data
+  renderBibleBookList();
+  loadBibleChapter();
+  renderTierCards();
+  renderPaymentButtons();
+})();
+</script>
+</body>
+</html>
