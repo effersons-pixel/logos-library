@@ -4,51 +4,2018 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Logos Library — Christian Digital Library</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ── FOLDER VIEW OVERRIDE ── */
-/* This makes the main library area show your entire folder instead of individual cards */
-.folder-container {
-    width: 100%;
-    height: 80vh;
-    border: 2px solid var(--gold);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--paper);
+/* ═══════════════════════════════════════
+   CSS VARIABLES — single source of truth
+   ═══════════════════════════════════════ */
+:root {
+  --navy:#0e1b2e; --navy2:#162540; --navy3:#1e3050;
+  --gold:#b8882a; --gold2:#d4a43e; --gold3:#f0c96a;
+  --parchment:#f9f5ed; --paper:#fdf9f3; --linen:#f2ead8; --dust:#e0d5c0;
+  --ink:#1a130a; --brown:#6b3d1a; --olive:#4a5c2a; --crimson:#8b1a2a;
+  --scholar:#1a3a5c; --minister:#3a1060; --free-c:#1a3020;
+  --shadow:rgba(14,27,46,0.15); --glow:rgba(184,136,42,0.18);
+  /* Reading pane dark mode vars */
+  --read-bg:var(--paper); --read-text:var(--ink); --read-border:var(--dust);
+  --read-verse-hover:rgba(184,136,42,0.06);
 }
-iframe.drive-folder {
-    width: 100%;
-    height: 100%;
-    border: none;
+.dark-read {
+  --read-bg:#1a1510; --read-text:#e8dfc8; --read-border:#3a3020;
+  --read-verse-hover:rgba(184,136,42,0.12);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--parchment);color:var(--ink);min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--navy);padding:.35rem 2rem;text-align:center;font-size:.75rem;color:var(--gold3);letter-spacing:1.5px;font-style:italic;font-family:'EB Garamond',serif;border-bottom:1px solid rgba(184,136,42,.3);}
+
+/* ── NAVBAR ── */
+nav{background:var(--navy);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--gold);box-shadow:0 4px 20px rgba(14,27,46,.4);gap:.75rem;}
+.logo{display:flex;align-items:center;gap:.6rem;flex-shrink:0;}
+.logo-cross{font-size:1.4rem;color:var(--gold2);}
+.logo-text{font-family:'EB Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--parchment);}
+.logo-text em{color:var(--gold2);font-style:italic;}
+.nav-links{display:flex;gap:.2rem;flex-wrap:wrap;}
+.nl{background:none;border:none;color:rgba(249,245,237,.5);font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:600;padding:.38rem .75rem;border-radius:6px;cursor:pointer;transition:all .18s;}
+.nl:hover{color:var(--parchment);background:rgba(255,255,255,.07);}
+.nl.on{background:var(--gold);color:var(--navy);}
+.nl.subscriber-glow{border:1px solid var(--gold);color:var(--gold3);}
+
+/* ── GLOBAL SEARCH ── */
+.global-search-wrap{position:relative;flex-shrink:0;}
+.global-search{background:rgba(255,255,255,.08);border:1.5px solid rgba(184,136,42,.35);border-radius:20px;padding:.32rem .85rem .32rem 2rem;font-family:'Nunito',sans-serif;font-size:.8rem;color:var(--parchment);outline:none;width:200px;transition:all .25s;}
+.global-search::placeholder{color:rgba(249,245,237,.35);}
+.global-search:focus{border-color:var(--gold);width:260px;background:rgba(255,255,255,.12);}
+.gs-icon{position:absolute;left:.65rem;top:50%;transform:translateY(-50%);font-size:.8rem;pointer-events:none;opacity:.5;}
+.gs-results{position:absolute;top:calc(100% + 8px);right:0;width:320px;background:var(--navy2);border:1.5px solid var(--gold);border-radius:10px;overflow:hidden;display:none;z-index:500;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+.gs-results.open{display:block;}
+.gs-section{padding:.55rem 1rem .3rem;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);border-bottom:1px solid rgba(184,136,42,.2);}
+.gs-item{padding:.5rem 1rem;font-size:.8rem;color:rgba(249,245,237,.75);cursor:pointer;transition:background .13s;display:flex;align-items:center;gap:.5rem;}
+.gs-item:hover{background:rgba(184,136,42,.12);color:var(--parchment);}
+.gs-item span{font-size:1rem;}
+.gs-empty{padding:1.2rem;text-align:center;font-size:.8rem;color:rgba(249,245,237,.4);}
+
+/* ── HERO ── */
+.hero{background:var(--navy2);padding:3.5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 15% 70%,rgba(184,136,42,.16),transparent 65%),radial-gradient(ellipse 50% 60% at 85% 25%,rgba(74,92,42,.14),transparent 65%);pointer-events:none;}
+.cross-wm{position:absolute;font-size:20rem;color:rgba(184,136,42,.04);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1;user-select:none;}
+.hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
+.verse-tag{display:inline-block;font-family:'EB Garamond',serif;font-style:italic;font-size:.85rem;color:var(--gold3);border:1px solid rgba(184,136,42,.35);padding:.3rem 1rem;border-radius:100px;margin-bottom:1.2rem;background:rgba(184,136,42,.06);}
+.hero h1{font-family:'EB Garamond',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;color:var(--parchment);line-height:1.1;margin-bottom:.9rem;}
+.hero h1 em{color:var(--gold2);font-style:italic;}
+.hero p{color:rgba(249,245,237,.6);font-size:.93rem;line-height:1.8;margin-bottom:2rem;}
+.hero-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;}
+.hstat{text-align:center;}
+.hstat-n{font-family:'EB Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--gold2);display:block;}
+.hstat-l{font-size:.7rem;color:rgba(249,245,237,.45);text-transform:uppercase;letter-spacing:1px;}
+
+/* ── PAGES ── */
+.page{display:none;}.page.on{display:block;}
+.wrap{max-width:1180px;margin:0 auto;padding:2rem 1.5rem;}
+.wrap-sm{max-width:880px;margin:0 auto;padding:2.5rem 1.5rem;}
+.sh{font-family:'EB Garamond',serif;font-size:1.5rem;font-weight:700;margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem;color:var(--navy);}
+.sh::after{content:'';flex:1;height:1px;background:var(--dust);}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.6rem;align-items:center;}
+.fl{font-size:.7rem;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:1px;margin-right:.2rem;}
+.chip{padding:.3rem .9rem;border-radius:100px;border:1.5px solid var(--dust);background:var(--paper);font-size:.77rem;font-family:'Nunito',sans-serif;font-weight:600;cursor:pointer;transition:all .17s;color:var(--ink);}
+.chip:hover,.chip.on{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+
+/* ── BOOK GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1.3rem;}
+.card{background:var(--paper);border-radius:10px;overflow:hidden;box-shadow:0 2px 14px var(--shadow);cursor:pointer;transition:transform .22s,box-shadow .22s;display:flex;flex-direction:column;animation:up .38s ease both;border:1px solid rgba(224,213,192,.6);}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 32px var(--shadow);}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.cover{height:182px;display:flex;align-items:flex-end;position:relative;overflow:hidden;padding:1rem;}
+.cover-spine{position:absolute;left:0;top:0;bottom:0;width:10px;background:rgba(0,0,0,.28);}
+.cover-glow{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.45));}
+.cover-emoji{position:absolute;top:1rem;right:1rem;font-size:1.9rem;opacity:.85;}
+.cover-text{position:relative;z-index:1;color:rgba(255,255,255,.95);text-shadow:0 1px 5px rgba(0,0,0,.5);}
+.ct{font-family:'EB Garamond',serif;font-style:italic;font-size:.92rem;line-height:1.25;font-weight:700;}
+.ca{font-size:.68rem;opacity:.75;margin-top:.15rem;}
+.card-body{padding:.85rem;flex:1;display:flex;flex-direction:column;}
+.card-title{font-family:'EB Garamond',serif;font-weight:700;font-size:.97rem;line-height:1.25;margin-bottom:.2rem;}
+.card-author{font-size:.72rem;color:var(--brown);margin-bottom:.45rem;}
+.card-desc{font-size:.74rem;color:#777;line-height:1.55;margin-bottom:.65rem;flex:1;}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.ctag{font-size:.66rem;font-weight:700;padding:.17rem .52rem;border-radius:100px;background:var(--linen);border:1px solid var(--dust);color:var(--brown);}
+.card-btns{display:flex;gap:.35rem;}
+.cbtn{flex:1;padding:.4rem .25rem;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .17s;}
+.cbtn-read{background:var(--navy);color:var(--parchment);}.cbtn-read:hover{background:var(--navy2);}
+.cbtn-listen{background:var(--gold);color:var(--navy);}.cbtn-listen:hover{background:var(--gold2);}
+.cbtn-ref{background:var(--linen);color:var(--brown);border:1px solid var(--dust);}.cbtn-ref:hover{background:var(--brown);color:var(--parchment);}
+
+/* ── READER MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(10,18,30,.92);z-index:600;display:flex;align-items:center;justify-content:center;padding:.75rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.rmodal{background:var(--read-bg);width:100%;max-width:1100px;max-height:96vh;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transform:scale(.96);transition:transform .25s,background .3s;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+.overlay.open .rmodal{transform:scale(1);}
+.rtop{background:var(--navy);padding:.75rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-shrink:0;border-bottom:2px solid var(--gold);}
+.rtitle{font-family:'EB Garamond',serif;font-size:1rem;color:var(--parchment);flex:1;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rtop-actions{display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+.dark-toggle{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--parchment);padding:.28rem .7rem;border-radius:20px;font-size:.72rem;cursor:pointer;transition:all .18s;font-family:'Nunito',sans-serif;}
+.dark-toggle:hover{background:rgba(255,255,255,.2);}
+.dark-toggle.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.rclose{background:none;border:none;color:var(--parchment);font-size:1.4rem;cursor:pointer;opacity:.6;transition:opacity .15s;}.rclose:hover{opacity:1;}
+.rtabs{background:rgba(14,27,46,.92);display:flex;gap:.2rem;padding:0 1.4rem;flex-shrink:0;}
+.rtab{padding:.5rem 1rem;background:none;border:none;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:600;color:rgba(249,245,237,.45);cursor:pointer;border-bottom:2px solid transparent;transition:all .17s;}
+.rtab.on{color:var(--gold2);border-bottom-color:var(--gold2);}
+.rbody{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+
+/* ── SIDECAR LAYOUT ── */
+.sidecar-wrap{display:flex;flex:1;overflow:hidden;min-height:0;}
+.sidecar-main{flex:1;overflow-y:auto;min-width:0;}
+.sidecar-panel{width:340px;flex-shrink:0;background:var(--navy2);border-left:2px solid var(--gold);overflow-y:auto;display:none;transition:width .25s;}
+.sidecar-panel.open{display:flex;flex-direction:column;}
+.sidecar-head{padding:.75rem 1rem;background:var(--navy);border-bottom:1px solid rgba(184,136,42,.3);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.sidecar-head-title{font-family:'EB Garamond',serif;font-size:.95rem;color:var(--parchment);font-style:italic;}
+.sidecar-close{background:none;border:none;color:rgba(249,245,237,.5);font-size:1.1rem;cursor:pointer;}.sidecar-close:hover{color:var(--parchment);}
+.sidecar-content{padding:1rem;flex:1;}
+.source-card{background:rgba(255,255,255,.05);border:1px solid rgba(184,136,42,.2);border-radius:8px;padding:.85rem 1rem;margin-bottom:.75rem;}
+.source-card-ref{font-family:'EB Garamond',serif;font-size:.78rem;color:var(--gold3);font-style:italic;margin-bottom:.45rem;}
+.source-card-text{font-family:'EB Garamond',serif;font-size:.92rem;line-height:1.75;color:rgba(249,245,237,.8);}
+.sidecar-toggle-btn{background:var(--gold);color:var(--navy);border:none;padding:.3rem .75rem;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* ── PDF PANE ── */
+.pdf-pane{flex:1;background:#3a3530;display:none;align-items:center;justify-content:center;}
+.pdf-pane.on{display:flex;}
+.pdf-pane iframe{width:100%;height:100%;border:none;}
+.no-pdf{text-align:center;color:rgba(255,255,255,.6);padding:3rem 2rem;max-width:480px;}
+.no-pdf .icon{font-size:3rem;margin-bottom:1rem;}
+.no-pdf h3{font-family:'EB Garamond',serif;color:#fff;margin-bottom:.6rem;font-size:1.3rem;}
+.no-pdf p{font-size:.83rem;line-height:1.7;}
+.no-pdf code{background:rgba(255,255,255,.1);padding:.15rem .45rem;border-radius:3px;font-size:.75rem;color:var(--gold3);}
+
+/* ── REFERENCE PANE ── */
+.ref-pane{flex:1;display:none;flex-direction:column;overflow-y:auto;padding:1.4rem 1.8rem;background:var(--read-bg);transition:background .3s;color:var(--read-text);}
+.ref-pane.on{display:flex;}
+.ref-book-header{display:flex;gap:1.4rem;margin-bottom:1.6rem;padding-bottom:1.4rem;border-bottom:1px solid var(--read-border);}
+.ref-cover-thumb{width:82px;height:110px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.4rem;box-shadow:3px 3px 12px var(--shadow);}
+.ref-meta h2{font-family:'EB Garamond',serif;font-size:1.35rem;font-weight:700;margin-bottom:.3rem;color:var(--read-text);}
+.ref-meta .auth{font-size:.8rem;color:var(--brown);margin-bottom:.45rem;}
+.ref-meta .desc{font-size:.82rem;line-height:1.65;color:#555;margin-bottom:.7rem;}
+.ref-tags{display:flex;gap:.4rem;flex-wrap:wrap;}
+.ref-tag{font-size:.67rem;font-weight:700;padding:.17rem .55rem;border-radius:100px;background:var(--linen);border:1px solid var(--dust);color:var(--brown);}
+.dark-read .ref-tag{background:rgba(184,136,42,.15);border-color:rgba(184,136,42,.3);color:var(--gold3);}
+.ref-search-row{display:flex;gap:.55rem;margin-bottom:1.1rem;}
+.ref-input{flex:1;border:1.5px solid var(--read-border);border-radius:8px;padding:.58rem 1rem;font-family:'Nunito',sans-serif;font-size:.87rem;background:var(--read-bg);outline:none;color:var(--read-text);transition:border-color .18s;}
+.ref-input:focus{border-color:var(--gold);}
+.ref-search-btn{background:var(--navy);color:var(--parchment);border:none;padding:.58rem 1.1rem;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;}
+.toc-title{font-family:'EB Garamond',serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:.7rem;margin-top:1rem;}
+.dark-read .toc-title{color:var(--gold2);}
+.toc-item{display:flex;align-items:baseline;justify-content:space-between;padding:.42rem .7rem;border-radius:6px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--read-border);}
+.toc-item:hover{background:var(--read-verse-hover);}
+.toc-item-title{font-size:.84rem;font-weight:600;color:var(--read-text);}
+.toc-item-num{font-size:.73rem;color:#bbb;font-family:'EB Garamond',serif;}
+.idx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.45rem;margin-top:.5rem;}
+.idx-item{display:flex;align-items:center;justify-content:space-between;padding:.38rem .7rem;background:var(--read-bg);border:1px solid var(--read-border);border-radius:6px;cursor:pointer;transition:all .15s;font-size:.78rem;color:var(--read-text);}
+.idx-item:hover{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.idx-count{font-size:.67rem;font-weight:700;background:var(--gold);color:var(--navy);padding:.1rem .42rem;border-radius:100px;}
+.passage-box{background:var(--linen);border:1px solid var(--dust);border-left:4px solid var(--gold);border-radius:8px;padding:1.1rem 1.3rem;margin-bottom:1.1rem;display:none;}
+.passage-box.show{display:block;}
+.dark-read .passage-box{background:rgba(184,136,42,.1);border-color:rgba(184,136,42,.3);}
+.passage-ref{font-family:'EB Garamond',serif;font-size:.8rem;color:var(--brown);font-style:italic;margin-bottom:.45rem;}
+.passage-text{font-family:'EB Garamond',serif;font-size:1.03rem;line-height:1.8;color:var(--read-text);}
+.passage-speak{margin-top:.7rem;padding:.36rem .85rem;background:var(--gold);color:var(--navy);border:none;border-radius:5px;font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;}
+
+/* ── AUDIO PANE ── */
+.audio-pane{flex:1;display:none;flex-direction:column;padding:1.4rem 1.8rem;overflow-y:auto;background:var(--read-bg);transition:background .3s;}
+.audio-pane.on{display:flex;}
+.audio-header{display:flex;gap:1.1rem;align-items:center;margin-bottom:1.4rem;}
+.audio-thumb{width:78px;height:102px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.4rem;box-shadow:3px 3px 12px var(--shadow);}
+.audio-title{font-family:'EB Garamond',serif;font-size:1.25rem;font-weight:700;margin-bottom:.22rem;color:var(--read-text);}
+.audio-author{font-size:.78rem;color:var(--brown);margin-bottom:.45rem;}
+.audio-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;padding:.26rem .72rem;border-radius:100px;background:rgba(74,92,42,.1);color:var(--olive);border:1px solid rgba(74,92,42,.25);}
+.tts-box{background:var(--parchment);border:1px solid var(--dust);border-radius:12px;padding:1.3rem 1.4rem;margin-bottom:1rem;}
+.dark-read .tts-box{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);}
+.tts-label{font-size:.76rem;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.55rem;display:block;}
+.dark-read .tts-label{color:var(--gold3);}
+.tts-ta{width:100%;min-height:105px;border:1.5px solid var(--dust);border-radius:8px;padding:.72rem 1rem;font-family:'EB Garamond',serif;font-size:1rem;line-height:1.7;resize:vertical;background:var(--read-bg);color:var(--read-text);margin-bottom:.85rem;outline:none;}
+.tts-ta:focus{border-color:var(--gold);}
+.tts-row{display:flex;gap:.65rem;align-items:center;flex-wrap:wrap;}
+.tts-sel{padding:.42rem .85rem;border:1.5px solid var(--dust);border-radius:7px;font-family:'Nunito',sans-serif;font-size:.77rem;background:var(--read-bg);color:var(--read-text);cursor:pointer;outline:none;}
+.tts-sel:focus{border-color:var(--gold);}
+.range-w{display:flex;align-items:center;gap:.38rem;font-size:.74rem;color:#999;}
+.tts-range{width:72px;accent-color:var(--gold);}
+.btn-play{background:var(--gold);color:var(--navy);border:none;padding:.46rem 1.2rem;border-radius:7px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.83rem;cursor:pointer;transition:background .17s;margin-left:auto;}
+.btn-play:hover{background:var(--gold2);}
+.btn-stop{background:none;border:1.5px solid var(--dust);padding:.46rem .85rem;border-radius:7px;font-family:'Nunito',sans-serif;font-size:.78rem;cursor:pointer;}
+.btn-stop:hover{border-color:var(--crimson);color:var(--crimson);}
+.spk{display:none;align-items:flex-end;gap:3px;height:17px;margin-left:.4rem;}
+.spk.on{display:inline-flex;}
+.spk-b{width:3px;background:var(--gold);border-radius:2px;animation:bo .55s ease-in-out infinite alternate;}
+.spk-b:nth-child(2){animation-delay:.1s}.spk-b:nth-child(3){animation-delay:.2s}.spk-b:nth-child(4){animation-delay:.15s}
+@keyframes bo{from{height:3px}to{height:15px}}
+.tts-hint{font-size:.75rem;color:#999;line-height:1.65;margin-top:.7rem;padding:.68rem .88rem;background:var(--linen);border-radius:6px;}
+
+.rfoot{padding:.75rem 1.4rem;display:flex;gap:.55rem;border-top:1px solid var(--read-border);background:var(--read-bg);flex-shrink:0;transition:background .3s;}
+.btn-dl{background:var(--navy);color:var(--parchment);border:none;padding:.44rem 1rem;border-radius:6px;font-family:'Nunito',sans-serif;font-size:.79rem;font-weight:600;cursor:pointer;}
+.btn-sec{background:none;border:1.5px solid var(--dust);padding:.44rem .85rem;border-radius:6px;font-family:'Nunito',sans-serif;font-size:.79rem;cursor:pointer;}
+
+/* ── STUDY TOOLS (Quiz / FAQ / Audio Overview) ── */
+.study-tools-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.study-btn{display:flex;align-items:center;gap:.38rem;padding:.44rem 1rem;border-radius:8px;border:1.5px solid var(--dust);background:var(--paper);font-family:'Nunito',sans-serif;font-size:.77rem;font-weight:700;cursor:pointer;transition:all .17s;color:var(--ink);}
+.study-btn:hover{border-color:var(--gold);background:rgba(184,136,42,.07);}
+.study-btn.active{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.study-output{background:var(--linen);border:1px solid var(--dust);border-radius:10px;padding:1.3rem 1.5rem;margin-top:.6rem;display:none;}
+.study-output.show{display:block;}
+.dark-read .study-output{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);}
+.study-output-head{font-family:'EB Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.dark-read .study-output-head{color:var(--gold2);}
+.quiz-q{margin-bottom:1.2rem;}
+.quiz-q-text{font-family:'EB Garamond',serif;font-size:.97rem;line-height:1.65;color:var(--read-text);margin-bottom:.6rem;font-weight:600;}
+.quiz-options{display:flex;flex-direction:column;gap:.38rem;}
+.quiz-opt{display:flex;align-items:center;gap:.6rem;padding:.45rem .8rem;border-radius:6px;border:1.5px solid var(--read-border);cursor:pointer;transition:all .15s;font-size:.84rem;color:var(--read-text);}
+.quiz-opt:hover{border-color:var(--gold);background:rgba(184,136,42,.07);}
+.quiz-opt.correct{background:rgba(74,92,42,.12);border-color:var(--olive);color:var(--olive);}
+.quiz-opt.wrong{background:rgba(139,26,42,.08);border-color:var(--crimson);color:var(--crimson);}
+.faq-item{border-bottom:1px solid var(--read-border);padding:.8rem 0;}
+.faq-q{font-family:'EB Garamond',serif;font-weight:700;font-size:.95rem;color:var(--read-text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+.faq-a{font-size:.85rem;line-height:1.7;color:#666;padding-top:.55rem;display:none;}
+.dark-read .faq-a{color:rgba(249,245,237,.6);}
+.faq-item.open .faq-a{display:block;}
+.audio-script-text{font-family:'EB Garamond',serif;font-size:.97rem;line-height:1.85;color:var(--read-text);white-space:pre-wrap;}
+
+/* ── RESEARCH PAGE ── */
+.research-hero{text-align:center;margin-bottom:2.2rem;padding-top:.5rem;}
+.research-hero h2{font-family:'EB Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;}
+.research-hero p{color:#888;font-size:.88rem;}
+.big-search-wrap{display:flex;gap:.55rem;margin-bottom:1rem;}
+.big-search{flex:1;border:2px solid var(--dust);border-radius:10px;padding:.82rem 1.1rem;font-family:'Nunito',sans-serif;font-size:.97rem;outline:none;background:var(--paper);color:var(--ink);transition:border-color .18s;}
+.big-search:focus{border-color:var(--gold);}
+.btn-research{background:var(--navy);color:var(--parchment);border:none;padding:.82rem 1.5rem;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;white-space:nowrap;}
+.btn-research:hover{background:var(--brown);}
+
+/* Research Layout — Sidecar */
+.research-layout{display:grid;grid-template-columns:1fr 360px;gap:1.4rem;align-items:start;}
+.research-main{min-width:0;}
+.research-sidecar{background:var(--navy2);border:1.5px solid var(--gold);border-radius:12px;overflow:hidden;position:sticky;top:80px;}
+.rs-head{background:var(--navy);padding:.7rem 1rem;font-family:'EB Garamond',serif;font-size:.9rem;color:var(--parchment);font-style:italic;border-bottom:1px solid rgba(184,136,42,.3);}
+.rs-body{padding:1rem;}
+.rs-source-item{background:rgba(255,255,255,.05);border:1px solid rgba(184,136,42,.2);border-radius:7px;padding:.7rem .85rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s;}
+.rs-source-item:hover{border-color:var(--gold);}
+.rs-source-ref{font-family:'EB Garamond',serif;font-size:.75rem;color:var(--gold3);font-style:italic;margin-bottom:.3rem;}
+.rs-source-text{font-size:.8rem;line-height:1.6;color:rgba(249,245,237,.7);}
+.rs-empty{text-align:center;padding:2rem 1rem;color:rgba(249,245,237,.3);font-size:.82rem;font-family:'EB Garamond',serif;font-style:italic;}
+
+.ai-box{background:var(--paper);border:1.5px solid var(--dust);border-radius:12px;overflow:hidden;margin-bottom:1.4rem;display:none;}
+.ai-box.show{display:block;}
+.ai-head{background:var(--navy);padding:.68rem 1.1rem;display:flex;align-items:center;gap:.55rem;color:var(--parchment);font-size:.8rem;font-weight:600;}
+.ai-badge{background:var(--gold);color:var(--navy);font-size:.66rem;font-weight:800;padding:.14rem .52rem;border-radius:4px;letter-spacing:.5px;}
+.ai-body{padding:1.2rem 1.4rem;}
+.ai-body p{font-family:'EB Garamond',serif;font-size:1rem;line-height:1.8;color:var(--ink);}
+.ai-cite{display:inline;background:rgba(184,136,42,.12);border:1px solid rgba(184,136,42,.25);border-radius:3px;font-size:.72rem;font-weight:700;padding:.08rem .38rem;color:var(--brown);cursor:pointer;margin:0 1px;white-space:nowrap;}
+.ai-cite:hover{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.ai-reflection{margin-top:1.1rem;padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(14,27,46,.04),rgba(184,136,42,.05));border:1px solid rgba(184,136,42,.2);border-radius:8px;}
+.ai-reflection-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:.65rem;}
+.ai-reflection-item{display:flex;align-items:flex-start;gap:.5rem;margin-bottom:.55rem;font-family:'EB Garamond',serif;font-size:.92rem;line-height:1.65;color:var(--navy);}
+.ai-reflection-item::before{content:'✦';color:var(--gold);flex-shrink:0;margin-top:.15rem;font-size:.7rem;}
+.ai-key-scriptures{margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;}
+.ai-ks-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--brown);margin-right:.2rem;}
+.ai-ks{display:inline-flex;align-items:center;gap:.3rem;font-size:.77rem;font-weight:700;padding:.22rem .65rem;border-radius:100px;background:rgba(14,27,46,.08);border:1px solid rgba(14,27,46,.15);color:var(--navy);cursor:pointer;font-family:'EB Garamond',serif;}
+.ai-ks:hover{background:var(--navy);color:var(--parchment);}
+.ai-sources{margin-top:.85rem;display:flex;flex-wrap:wrap;gap:.42rem;align-items:center;}
+.ai-src-label{font-size:.7rem;color:#999;margin-right:.2rem;}
+.ai-src{font-size:.7rem;padding:.18rem .62rem;border-radius:100px;background:var(--linen);border:1px solid var(--dust);color:var(--brown);cursor:pointer;}
+.ai-src:hover{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+
+.ritem{display:flex;gap:1rem;background:var(--paper);border:1px solid var(--dust);border-radius:10px;padding:.95rem 1.1rem;margin-bottom:.8rem;cursor:pointer;transition:box-shadow .18s,border-color .18s;animation:up .3s ease both;}
+.ritem:hover{box-shadow:0 4px 18px var(--shadow);border-color:var(--gold);}
+.ritem-cover{width:48px;height:62px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.55rem;}
+.ritem-info{flex:1;min-width:0;}
+.ritem-title{font-family:'EB Garamond',serif;font-weight:700;font-size:.97rem;margin-bottom:.18rem;}
+.ritem-auth{font-size:.72rem;color:var(--brown);margin-bottom:.32rem;}
+.ritem-snip{font-size:.79rem;line-height:1.62;color:#555;}
+.ritem-snip mark{background:rgba(184,136,42,.18);border-radius:2px;padding:0 2px;}
+.ritem-acts{display:flex;gap:.42rem;margin-top:.55rem;flex-wrap:wrap;}
+.bsm{padding:.28rem .8rem;border-radius:5px;font-size:.71rem;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
+.bsm-n{background:var(--navy);color:var(--parchment);}
+.bsm-g{background:var(--gold);color:var(--navy);}
+.bsm-r{background:var(--linen);color:var(--brown);border:1px solid var(--dust);}.bsm-r:hover{background:var(--brown);color:var(--parchment);}
+.spinner-w{text-align:center;padding:2rem;display:none;}.spinner-w.on{display:block;}
+.spinner{width:32px;height:32px;border:3px solid var(--dust);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto .7rem;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.no-res{text-align:center;padding:2.5rem;color:#aaa;}
+.no-res span{font-size:2.3rem;display:block;margin-bottom:.7rem;}
+
+/* ── KJV BIBLE ── */
+.bible-hero{background:linear-gradient(135deg,#0a1520,#1a2e48);padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.bible-hero::before{content:'✝';position:absolute;font-size:18rem;color:rgba(184,136,42,.05);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.bible-hero-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;}
+.bible-hero h2{font-family:'EB Garamond',serif;font-size:2rem;font-weight:700;color:var(--parchment);margin-bottom:.5rem;}
+.bible-hero h2 em{color:var(--gold2);font-style:italic;}
+.bible-hero p{color:rgba(249,245,237,.55);font-size:.87rem;margin-bottom:1.5rem;}
+.bible-search-row{display:flex;gap:.5rem;max-width:580px;margin:0 auto;}
+.bible-search{flex:1;border:2px solid rgba(184,136,42,.4);border-radius:10px;padding:.8rem 1.1rem;font-family:'Nunito',sans-serif;font-size:.95rem;outline:none;background:rgba(255,255,255,.07);color:var(--parchment);}
+.bible-search::placeholder{color:rgba(249,245,237,.35);}
+.bible-search:focus{border-color:var(--gold);}
+.btn-bible-search{background:var(--gold);color:var(--navy);border:none;padding:.8rem 1.4rem;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.87rem;cursor:pointer;white-space:nowrap;}
+.bible-wrap{max-width:1100px;margin:0 auto;padding:1.5rem;}
+.bible-layout{display:grid;grid-template-columns:220px 1fr;gap:1.5rem;align-items:start;}
+.bible-nav{background:var(--paper);border:1px solid var(--dust);border-radius:10px;overflow:hidden;position:sticky;top:80px;max-height:80vh;display:flex;flex-direction:column;}
+.bible-nav-head{background:var(--navy);padding:.7rem 1rem;font-family:'EB Garamond',serif;font-size:.9rem;color:var(--parchment);font-weight:700;}
+.bible-testament-tabs{display:flex;}
+.bible-testament-tab{flex:1;padding:.4rem;background:rgba(0,0,0,.2);border:none;font-family:'Nunito',sans-serif;font-size:.73rem;font-weight:700;color:rgba(249,245,237,.5);cursor:pointer;transition:all .15s;}
+.bible-testament-tab.on{background:var(--gold);color:var(--navy);}
+.bible-book-list{overflow-y:auto;flex:1;padding:.5rem 0;}
+.bible-book-item{display:block;width:100%;padding:.4rem 1rem;background:none;border:none;text-align:left;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;transition:background .13s;color:var(--ink);}
+.bible-book-item:hover{background:var(--linen);}
+.bible-book-item.on{background:var(--navy);color:var(--parchment);font-weight:700;}
+.bible-chapter-nums{display:flex;flex-wrap:wrap;gap:4px;padding:.5rem .75rem;border-top:1px solid var(--dust);}
+.bible-ch-btn{width:28px;height:28px;border:1px solid var(--dust);border-radius:5px;background:var(--paper);font-family:'Nunito',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .13s;display:flex;align-items:center;justify-content:center;}
+.bible-ch-btn:hover,.bible-ch-btn.on{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+.bible-reader{background:var(--read-bg);border:1px solid var(--read-border);border-radius:10px;padding:1.5rem 2rem;min-height:500px;transition:background .3s,border-color .3s;position:relative;}
+.bible-chapter-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:2px solid var(--gold);flex-wrap:wrap;gap:.5rem;}
+.bible-chapter-title{font-family:'EB Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--read-text);}
+.bible-chapter-actions{display:flex;gap:.4rem;flex-wrap:wrap;}
+.bca{padding:.3rem .75rem;border-radius:6px;border:1.5px solid var(--read-border);background:var(--read-bg);font-family:'Nunito',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;transition:all .15s;color:var(--read-text);}
+.bca:hover{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.bca-gold{background:var(--gold);border-color:var(--gold);color:var(--navy);}.bca-gold:hover{background:var(--gold2);}
+.bible-dark-toggle{background:rgba(14,27,46,.08);border:1.5px solid var(--dust);color:var(--read-text);}
+.bible-dark-toggle.active{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.bible-verses{font-family:'EB Garamond',serif;}
+.verse{display:flex;gap:.6rem;margin-bottom:.6rem;padding:.3rem .5rem;border-radius:5px;transition:background .13s;cursor:pointer;position:relative;align-items:flex-start;}
+.verse:hover{background:var(--read-verse-hover);}
+.verse:hover .verse-copy{opacity:1;}
+.verse.highlighted{background:rgba(184,136,42,.12);border-left:3px solid var(--gold);padding-left:.7rem;}
+.verse-num{font-size:.7rem;color:var(--gold);font-weight:700;font-family:'Nunito',sans-serif;min-width:22px;margin-top:.22rem;flex-shrink:0;}
+.verse-text{font-size:1.05rem;line-height:1.82;color:var(--read-text);}
+.verse-text mark{background:rgba(184,136,42,.2);border-radius:2px;padding:0 2px;}
+.verse-copy{position:absolute;right:.5rem;top:.3rem;background:var(--gold);color:var(--navy);border:none;border-radius:4px;font-size:.65rem;font-weight:700;padding:.15rem .4rem;cursor:pointer;opacity:0;transition:opacity .15s;font-family:'Nunito',sans-serif;}
+.verse-copy:hover{background:var(--gold2);}
+.concordance-result{background:var(--linen);border:1px solid var(--dust);border-left:4px solid var(--gold);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.8rem;cursor:pointer;transition:box-shadow .15s;}
+.concordance-result:hover{box-shadow:0 3px 14px var(--shadow);}
+.concordance-ref{font-family:'EB Garamond',serif;font-size:.82rem;color:var(--gold);font-weight:700;margin-bottom:.3rem;}
+.concordance-text{font-family:'EB Garamond',serif;font-size:.97rem;line-height:1.7;color:var(--navy);}
+
+/* ── GIVING ── */
+.giving-hero{background:var(--navy);text-align:center;padding:3.5rem 2rem 2.8rem;position:relative;overflow:hidden;}
+.giving-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 100%,rgba(184,136,42,.2),transparent 65%);pointer-events:none;}
+.giving-hero-inner{position:relative;z-index:1;max-width:560px;margin:0 auto;}
+.giving-hero h2{font-family:'EB Garamond',serif;font-size:2.3rem;font-weight:700;color:var(--parchment);margin-bottom:.75rem;line-height:1.1;}
+.giving-hero h2 em{color:var(--gold2);font-style:italic;}
+.giving-hero p{color:rgba(249,245,237,.65);font-size:.9rem;line-height:1.8;}
+.giving-wrap{max-width:820px;margin:0 auto;padding:2.2rem 1.5rem;}
+.scripture-block{background:var(--linen);border-left:4px solid var(--gold);border-radius:8px;padding:1.1rem 1.4rem;margin-bottom:2.2rem;text-align:center;}
+.scripture-block blockquote{font-family:'EB Garamond',serif;font-size:1.1rem;font-style:italic;line-height:1.8;color:var(--navy);margin-bottom:.38rem;}
+.scripture-block cite{font-size:.76rem;color:var(--brown);font-style:normal;font-weight:700;}
+.giving-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1.1rem;margin-bottom:2.2rem;}
+.gtier{background:var(--paper);border:2px solid var(--dust);border-radius:12px;padding:1.4rem 1.2rem;text-align:center;transition:all .2s;cursor:pointer;position:relative;overflow:hidden;}
+.gtier:hover,.gtier.picked{border-color:var(--gold);box-shadow:0 6px 24px var(--glow);transform:translateY(-3px);}
+.gtier.featured{border-color:var(--gold);background:linear-gradient(135deg,rgba(184,136,42,.06),var(--paper));}
+.gtier-badge{position:absolute;top:0;right:0;background:var(--gold);color:var(--navy);font-size:.64rem;font-weight:800;padding:.22rem .7rem;border-radius:0 10px 0 8px;letter-spacing:.5px;}
+.gtier-emoji{font-size:1.9rem;margin-bottom:.55rem;display:block;}
+.gtier-amount{font-family:'EB Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:.15rem;}
+.gtier-amount-kes{font-size:.8rem;color:var(--brown);margin-bottom:.28rem;}
+.gtier-label{font-size:.82rem;font-weight:700;color:var(--brown);margin-bottom:.45rem;}
+.gtier-desc{font-size:.75rem;color:#888;line-height:1.55;}
+.custom-give{background:var(--paper);border:1.5px solid var(--dust);border-radius:12px;padding:1.4rem;margin-bottom:1.8rem;}
+.custom-give h4{font-family:'EB Garamond',serif;font-size:1.08rem;font-weight:700;margin-bottom:.95rem;color:var(--navy);}
+.give-currency-tabs{display:flex;gap:.4rem;margin-bottom:.9rem;}
+.give-curr-tab{padding:.35rem .9rem;border-radius:6px;border:1.5px solid var(--dust);background:var(--paper);font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;color:var(--ink);}
+.give-curr-tab:hover,.give-curr-tab.on{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.give-row{display:flex;gap:.7rem;align-items:stretch;flex-wrap:wrap;}
+.give-curr{background:var(--linen);border:1.5px solid var(--dust);border-radius:8px 0 0 8px;border-right:none;padding:0 .95rem;font-family:'EB Garamond',serif;font-size:1.08rem;color:var(--brown);display:flex;align-items:center;}
+.give-amount{flex:1;min-width:135px;border:1.5px solid var(--dust);border-radius:0 8px 8px 0;padding:.72rem 1rem;font-family:'EB Garamond',serif;font-size:1.15rem;background:var(--paper);outline:none;color:var(--ink);}
+.give-amount:focus{border-color:var(--gold);}
+.give-name{flex:2;min-width:155px;border:1.5px solid var(--dust);border-radius:8px;padding:.72rem 1rem;font-family:'Nunito',sans-serif;font-size:.88rem;background:var(--paper);outline:none;color:var(--ink);}
+.give-name:focus{border-color:var(--gold);}
+.payment-methods{margin-top:1.1rem;}
+.pm-label{font-size:.76rem;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.7rem;display:block;}
+.pm-grid{display:flex;gap:.55rem;flex-wrap:wrap;}
+.pm-btn{padding:.58rem 1.1rem;border-radius:8px;border:1.5px solid var(--dust);background:var(--paper);font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .17s;display:flex;align-items:center;gap:.38rem;color:var(--ink);}
+.pm-btn:hover{border-color:var(--gold);background:var(--linen);}
+.pm-btn.pm-primary{background:var(--navy);color:var(--parchment);border-color:var(--navy);}.pm-btn.pm-primary:hover{background:var(--brown);}
+.pm-btn.pm-mpesa{background:#4caf50;color:#fff;border-color:#4caf50;}.pm-btn.pm-mpesa:hover{background:#388e3c;}
+.impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:.95rem;}
+.impact-item{display:flex;gap:.8rem;align-items:flex-start;background:var(--parchment);border:1px solid var(--dust);border-radius:10px;padding:.95rem;}
+.impact-icon{font-size:1.45rem;flex-shrink:0;}
+.impact-title{font-weight:700;font-size:.83rem;margin-bottom:.18rem;}
+.impact-desc{font-size:.74rem;color:#777;line-height:1.55;}
+.testimony{background:var(--navy);color:var(--parchment);border-radius:12px;padding:1.8rem;margin-top:1.8rem;text-align:center;position:relative;overflow:hidden;}
+.testimony::before{content:'\201C';font-family:'EB Garamond',serif;font-size:7rem;color:rgba(184,136,42,.15);position:absolute;top:-.8rem;left:1rem;line-height:1;pointer-events:none;}
+.testimony blockquote{font-family:'EB Garamond',serif;font-style:italic;font-size:1rem;line-height:1.8;margin-bottom:.7rem;position:relative;z-index:1;}
+.testimony cite{font-size:.76rem;color:var(--gold3);font-style:normal;}
+
+/* ── SUBSCRIBE PAGE ── */
+.sub-hero{background:linear-gradient(135deg,var(--navy),var(--minister));padding:3.5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.sub-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 20% 80%,rgba(184,136,42,.15),transparent 65%),radial-gradient(ellipse 50% 60% at 80% 20%,rgba(74,92,42,.12),transparent 65%);pointer-events:none;}
+.sub-hero-inner{position:relative;z-index:1;max-width:660px;margin:0 auto;}
+.sub-hero h2{font-family:'EB Garamond',serif;font-size:2.3rem;font-weight:700;color:var(--parchment);margin-bottom:.8rem;line-height:1.1;}
+.sub-hero h2 em{color:var(--gold2);font-style:italic;}
+.sub-hero p{color:rgba(249,245,237,.6);font-size:.9rem;line-height:1.8;}
+.sub-wrap{max-width:1000px;margin:0 auto;padding:2.2rem 1.5rem;}
+.tier-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.3rem;margin-bottom:2.5rem;}
+.tier-card{background:var(--paper);border:2px solid var(--dust);border-radius:14px;overflow:hidden;transition:all .22s;}
+.tier-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px var(--shadow);}
+.tier-card.featured-tier{border-color:var(--gold);box-shadow:0 4px 20px var(--glow);}
+.tier-head{padding:1.4rem 1.5rem 1.1rem;position:relative;}
+.tier-popular{position:absolute;top:1rem;right:1rem;background:var(--gold);color:var(--navy);font-size:.65rem;font-weight:800;padding:.2rem .6rem;border-radius:100px;letter-spacing:.5px;}
+.tier-icon{font-size:2rem;margin-bottom:.6rem;display:block;}
+.tier-name{font-family:'EB Garamond',serif;font-size:1.3rem;font-weight:700;margin-bottom:.2rem;}
+.tier-price{font-family:'EB Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--navy);}
+.tier-price-kes{font-size:.8rem;color:var(--brown);margin:.1rem 0 .15rem;}
+.tier-price span{font-size:.8rem;font-weight:400;color:#999;}
+.tier-desc{font-size:.8rem;color:#777;margin-top:.4rem;line-height:1.55;}
+.tier-features{padding:1rem 1.5rem 1.4rem;border-top:1px solid var(--dust);}
+.tier-feature{display:flex;align-items:flex-start;gap:.55rem;margin-bottom:.55rem;font-size:.8rem;line-height:1.5;}
+.tier-feature-icon{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;margin-top:.1rem;}
+.tf-check{background:rgba(74,92,42,.12);color:var(--olive);}
+.tf-lock{background:rgba(139,26,42,.1);color:var(--crimson);}
+.tier-btn{display:block;width:calc(100% - 3rem);margin:0 1.5rem 1.4rem;padding:.65rem;border-radius:8px;border:none;font-family:'Nunito',sans-serif;font-weight:700;font-size:.87rem;cursor:pointer;transition:all .17s;text-align:center;}
+.tier-btn-free{background:var(--linen);color:var(--brown);border:1.5px solid var(--dust);}.tier-btn-free:hover{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.tier-btn-scholar{background:var(--scholar);color:var(--parchment);}.tier-btn-scholar:hover{background:#0e2840;}
+.tier-btn-minister{background:linear-gradient(135deg,var(--navy),var(--minister));color:var(--parchment);}.tier-btn-minister:hover{opacity:.9;}
+.signup-form-wrap{background:var(--paper);border:1.5px solid var(--dust);border-radius:14px;padding:2rem;margin-bottom:2rem;display:none;}
+.signup-form-wrap.show{display:block;}
+.signup-form-title{font-family:'EB Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;}
+.signup-form-sub{font-size:.82rem;color:#888;margin-bottom:1.4rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.form-field{display:flex;flex-direction:column;gap:.32rem;}
+.form-field.full{grid-column:1/-1;}
+.form-label{font-size:.76rem;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:.5px;}
+.form-input,.form-select{border:1.5px solid var(--dust);border-radius:8px;padding:.65rem 1rem;font-family:'Nunito',sans-serif;font-size:.88rem;background:var(--parchment);outline:none;color:var(--ink);transition:border-color .18s;}
+.form-input:focus,.form-select:focus{border-color:var(--gold);}
+.form-select{cursor:pointer;}
+.signup-cta{background:linear-gradient(135deg,var(--navy),var(--minister));color:var(--parchment);border:none;padding:.78rem 2rem;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.92rem;cursor:pointer;margin-top:1.2rem;width:100%;transition:opacity .17s;}
+.signup-cta:hover{opacity:.88;}
+.consent-row{display:flex;align-items:flex-start;gap:.5rem;margin-top:.75rem;font-size:.77rem;color:#888;line-height:1.5;}
+.consent-row input{margin-top:.15rem;accent-color:var(--gold);}
+.member-banner{background:linear-gradient(135deg,var(--navy),var(--minister));color:var(--parchment);border-radius:12px;padding:1.2rem 1.5rem;display:none;align-items:center;gap:1rem;margin-bottom:2rem;}
+.member-banner.show{display:flex;}
+.member-avatar{width:48px;height:48px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.member-info{flex:1;}
+.member-name{font-family:'EB Garamond',serif;font-size:1.1rem;font-weight:700;}
+.member-tier{font-size:.77rem;color:rgba(249,245,237,.65);margin-top:.1rem;}
+.member-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--parchment);padding:.36rem .85rem;border-radius:6px;font-family:'Nunito',sans-serif;font-size:.76rem;cursor:pointer;}
+
+/* ── THESIS WRITER ── */
+.thesis-hero{background:linear-gradient(135deg,#0a0e1a,var(--minister));padding:2.5rem 2rem;text-align:center;}
+.thesis-hero h2{font-family:'EB Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--parchment);margin-bottom:.4rem;}
+.thesis-hero h2 em{color:var(--gold2);font-style:italic;}
+.thesis-hero p{color:rgba(249,245,237,.55);font-size:.87rem;}
+.thesis-wrap{max-width:920px;margin:0 auto;padding:2rem 1.5rem;}
+.thesis-lock,.thesis-form{background:var(--paper);border:1.5px solid var(--dust);border-radius:14px;padding:1.8rem;display:none;}
+.thesis-lock{text-align:center;border:2px dashed var(--dust);}
+.thesis-lock.show,.thesis-form.show{display:block;}
+.thesis-lock h3{font-family:'EB Garamond',serif;font-size:1.4rem;color:var(--navy);margin-bottom:.5rem;}
+.thesis-lock p{font-size:.85rem;color:#888;margin-bottom:1.2rem;}
+.thesis-form-title{font-family:'EB Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:1.2rem;}
+.thesis-field{margin-bottom:1rem;}
+.thesis-label{font-size:.76rem;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.35rem;display:block;}
+.thesis-input,.thesis-select,.thesis-textarea{width:100%;border:1.5px solid var(--dust);border-radius:8px;padding:.65rem 1rem;font-family:'Nunito',sans-serif;font-size:.88rem;background:var(--parchment);outline:none;color:var(--ink);}
+.thesis-input:focus,.thesis-select:focus,.thesis-textarea:focus{border-color:var(--gold);}
+.thesis-textarea{resize:vertical;min-height:90px;}
+.thesis-select,.form-select{cursor:pointer;}
+.thesis-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem;}
+.thesis-opt{padding:.6rem;border:1.5px solid var(--dust);border-radius:8px;text-align:center;cursor:pointer;transition:all .15s;background:var(--paper);}
+.thesis-opt:hover,.thesis-opt.on{border-color:var(--gold);background:rgba(184,136,42,.06);}
+.thesis-opt-icon{font-size:1.4rem;margin-bottom:.3rem;}
+.thesis-opt-label{font-size:.74rem;font-weight:700;color:var(--ink);}
+.thesis-opt-sub{font-size:.67rem;color:#999;}
+.thesis-generate{background:linear-gradient(135deg,var(--navy),var(--minister));color:var(--parchment);border:none;padding:.78rem 2rem;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;width:100%;margin-top:.5rem;}
+.thesis-generate:hover{opacity:.88;}
+.thesis-output{background:var(--paper);border:1.5px solid var(--dust);border-radius:14px;padding:1.8rem;margin-top:1.5rem;display:none;}
+.thesis-output.show{display:block;}
+.thesis-output-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:2px solid var(--gold);flex-wrap:wrap;gap:.5rem;}
+.thesis-output-title{font-family:'EB Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--navy);}
+.thesis-output-actions{display:flex;gap:.5rem;flex-wrap:wrap;}
+.thesis-content{font-family:'EB Garamond',serif;font-size:1rem;line-height:1.85;color:var(--ink);}
+.thesis-content h2{font-size:1.2rem;font-weight:700;color:var(--navy);margin:1.5rem 0 .6rem;border-bottom:1px solid var(--dust);padding-bottom:.4rem;}
+.thesis-content h3{font-size:1.05rem;font-weight:700;color:var(--brown);margin:1.2rem 0 .4rem;}
+.thesis-content p{margin-bottom:.85rem;}
+.thesis-content blockquote{border-left:4px solid var(--gold);padding:.6rem 1rem;margin:1rem 0;background:var(--linen);border-radius:0 6px 6px 0;font-style:italic;}
+.thesis-generating{text-align:center;padding:2rem;}
+.thesis-generating p{font-size:.9rem;color:#888;margin-top:.8rem;}
+
+/* ── GROUNDING NOTICE ── */
+.grounding-notice{background:linear-gradient(135deg,rgba(74,92,42,.06),rgba(14,27,46,.04));border:1px solid rgba(74,92,42,.2);border-radius:8px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.77rem;color:var(--olive);display:flex;align-items:center;gap:.5rem;}
+.grounding-notice strong{font-weight:700;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--parchment);padding:.72rem 1.2rem;border-radius:8px;font-size:.8rem;border-left:4px solid var(--gold);z-index:9999;transform:translateY(70px);opacity:0;transition:transform .3s,opacity .3s;max-width:310px;word-break:break-word;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+footer{background:var(--navy);color:rgba(249,245,237,.4);padding:1.4rem 2rem;text-align:center;font-size:.77rem;border-top:1px solid rgba(184,136,42,.2);}
+footer a{color:var(--gold2);text-decoration:none;}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .research-layout{grid-template-columns:1fr;}
+  .research-sidecar{position:static;}
+  .sidecar-panel{width:100%;max-height:320px;}
+}
+@media(max-width:700px){
+  nav{padding:0 .75rem;}
+  .nl span{display:none;}
+  .global-search{width:130px;font-size:.72rem;}.global-search:focus{width:160px;}
+  .gs-results{right:-70px;width:280px;}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(152px,1fr));}
+  .bible-layout{grid-template-columns:1fr;}
+  .bible-nav{position:static;max-height:none;}
+  .form-grid{grid-template-columns:1fr;}
+  .thesis-options{grid-template-columns:1fr 1fr;}
+  .tier-grid{grid-template-columns:1fr;}
+  .overlay{padding:.25rem;}
+  .rmodal{border-radius:0;max-height:100vh;height:100%;}
+  .sidecar-panel{width:100%;border-left:none;border-top:2px solid var(--gold);max-height:280px;}
+  .research-sidecar{display:none;}
 }
 </style>
 </head>
 <body>
 
-<div id="page-library" class="page on">
-  <div class="wrap">
-    <div class="sh">My Digital Collection</div>
-    <p style="margin-bottom: 1.5rem; color: #666; font-style: italic;">
-        Click any file below to open it. New books added to your Google Drive folder appear here automatically.
-    </p>
-    
-    <div class="folder-container">
-      <iframe class="drive-folder" src="https://drive.google.com/embeddedfolderview?id=13ByRtynPn6zkCaPq8l7InyiNOHUFU-7F#list"></iframe>
+<div class="topbar">"Thy word is a lamp unto my feet, and a light unto my path." — Psalm 119:105</div>
+
+<nav>
+  <div class="logo">
+    <span class="logo-cross">✝</span>
+    <span class="logo-text">Logos <em>Library</em></span>
+  </div>
+  <div class="nav-links">
+    <button class="nl on" onclick="showPage('library',this)">📚 <span>Library</span></button>
+    <button class="nl" onclick="showPage('bible',this)">📖 <span>KJV Bible</span></button>
+    <button class="nl" onclick="showPage('research',this)">🔬 <span>Research</span></button>
+    <button class="nl" onclick="showPage('thesis',this)" id="thesis-nav">✍️ <span>Thesis</span></button>
+    <button class="nl subscriber-glow" onclick="showPage('subscribe',this)">⭐ <span>Subscribe</span></button>
+    <button class="nl" onclick="showPage('giving',this)">🙏 <span>Give</span></button>
+  </div>
+  <div class="global-search-wrap">
+    <span class="gs-icon">🔍</span>
+    <input class="global-search" id="gs-input" type="text" placeholder="Search everything…" oninput="globalSearch(this.value)" onkeydown="if(event.key==='Escape'){closeGS();}" autocomplete="off">
+    <div class="gs-results" id="gs-results"></div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="cross-wm">✝</div>
+  <div class="hero-inner">
+    <div class="verse-tag">"The truth shall set you free" — John 8:32</div>
+    <h1>A <em>Christian</em> Digital Library<br>Open to All</h1>
+    <p>Faith-building books, KJV Bible with concordance, commentaries, leadership resources and AI-powered research — free and premium access for every believer.</p>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-n" id="s-books">0</span><span class="hstat-l">Books</span></div>
+      <div class="hstat"><span class="hstat-n">66</span><span class="hstat-l">Bible Books</span></div>
+      <div class="hstat"><span class="hstat-n" id="s-cats">0</span><span class="hstat-l">Categories</span></div>
+      <div class="hstat"><span class="hstat-n">Free</span><span class="hstat-l">Always</span></div>
     </div>
   </div>
 </div>
 
-<script>
-// NOTE: Since you are now using the Folder View, the renderLib() function 
-// at the bottom of your script is no longer needed to display books, 
-// but I have kept the core logic so your "Research" and "Thesis" tools 
-// still have data to work with.
+<!-- ══ LIBRARY ══ -->
+<div id="page-library" class="page on">
+  <div class="wrap">
+    <div class="chips">
+      <span class="fl">Browse:</span>
+      <button class="chip on" onclick="filterLib('all',this)">All Books</button>
+      <button class="chip" onclick="filterLib('Commentary',this)">📖 Commentaries</button>
+      <button class="chip" onclick="filterLib('Leadership',this)">🦅 Leadership</button>
+      <button class="chip" onclick="filterLib('Devotional',this)">🙏 Devotional</button>
+      <button class="chip" onclick="filterLib('Theology',this)">✝ Theology</button>
+      <button class="chip" onclick="filterLib('Evangelism',this)">📢 Evangelism</button>
+      <button class="chip" onclick="filterLib('Prayer',this)">🕊 Prayer</button>
+      <button class="chip" onclick="filterLib('Family',this)">👨‍👩‍👧 Family</button>
+      <button class="chip" onclick="filterLib('Prophecy',this)">🔥 Prophecy</button>
+    </div>
+    <div class="sh">Collection</div>
+    <div class="grid" id="book-grid"></div>
+  </div>
+</div>
 
+<!-- ══ KJV BIBLE ══ -->
+<div id="page-bible" class="page">
+  <div class="bible-hero">
+    <div class="bible-hero-inner">
+      <h2>King James <em>Bible</em></h2>
+      <p>Complete KJV Bible with full concordance search, chapter navigation, and audio reading</p>
+      <div class="bible-search-row">
+        <input class="bible-search" id="bible-search" type="text" placeholder="Search any word, phrase, or reference e.g. 'John 3:16' or 'love one another'…" onkeydown="if(event.key==='Enter')bibleSearch()">
+        <button class="btn-bible-search" onclick="bibleSearch()">🔍 Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="bible-wrap">
+    <div id="bible-concordance-results" style="display:none;margin-bottom:1.5rem;"></div>
+    <div class="bible-layout">
+      <div class="bible-nav">
+        <div class="bible-nav-head">📖 Books of the Bible</div>
+        <div class="bible-testament-tabs">
+          <button class="bible-testament-tab on" onclick="showTestament('ot',this)">Old Testament</button>
+          <button class="bible-testament-tab" onclick="showTestament('nt',this)">New Testament</button>
+        </div>
+        <div class="bible-book-list" id="bible-book-list"></div>
+        <div style="padding:.5rem .75rem;border-top:1px solid var(--dust);font-size:.7rem;color:#bbb;font-family:'EB Garamond',serif;font-style:italic;">Select a chapter:</div>
+        <div class="bible-chapter-nums" id="bible-chapter-nums"></div>
+      </div>
+      <div class="bible-reader" id="bible-reader-pane">
+        <div class="bible-chapter-header">
+          <div class="bible-chapter-title" id="bible-chapter-title">Select a Book &amp; Chapter</div>
+          <div class="bible-chapter-actions">
+            <button class="bca" onclick="prevChapter()">◀ Prev</button>
+            <button class="bca bca-gold" onclick="listenChapter()">🔊 Listen</button>
+            <button class="bca" onclick="nextChapter()">Next ▶</button>
+            <button class="bca bible-dark-toggle" id="bible-dark-btn" onclick="toggleBibleDark()">🌙 Dark</button>
+          </div>
+        </div>
+        <div class="bible-verses" id="bible-verses">
+          <div style="text-align:center;padding:3rem;color:#bbb;">
+            <div style="font-size:3rem;margin-bottom:1rem">✝</div>
+            <p style="font-family:'EB Garamond',serif;font-size:1.05rem;">Select a book and chapter from the navigation to begin reading.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESEARCH ══ -->
+<div id="page-research" class="page">
+  <div class="wrap-sm">
+    <div class="research-hero">
+      <div style="font-size:2.3rem;margin-bottom:.7rem">📜</div>
+      <h2>Research &amp; Reference Search</h2>
+      <p>Search across library books and KJV Bible. AI synthesizes themes; every answer is grounded in your sources.</p>
+    </div>
+    <div class="grounding-notice">🔒 <span><strong>Source-Grounded:</strong> All AI responses cite only books in the Logos Library collection and the KJV Bible.</span></div>
+    <div class="big-search-wrap">
+      <input class="big-search" id="rsearch" type="text" placeholder='"sanctification", "servant leadership", "spiritual warfare", "grace"…' onkeydown="if(event.key==='Enter')doResearch()">
+      <button class="btn-research" onclick="doResearch()">🔍 Search</button>
+    </div>
+    <div class="chips" style="margin-bottom:1.4rem">
+      <span class="fl">Scope:</span>
+      <button class="chip on" onclick="setScope('all',this)">All</button>
+      <button class="chip" onclick="setScope('Commentary',this)">Commentaries</button>
+      <button class="chip" onclick="setScope('Theology',this)">Theology</button>
+      <button class="chip" onclick="setScope('Leadership',this)">Leadership</button>
+      <button class="chip" onclick="setScope('Prayer',this)">Prayer</button>
+      <button class="chip" onclick="setScope('Devotional',this)">Devotional</button>
+    </div>
+    <div class="research-layout" id="research-layout">
+      <div class="research-main">
+        <div class="ai-box" id="ai-box">
+          <div class="ai-head">
+            <span class="ai-badge">AI</span> Research Summary
+            <span style="margin-left:auto;font-size:.7rem;opacity:.6">Grounded in library sources</span>
+          </div>
+          <div class="ai-body">
+            <p id="ai-text"></p>
+            <div id="ai-reflection-block"></div>
+            <div class="ai-key-scriptures" id="ai-key-scriptures" style="display:none">
+              <span class="ai-ks-label">Key Scriptures:</span>
+            </div>
+            <div class="ai-sources" id="ai-sources"></div>
+          </div>
+        </div>
+        <div class="spinner-w" id="spinner"><div class="spinner"></div><p>Searching the library…</p></div>
+        <div id="r-results"></div>
+      </div>
+      <div class="research-sidecar" id="research-sidecar">
+        <div class="rs-head">📚 Source Passages</div>
+        <div class="rs-body" id="rs-body">
+          <div class="rs-empty">Run a search to see grounded source passages here.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ THESIS WRITER ══ -->
+<div id="page-thesis" class="page">
+  <div class="thesis-hero">
+    <h2>✍️ <em>Thesis</em> &amp; Research Paper Writer</h2>
+    <p>AI-powered academic writing with scripture integration, citations and export</p>
+  </div>
+  <div class="thesis-wrap">
+    <div class="thesis-lock" id="thesis-lock">
+      <div style="font-size:3rem;margin-bottom:1rem">🔒</div>
+      <h3>Scholar / Minister Feature</h3>
+      <p>The Thesis Writer is available to <strong>Scholar</strong> (KES 300/$2.50) and <strong>Minister</strong> (KES 1,000/$8.00) subscribers.</p>
+      <button onclick="showPage('subscribe',document.querySelectorAll('.nl')[4])" style="background:linear-gradient(135deg,var(--navy),var(--minister));color:var(--parchment);border:none;padding:.75rem 2rem;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;">Subscribe to Unlock ⭐</button>
+    </div>
+    <div class="thesis-form" id="thesis-form">
+      <div class="thesis-form-title">📄 Generate a Research Paper or Thesis</div>
+      <div class="thesis-field">
+        <label class="thesis-label">Paper Title / Topic</label>
+        <input class="thesis-input" id="thesis-title" placeholder="e.g. The Role of Prayer in Spiritual Formation According to the Psalms">
+      </div>
+      <div class="thesis-field">
+        <label class="thesis-label">Paper Type</label>
+        <div class="thesis-options" id="thesis-type-opts">
+          <div class="thesis-opt on" onclick="selectOpt(this,'type','thesis')"><div class="thesis-opt-icon">🎓</div><div class="thesis-opt-label">Thesis</div><div class="thesis-opt-sub">Academic dissertation</div></div>
+          <div class="thesis-opt" onclick="selectOpt(this,'type','research')"><div class="thesis-opt-icon">🔬</div><div class="thesis-opt-label">Research Paper</div><div class="thesis-opt-sub">Scholarly article</div></div>
+          <div class="thesis-opt" onclick="selectOpt(this,'type','sermon')"><div class="thesis-opt-icon">📢</div><div class="thesis-opt-label">Sermon Paper</div><div class="thesis-opt-sub">Expository study</div></div>
+          <div class="thesis-opt" onclick="selectOpt(this,'type','commentary')"><div class="thesis-opt-icon">📖</div><div class="thesis-opt-label">Commentary</div><div class="thesis-opt-sub">Biblical passage</div></div>
+          <div class="thesis-opt" onclick="selectOpt(this,'type','devotional')"><div class="thesis-opt-icon">🙏</div><div class="thesis-opt-label">Devotional</div><div class="thesis-opt-sub">Reflective study</div></div>
+          <div class="thesis-opt" onclick="selectOpt(this,'type','apolo')"><div class="thesis-opt-icon">⚡</div><div class="thesis-opt-label">Apologetics</div><div class="thesis-opt-sub">Defending the faith</div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;">
+        <div class="thesis-field">
+          <label class="thesis-label">Key Scripture(s)</label>
+          <input class="thesis-input" id="thesis-scripture" placeholder="e.g. Psalm 51, Romans 8:1-11">
+        </div>
+        <div class="thesis-field">
+          <label class="thesis-label">Citation Style</label>
+          <select class="thesis-select" id="thesis-citation">
+            <option value="Turabian">Turabian (Seminary standard)</option>
+            <option value="APA">APA 7th Edition</option>
+            <option value="MLA">MLA 9th Edition</option>
+            <option value="Chicago">Chicago 17th Edition</option>
+            <option value="SBL">SBL (Biblical Studies)</option>
+          </select>
+        </div>
+      </div>
+      <div class="thesis-field">
+        <label class="thesis-label">Research Argument / Thesis Statement</label>
+        <textarea class="thesis-textarea" id="thesis-argument" placeholder="Briefly describe your main argument or question…"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;">
+        <div class="thesis-field">
+          <label class="thesis-label">Academic Level</label>
+          <select class="thesis-select" id="thesis-level">
+            <option>Undergraduate</option><option>Seminary / Graduate</option><option>Doctoral</option><option>Pastoral / Practical</option>
+          </select>
+        </div>
+        <div class="thesis-field">
+          <label class="thesis-label">Target Length</label>
+          <select class="thesis-select" id="thesis-length">
+            <option value="short">Short (3–5 pages)</option>
+            <option value="medium" selected>Medium (8–12 pages)</option>
+            <option value="long">Full Thesis (20+ pages)</option>
+          </select>
+        </div>
+      </div>
+      <button class="thesis-generate" onclick="generateThesis()">🎓 Generate Paper with AI</button>
+    </div>
+    <div class="thesis-output" id="thesis-output">
+      <div class="thesis-output-head">
+        <div class="thesis-output-title" id="thesis-output-title">Generated Paper</div>
+        <div class="thesis-output-actions">
+          <button class="bca bca-gold" onclick="listenThesis()">🔊 Listen</button>
+          <button class="bca" onclick="copyThesis()">📋 Copy</button>
+          <button class="bca" style="background:var(--olive);color:#fff;border-color:var(--olive)" onclick="downloadThesis()">⬇ .txt</button>
+        </div>
+      </div>
+      <div class="thesis-content" id="thesis-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SUBSCRIBE ══ -->
+<div id="page-subscribe" class="page">
+  <div class="sub-hero">
+    <div class="sub-hero-inner">
+      <h2>Join the <em>Logos</em> Community</h2>
+      <p>Free, Scholar (KES 300 / $2.50), or Minister (KES 1,000 / $8.00) — a plan for every believer. Pay with M-Pesa or PayPal.</p>
+    </div>
+  </div>
+  <div class="sub-wrap">
+    <div class="member-banner" id="member-banner">
+      <div class="member-avatar" id="member-avatar">✝</div>
+      <div class="member-info">
+        <div class="member-name" id="member-name-display">Welcome back!</div>
+        <div class="member-tier" id="member-tier-display">Active subscriber</div>
+      </div>
+      <button class="member-logout" onclick="logout()">Sign Out</button>
+    </div>
+    <div class="sh">Choose Your Access Level</div>
+    <div class="tier-grid" id="tier-cards"></div>
+    <div class="signup-form-wrap" id="signup-form-wrap">
+      <div class="signup-form-title" id="signup-title">Create Your Account</div>
+      <div class="signup-form-sub" id="signup-sub">Fill in your details to activate your subscription.</div>
+      <div class="form-grid">
+        <div class="form-field"><label class="form-label">First Name</label><input class="form-input" id="sub-fname" placeholder="Your first name"></div>
+        <div class="form-field"><label class="form-label">Last Name</label><input class="form-input" id="sub-lname" placeholder="Your last name"></div>
+        <div class="form-field"><label class="form-label">Email Address</label><input class="form-input" id="sub-email" type="email" placeholder="your@email.com"></div>
+        <div class="form-field"><label class="form-label">Phone / M-Pesa</label><input class="form-input" id="sub-phone" type="tel" placeholder="+254 7XX XXX XXX"></div>
+        <div class="form-field full"><label class="form-label">Country</label>
+          <select class="form-select" id="sub-country">
+            <option>Select your country</option>
+            <option>Kenya</option><option>South Africa</option><option>Nigeria</option><option>Ghana</option><option>Zimbabwe</option><option>Uganda</option><option>Tanzania</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-field full"><label class="form-label">Ministry / Church (optional)</label><input class="form-input" id="sub-ministry" placeholder="Your church, ministry, or institution"></div>
+        <div class="form-field full"><label class="form-label">Your Role</label>
+          <select class="form-select" id="sub-role">
+            <option>Pastor / Minister</option><option>Bible Teacher</option><option>Student / Researcher</option><option>General Reader</option><option>Worship Leader</option><option>Evangelist</option>
+          </select>
+        </div>
+      </div>
+      <div class="consent-row"><input type="checkbox" id="sub-consent" checked><label for="sub-consent">I agree to receive email notifications for new books and the Logos Library newsletter.</label></div>
+      <div class="consent-row"><input type="checkbox" id="sub-privacy" checked><label for="sub-privacy">My information is stored securely and will never be sold or shared with third parties.</label></div>
+      <button class="signup-cta" onclick="completeSignup()">✝ Activate My Subscription</button>
+    </div>
+    <div class="scripture-block" style="margin-top:1.5rem">
+      <blockquote>"My people are destroyed for lack of knowledge."</blockquote>
+      <cite>— Hosea 4:6 (KJV)</cite>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GIVING ══ -->
+<div id="page-giving" class="page">
+  <div class="giving-hero">
+    <div class="giving-hero-inner">
+      <h2>Support This <em>Ministry</em></h2>
+      <p>This library is a labour of love — free for every believer. Your giving keeps it growing.</p>
+    </div>
+  </div>
+  <div class="giving-wrap">
+    <div class="scripture-block">
+      <blockquote>"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."</blockquote>
+      <cite>— 2 Corinthians 9:7</cite>
+    </div>
+    <div class="sh">Choose a Giving Level</div>
+    <div class="giving-grid">
+      <div class="gtier" onclick="pickTier(this,'5','600')"><span class="gtier-emoji">🌱</span><div class="gtier-amount">$5</div><div class="gtier-amount-kes">KES 600</div><div class="gtier-label">Seed Giver</div><div class="gtier-desc">Plant a seed. Helps keep the library online and free for all.</div></div>
+      <div class="gtier featured" onclick="pickTier(this,'20','2500')"><div class="gtier-badge">POPULAR</div><span class="gtier-emoji">📖</span><div class="gtier-amount">$20</div><div class="gtier-amount-kes">KES 2,500</div><div class="gtier-label">Book Patron</div><div class="gtier-desc">Sponsor the addition of new books and resources.</div></div>
+      <div class="gtier" onclick="pickTier(this,'50','6500')"><span class="gtier-emoji">🦅</span><div class="gtier-amount">$50</div><div class="gtier-amount-kes">KES 6,500</div><div class="gtier-label">Ministry Partner</div><div class="gtier-desc">Partner with us to expand the library and reach more believers.</div></div>
+      <div class="gtier" onclick="pickTier(this,'100','13000')"><span class="gtier-emoji">✝</span><div class="gtier-amount">$100</div><div class="gtier-amount-kes">KES 13,000</div><div class="gtier-label">Kingdom Builder</div><div class="gtier-desc">Make a significant investment in equipping the global Church.</div></div>
+    </div>
+    <div class="custom-give">
+      <h4>Or Enter a Custom Amount</h4>
+      <div class="give-currency-tabs">
+        <button class="give-curr-tab on" id="curr-usd" onclick="switchCurrency('usd')">💵 USD</button>
+        <button class="give-curr-tab" id="curr-kes" onclick="switchCurrency('kes')">📱 KES (M-Pesa)</button>
+      </div>
+      <div class="give-row">
+        <div class="give-curr" id="give-curr-symbol">$</div>
+        <input class="give-amount" id="give-amount" type="number" placeholder="0.00" min="1">
+        <input class="give-name" id="give-name" type="text" placeholder="Your name (optional)">
+      </div>
+      <div class="payment-methods">
+        <span class="pm-label">Give via:</span>
+        <div class="pm-grid" id="payment-btns"></div>
+      </div>
+    </div>
+    <div class="sh">Your Gift Makes an Impact</div>
+    <div class="impact-grid">
+      <div class="impact-item"><span class="impact-icon">📚</span><div><div class="impact-title">Grows the Collection</div><div class="impact-desc">Every gift helps source and add new Christian books.</div></div></div>
+      <div class="impact-item"><span class="impact-icon">🌍</span><div><div class="impact-title">Global Reach</div><div class="impact-desc">Keeps the library free for believers in every nation.</div></div></div>
+      <div class="impact-item"><span class="impact-icon">🎓</span><div><div class="impact-title">Equips Leaders</div><div class="impact-desc">Pastors and students access resources they couldn't afford.</div></div></div>
+      <div class="impact-item"><span class="impact-icon">🕊</span><div><div class="impact-title">Spreads the Word</div><div class="impact-desc">Supports evangelism through the power of good books.</div></div></div>
+    </div>
+    <div class="testimony">
+      <blockquote>This library has been a tremendous blessing — I found commentaries I could never afford to buy, and the audio reader means I can listen while I commute. God bless this ministry.</blockquote>
+      <cite>— A grateful reader</cite>
+    </div>
+  </div>
+</div>
+
+<!-- ══ READER MODAL ══ -->
+<div class="overlay" id="overlay" onclick="maybeClose(event)">
+  <div class="rmodal" id="rmodal">
+    <div class="rtop">
+      <div class="rtitle" id="r-title">Book Title</div>
+      <div class="rtop-actions">
+        <button class="dark-toggle" id="reader-dark-btn" onclick="toggleReaderDark()">🌙 Dark</button>
+        <button class="rclose" onclick="closeReader()">✕</button>
+      </div>
+    </div>
+    <div class="rtabs">
+      <button class="rtab on" onclick="switchTab('pdf',this)">📄 Read PDF</button>
+      <button class="rtab" onclick="switchTab('ref',this)">📑 References</button>
+      <button class="rtab" onclick="switchTab('audio',this)">🔊 Listen</button>
+    </div>
+    <div class="rbody">
+      <div class="sidecar-wrap" id="main-sidecar-wrap">
+        <div class="sidecar-main">
+          <!-- PDF pane -->
+          <div class="pdf-pane on" id="pdf-pane">
+            <div class="no-pdf" id="pdf-ph">
+              <div class="icon">📖</div>
+              <h3 id="pdf-ph-title">Book Title</h3>
+              <p>Add your Google Drive preview URL to the <code>BOOKS</code> array.<br>Format: <code>https://drive.google.com/file/d/YOUR_ID/preview</code></p>
+            </div>
+            <iframe id="pdf-frame" style="display:none" allowfullscreen></iframe>
+          </div>
+          <!-- Ref pane -->
+          <div class="ref-pane" id="ref-pane">
+            <div class="ref-book-header">
+              <div class="ref-cover-thumb" id="ref-thumb"></div>
+              <div class="ref-meta">
+                <h2 id="ref-book-title"></h2>
+                <div class="auth" id="ref-book-author"></div>
+                <div class="desc" id="ref-book-desc"></div>
+                <div class="ref-tags" id="ref-tags"></div>
+              </div>
+            </div>
+            <div class="ref-search-row">
+              <input class="ref-input" id="ref-search" type="text" placeholder="Search within this book — topic, keyword, scripture…" onkeydown="if(event.key==='Enter')refSearch()">
+              <button class="ref-search-btn" onclick="refSearch()">Search</button>
+            </div>
+            <div class="passage-box" id="passage-box">
+              <div class="passage-ref" id="passage-ref"></div>
+              <div class="passage-text" id="passage-text"></div>
+              <button class="passage-speak" onclick="speakPassage()">🔊 Read Aloud</button>
+            </div>
+            <!-- Study Tools -->
+            <div class="study-tools-row" id="study-tools-row"></div>
+            <div class="study-output" id="study-output"></div>
+            <div class="toc-title">📋 Table of Contents</div>
+            <div id="toc-list"></div>
+            <div class="toc-title" style="margin-top:1rem">🗂 Subject Index</div>
+            <div class="idx-grid" id="idx-grid"></div>
+          </div>
+          <!-- Audio pane -->
+          <div class="audio-pane" id="audio-pane">
+            <div class="audio-header">
+              <div class="audio-thumb" id="a-thumb"></div>
+              <div>
+                <div class="audio-title" id="a-title"></div>
+                <div class="audio-author" id="a-author"></div>
+                <div class="audio-badge">🔊 Text-to-Speech Reader</div>
+              </div>
+            </div>
+            <div class="tts-box">
+              <span class="tts-label">Paste text from the book to hear it read aloud:</span>
+              <textarea class="tts-ta" id="tts-ta" placeholder="Paste any passage, commentary note, or chapter text here…"></textarea>
+              <div class="tts-row">
+                <select class="tts-sel" id="tts-voice"><option>Loading voices…</option></select>
+                <div class="range-w">Speed: <input type="range" class="tts-range" id="tts-speed" min="0.6" max="1.8" step="0.1" value="1"> <span id="sv">1×</span></div>
+                <div class="range-w">Pitch: <input type="range" class="tts-range" id="tts-pitch" min="0.5" max="2" step="0.1" value="1"> <span id="pv">1</span></div>
+                <button class="btn-stop" onclick="stopSpeech()">⏹ Stop</button>
+                <button class="btn-play" id="play-btn" onclick="speakText()">▶ Listen <span class="spk" id="spk"><span class="spk-b"></span><span class="spk-b"></span><span class="spk-b"></span><span class="spk-b"></span></span></button>
+              </div>
+              <div class="tts-hint">💡 Open the Read tab, copy a passage, paste it here, then press Listen. Works in Chrome &amp; Edge.</div>
+            </div>
+          </div>
+        </div>
+        <!-- Sidecar source panel -->
+        <div class="sidecar-panel" id="sidecar-panel">
+          <div class="sidecar-head">
+            <span class="sidecar-head-title">📚 Source Passages</span>
+            <button class="sidecar-close" onclick="closeSidecar()">✕</button>
+          </div>
+          <div class="sidecar-content" id="sidecar-content"></div>
+        </div>
+      </div>
+    </div>
+    <div class="rfoot">
+      <button class="btn-dl" id="r-dl">⬇ Open / Download</button>
+      <button class="bca sidecar-toggle-btn" onclick="toggleSidecar()">📚 Sources</button>
+      <button class="btn-sec" onclick="closeReader()">Close</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  ✝ Logos Library — Free Christian Resources for Every Believer &nbsp;·&nbsp;
+  <a href="#" onclick="showPage('giving',document.querySelectorAll('.nl')[5]);return false">Support this ministry 🙏</a>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// BOOK DATA — set driveUrl per book for PDF preview/download
+// ═══════════════════════════════════════════════════════════
+const BOOKS = [
+  {id:1,title:"Mere Christianity",author:"C.S. Lewis",category:"Theology",emoji:"✝",gradient:"linear-gradient(135deg,#0e1b2e,#1a3a5c)",driveUrl:"",
+    description:"A reasoned defence of the Christian faith — belief, morality, and the nature of Christ explained with brilliant clarity.",
+    keywords:["faith","morality","trinity","christ","belief","reason","sin","virtue","pride","charity"],
+    toc:["Book I: Right and Wrong","Book II: What Christians Believe","Book III: Christian Behaviour","Book IV: Beyond Personality"],
+    passages:[
+      {ref:"Book II, Ch.2",text:"A man who was merely a man and said the sort of things Jesus said would not be a great moral teacher. He would either be a lunatic or else he would be the Devil of Hell. You must make your choice."},
+      {ref:"Book III, Ch.8",text:"Pride is the great sin — the sin that was the beginning of evil. Pride is essentially competitive — it is not having things that pleases the proud, but having more than the next person."}
+    ]},
+  {id:2,title:"Halley's Bible Handbook",author:"Henry H. Halley",category:"Commentary",emoji:"📖",gradient:"linear-gradient(135deg,#3a1a08,#7a3a14)",driveUrl:"",
+    description:"The authoritative guide to every book of the Bible — history, archaeology, maps and detailed notes on every passage.",
+    keywords:["commentary","scripture","old testament","new testament","archaeology","genesis","revelation","prophecy","context"],
+    toc:["The Old Testament","The Pentateuch","Historical Books","The Psalms","The Prophets","The New Testament","The Gospels","The Epistles","Revelation"],
+    passages:[{ref:"Introduction",text:"The Bible is the most wonderful book in the world. It is God's Word — His revealed will for mankind. To understand it is to know God Himself."}]},
+  {id:3,title:"Spiritual Leadership",author:"J. Oswald Sanders",category:"Leadership",emoji:"🦅",gradient:"linear-gradient(135deg,#1a2e14,#2e5c1e)",driveUrl:"",
+    description:"The classic text on leading God's way — humility, prayer, discipline and sacrifice as the hallmarks of the servant leader.",
+    keywords:["leadership","servant","humility","prayer","discipline","influence","character","vision","sacrifice","calling"],
+    toc:["The Master and His Men","Natural and Spiritual Leadership","The Leader and Prayer","Essential Qualities","The Cost of Leadership","The Leader and Time"],
+    passages:[{ref:"Chapter 3",text:"The spiritual leader of today is not one who simply manages people — he is one who has heard from God and leads others into God's purposes. Prayer is not preparation for the work; prayer is the work."}]},
+  {id:4,title:"The Purpose Driven Church",author:"Rick Warren",category:"Leadership",emoji:"⛪",gradient:"linear-gradient(135deg,#2e2040,#4e3a70)",driveUrl:"",
+    description:"How to grow a healthy church built on five New Testament purposes that every congregation must fulfil.",
+    keywords:["church","purpose","mission","evangelism","worship","fellowship","discipleship","ministry","growth","vision"],
+    toc:["Seeing the Big Picture","Starting with Purpose","Building on Purpose","Deepening Your Church","Measuring Health"],
+    passages:[{ref:"Chapter 1",text:"The issue is church health, not church growth. If your church is healthy, growth will occur naturally. You don't have to beg a healthy baby to grow — it's what healthy things do."}]},
+  {id:5,title:"The Pursuit of God",author:"A.W. Tozer",category:"Devotional",emoji:"🕊",gradient:"linear-gradient(135deg,#0a2030,#124060)",driveUrl:"",
+    description:"A burning call to deeper intimacy with God — perhaps the most beloved devotional classic of the twentieth century.",
+    keywords:["intimacy","presence","devotion","worship","soul","seeking","heart","holiness","hunger","thirst"],
+    toc:["Following Hard After God","The Blessedness of Possessing Nothing","Removing the Veil","Apprehending God","The Universal Presence","The Gaze of the Soul"],
+    passages:[{ref:"Chapter 1",text:"We pursue God because and only because He has first put an urge within us that spurs us to the pursuit. Before a man can seek God, God must first have sought him."}]},
+  {id:6,title:"Knowing God",author:"J.I. Packer",category:"Theology",emoji:"✨",gradient:"linear-gradient(135deg,#2a1810,#5a3020)",driveUrl:"",
+    description:"One of the greatest books of modern Christianity — a transforming exploration of the character and ways of God.",
+    keywords:["theology","god","attributes","sovereignty","grace","love","holiness","wisdom","father","knowledge"],
+    toc:["The Study of God","The People Who Know Their God","God Incarnate","The Loving God","God's Sovereignty"],
+    passages:[{ref:"Chapter 1",text:"We are cruel to ourselves if we try to live in this world without knowing about the God whose world it is. The world becomes a strange, mad, painful place to those who do not know about God."}]},
+  {id:7,title:"Prayer: Awe and Intimacy",author:"Timothy Keller",category:"Prayer",emoji:"🙏",gradient:"linear-gradient(135deg,#1c2a10,#3a5520)",driveUrl:"",
+    description:"A deeply practical and theological guide to prayer, weaving together Augustine, Luther, Calvin and the Psalms.",
+    keywords:["prayer","psalms","meditation","intercession","praise","confession","petition","contemplation","adoration"],
+    toc:["The Neglected Defence","The Fathomless Depths","The Language of Prayer","The Secret of the Psalms","Praying Through Suffering"],
+    passages:[{ref:"Chapter 4",text:"Prayer is the only entryway into genuine self-knowledge. It is also the main way we experience deep change — the reordering of our loves."}]},
+  {id:8,title:"Evidence That Demands a Verdict",author:"Josh McDowell",category:"Evangelism",emoji:"⚡",gradient:"linear-gradient(135deg,#30180a,#602e14)",driveUrl:"",
+    description:"The definitive apologetics handbook — historical, legal and scientific evidence for Scripture and the resurrection.",
+    keywords:["apologetics","evidence","resurrection","historical","scripture","reliability","jesus","proof","prophecy"],
+    toc:["Is the Bible Reliable?","The Uniqueness of the Bible","The Deity of Jesus Christ","The Resurrection","Prophecy"],
+    passages:[{ref:"Part Two, Ch.10",text:"The resurrection is either the greatest miracle or the greatest delusion history records. The evidence demands a verdict."}]},
+  {id:9,title:"Experiencing God",author:"Henry Blackaby",category:"Devotional",emoji:"🌅",gradient:"linear-gradient(135deg,#1a2010,#3a4a20)",driveUrl:"",
+    description:"Knowing and doing the will of God — a transformative study of how to recognise God's activity and join Him in it.",
+    keywords:["will","calling","obedience","relationship","faith","activity","invitation","transformation","purpose"],
+    toc:["God's Will and Your Life","Looking Through God's Eyes","God Speaks — How?","Adjusting Your Life","Experiencing God Through Obedience"],
+    passages:[{ref:"Unit 3",text:"Watch to see where God is working and join Him there. When you see the Father at work — that is your invitation."}]},
+  {id:10,title:"The Christian Family",author:"Larry Christenson",category:"Family",emoji:"👨‍👩‍👧",gradient:"linear-gradient(135deg,#2a1030,#5a2060)",driveUrl:"",
+    description:"A practical, scripture-grounded guide to building a God-centred home — marriage, parenting, authority and love.",
+    keywords:["family","marriage","parenting","children","discipline","love","authority","home","covenant"],
+    toc:["The Design of the Family","Husband and Wife","Parents and Children","The Family and the Church"],
+    passages:[{ref:"Chapter 2",text:"A Christian home is not an accident — it is a work of deliberate construction. The husband is the foundation stone, the wife the warm interior, and the children the growing life within those walls."}]},
+  {id:11,title:"End Times Made Simple",author:"Samuel Waldron",category:"Prophecy",emoji:"🔥",gradient:"linear-gradient(135deg,#300a0a,#6a1414)",driveUrl:"",
+    description:"A clear, balanced introduction to biblical eschatology — the second coming, the millennium, judgment and the new creation.",
+    keywords:["eschatology","second coming","millennium","rapture","tribulation","judgment","revelation","prophecy","kingdom"],
+    toc:["What Does the Bible Say?","The Second Coming","The Millennium","The Final Judgment","The New Creation"],
+    passages:[{ref:"Chapter 1",text:"The purpose of prophecy is not to satisfy our curiosity about dates and events, but to purify our lives in the light of eternity."}]},
+  {id:12,title:"The Screwtape Letters",author:"C.S. Lewis",category:"Theology",emoji:"📜",gradient:"linear-gradient(135deg,#141c08,#2a3c10)",driveUrl:"",
+    description:"A brilliant satirical masterpiece — advice from a senior demon to a junior one on how to tempt a human soul away from God.",
+    keywords:["temptation","spiritual warfare","devil","demons","pride","distraction","sin","habit","heaven"],
+    toc:["Letter I","Letters II–V: The New Convert","Letters VI–XII: Wartime","Letters XIII–XXII: Love","Letters XXIII–XXXI: Finale"],
+    passages:[{ref:"Letter VIII",text:"Humans live in time but our Enemy destines them to eternity. Our business is to distract them from the present, either into the past or future."}]},
+];
+
+// Sample KJV verses
+const OT_BOOKS=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"];
+const NT_BOOKS=["Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
+const BOOK_CHAPTERS={"Genesis":50,"Exodus":40,"Leviticus":27,"Numbers":36,"Deuteronomy":34,"Joshua":24,"Judges":21,"Ruth":4,"1 Samuel":31,"2 Samuel":24,"1 Kings":22,"2 Kings":25,"1 Chronicles":29,"2 Chronicles":36,"Ezra":10,"Nehemiah":13,"Esther":10,"Job":42,"Psalms":150,"Proverbs":31,"Ecclesiastes":12,"Song of Solomon":8,"Isaiah":66,"Jeremiah":52,"Lamentations":5,"Ezekiel":48,"Daniel":12,"Hosea":14,"Joel":3,"Amos":9,"Obadiah":1,"Jonah":4,"Micah":7,"Nahum":3,"Habakkuk":3,"Zephaniah":3,"Haggai":2,"Zechariah":14,"Malachi":4,"Matthew":28,"Mark":16,"Luke":24,"John":21,"Acts":28,"Romans":16,"1 Corinthians":16,"2 Corinthians":13,"Galatians":6,"Ephesians":6,"Philippians":4,"Colossians":4,"1 Thessalonians":5,"2 Thessalonians":3,"1 Timothy":6,"2 Timothy":4,"Titus":3,"Philemon":1,"Hebrews":13,"James":5,"1 Peter":5,"2 Peter":3,"1 John":5,"2 John":1,"3 John":1,"Jude":1,"Revelation":22};
+const SAMPLE_VERSES={
+  "John":{3:[{v:1,t:"There was a man of the Pharisees, named Nicodemus, a ruler of the Jews:"},{v:2,t:"The same came to Jesus by night, and said unto him, Rabbi, we know that thou art a teacher come from God: for no man can do these miracles that thou doest, except God be with him."},{v:3,t:"Jesus answered and said unto him, Verily, verily, I say unto thee, Except a man be born again, he cannot see the kingdom of God."},{v:16,t:"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."},{v:17,t:"For God sent not his Son into the world to condemn the world; but that the world through him might be saved."}]},
+  "Psalms":{23:[{v:1,t:"The LORD is my shepherd; I shall not want."},{v:2,t:"He maketh me to lie down in green pastures: he leadeth me beside the still waters."},{v:3,t:"He restoreth my soul: he leadeth me in the paths of righteousness for his name's sake."},{v:4,t:"Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me."},{v:5,t:"Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over."},{v:6,t:"Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever."}]},
+  "Romans":{8:[{v:1,t:"There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the Spirit, but after the flesh."},{v:28,t:"And we know that all things work together for good to them that love God, to them who are the called according to his purpose."},{v:38,t:"For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, nor things present, nor things to come,"},{v:39,t:"Nor height, nor depth, nor any other creature, shall be able to separate us from the love of God, which is in Christ Jesus our Lord."}]},
+  "Proverbs":{3:[{v:5,t:"Trust in the LORD with all thine heart; and lean not unto thine own understanding."},{v:6,t:"In all thy ways acknowledge him, and he shall direct thy paths."},{v:7,t:"Be not wise in thine own eyes: fear the LORD, and depart from evil."}]},
+  "Isaiah":{40:[{v:28,t:"Hast thou not known? hast thou not heard, that the everlasting God, the LORD, the Creator of the ends of the earth, fainteth not, neither is weary? there is no searching of his understanding."},{v:29,t:"He giveth power to the faint; and to them that have no might he increaseth strength."},{v:31,t:"But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint."}]},
+  "Philippians":{4:[{v:4,t:"Rejoice in the Lord alway: and again I say, Rejoice."},{v:6,t:"Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God."},{v:7,t:"And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus."},{v:13,t:"I can do all things through Christ which strengtheneth me."}]},
+  "Matthew":{5:[{v:3,t:"Blessed are the poor in spirit: for theirs is the kingdom of heaven."},{v:4,t:"Blessed are they that mourn: for they shall be comforted."},{v:5,t:"Blessed are the meek: for they shall inherit the earth."},{v:6,t:"Blessed are they which do hunger and thirst after righteousness: for they shall be filled."},{v:7,t:"Blessed are the merciful: for they shall obtain mercy."},{v:8,t:"Blessed are the pure in heart: for they shall see God."},{v:9,t:"Blessed are the peacemakers: for they shall be called the children of God."}]},
+  "Genesis":{1:[{v:1,t:"In the beginning God created the heaven and the earth."},{v:2,t:"And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."},{v:3,t:"And God said, Let there be light: and there was light."}]},
+};
+
+// ═══════════════════════════════════════════════════════════
+// API HELPER — BACKEND PROXY PATTERN
+// Replace API_ENDPOINT with your own backend proxy URL
+// to avoid exposing Anthropic API keys in the frontend.
+//
+// Your proxy should:
+//   POST /api/ai  { system, userMessage, maxTokens }
+//   → { text: "…" }
+//
+// Until your backend is ready, a direct call is used as
+// a fallback (requires browser API key injection).
+// ═══════════════════════════════════════════════════════════
+const API_ENDPOINT = '/api/ai'; // ← Replace with your backend proxy URL
+
+async function callAI({ system, userMessage, maxTokens = 1000 }) {
+  // ── OPTION A: Backend Proxy (RECOMMENDED for production) ──────────────────
+  // Uncomment when your proxy is live:
+  // const res = await fetch(API_ENDPOINT, {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ system, userMessage, maxTokens }),
+  // });
+  // if (!res.ok) throw new Error(`Proxy error: ${res.status}`);
+  // const data = await res.json();
+  // return data.text;
+
+  // ── OPTION B: Direct Anthropic call (Dev/Demo only — no API key in frontend!) ──
+  // This is safe only when the API key is injected by a build tool or server-side
+  // env var, NEVER hardcode a key here.
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: maxTokens,
+      system,
+      messages: [{ role: 'user', content: userMessage }],
+    }),
+  });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  const data = await res.json();
+  return (data.content || []).map(c => c.text || '').join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════════════════════════
+let libFilter = 'all';
+let curBook = null;
+let voices = [];
+let utt = null;
+let resScope = 'all';
+let curBibleBook = 'John';
+let curBibleChapter = 3;
+let curTestament = 'nt';
+let currentMember = null;
+let selectedTierKey = 'free';
+let thesisTypeSelected = 'thesis';
+let selectedThesisContent = '';
+let readerDarkMode = false;
+let bibleDarkMode = false;
+let giveCurrency = 'usd';
+let lastResearchSources = [];
+
+// ═══════════════════════════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════════════════════════
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nl').forEach(n => n.classList.remove('on'));
+  document.getElementById('page-' + id).classList.add('on');
+  if (el) el.classList.add('on');
+  if (id === 'thesis') checkThesisAccess();
+  if (id === 'subscribe') renderTierCards();
+}
+
+// ═══════════════════════════════════════════════════════════
+// LIBRARY
+// ═══════════════════════════════════════════════════════════
+function renderLib() {
+  const list = libFilter === 'all' ? BOOKS : BOOKS.filter(b => b.category === libFilter);
+  document.getElementById('book-grid').innerHTML = list.map((b, i) => `
+    <div class="card" style="animation-delay:${i * 0.05}s">
+      <div class="cover" style="background:${b.gradient}">
+        <div class="cover-spine"></div><div class="cover-glow"></div>
+        <span class="cover-emoji">${b.emoji}</span>
+        <div class="cover-text"><div class="ct">${b.title}</div><div class="ca">${b.author}</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${b.title}</div>
+        <div class="card-author">${b.author}</div>
+        <div class="card-desc">${b.description.slice(0, 88)}…</div>
+        <div class="card-foot"><span class="ctag">${b.category}</span></div>
+        <div class="card-btns">
+          <button class="cbtn cbtn-read" onclick="openReader(${b.id},'pdf')">📄 Read</button>
+          <button class="cbtn cbtn-listen" onclick="openReader(${b.id},'audio')">🔊 Listen</button>
+          <button class="cbtn cbtn-ref" onclick="openReader(${b.id},'ref')">📑 Ref</button>
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('s-books').textContent = BOOKS.length;
+  document.getElementById('s-cats').textContent = new Set(BOOKS.map(b => b.category)).size;
+}
+
+function filterLib(cat, el) {
+  libFilter = cat;
+  document.querySelectorAll('#page-library .chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  renderLib();
+}
+
+// ═══════════════════════════════════════════════════════════
+// READER MODAL
+// ═══════════════════════════════════════════════════════════
+function openReader(id, tab) {
+  curBook = BOOKS.find(b => b.id === id);
+  if (!curBook) return;
+  document.getElementById('r-title').textContent = curBook.title + ' — ' + curBook.author;
+  document.getElementById('a-title').textContent = curBook.title;
+  document.getElementById('a-author').textContent = curBook.author;
+  const thumb = document.getElementById('a-thumb');
+  thumb.style.background = curBook.gradient;
+  thumb.textContent = curBook.emoji;
+  document.getElementById('r-dl').onclick = () => {
+    if (curBook.driveUrl) window.open(curBook.driveUrl.replace('/preview', '/view'), '_blank');
+    else toast('Add the Google Drive URL for this book to enable downloading.');
+  };
+  switchTab(tab || 'pdf');
+  document.getElementById('overlay').classList.add('open');
+  applyReaderDark(readerDarkMode);
+}
+
+function switchTab(tab, el) {
+  const tabs = ['pdf', 'ref', 'audio'];
+  document.querySelectorAll('.rtab').forEach((t, i) => t.classList.toggle('on', tabs[i] === tab));
+  document.getElementById('pdf-pane').classList.toggle('on', tab === 'pdf');
+  document.getElementById('ref-pane').classList.toggle('on', tab === 'ref');
+  document.getElementById('audio-pane').classList.toggle('on', tab === 'audio');
+  if (tab === 'pdf' && curBook) {
+    const fr = document.getElementById('pdf-frame'), ph = document.getElementById('pdf-ph');
+    if (curBook.driveUrl) { fr.src = curBook.driveUrl; fr.style.display = 'block'; ph.style.display = 'none'; }
+    else { fr.style.display = 'none'; ph.style.display = 'block'; document.getElementById('pdf-ph-title').textContent = curBook.title; }
+  }
+  if (tab === 'ref' && curBook) buildRef(curBook);
+}
+
+function closeReader() {
+  document.getElementById('overlay').classList.remove('open');
+  stopSpeech();
+  document.getElementById('pdf-frame').src = '';
+  document.getElementById('pdf-frame').style.display = 'none';
+  document.getElementById('pdf-ph').style.display = 'block';
+  document.getElementById('passage-box').classList.remove('show');
+  document.getElementById('study-output').classList.remove('show');
+  closeSidecar();
+}
+function maybeClose(e) { if (e.target === document.getElementById('overlay')) closeReader(); }
+
+// Dark mode for reader
+function toggleReaderDark() {
+  readerDarkMode = !readerDarkMode;
+  applyReaderDark(readerDarkMode);
+}
+function applyReaderDark(on) {
+  const modal = document.getElementById('rmodal');
+  modal.classList.toggle('dark-read', on);
+  const btn = document.getElementById('reader-dark-btn');
+  btn.textContent = on ? '☀️ Light' : '🌙 Dark';
+  btn.classList.toggle('active', on);
+}
+
+// Bible dark mode
+function toggleBibleDark() {
+  bibleDarkMode = !bibleDarkMode;
+  const pane = document.getElementById('bible-reader-pane');
+  pane.classList.toggle('dark-read', bibleDarkMode);
+  const btn = document.getElementById('bible-dark-btn');
+  btn.textContent = bibleDarkMode ? '☀️ Light' : '🌙 Dark';
+  btn.classList.toggle('active', bibleDarkMode);
+}
+
+// Sidecar
+function toggleSidecar() {
+  const panel = document.getElementById('sidecar-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open') && curBook) populateSidecar(curBook);
+}
+function closeSidecar() { document.getElementById('sidecar-panel').classList.remove('open'); }
+function populateSidecar(b) {
+  const sc = document.getElementById('sidecar-content');
+  if (!b.passages || !b.passages.length) { sc.innerHTML = '<div style="color:rgba(249,245,237,.4);font-size:.82rem;padding:1rem 0;font-family:EB Garamond,serif;font-style:italic;">No source passages loaded for this book yet.</div>'; return; }
+  sc.innerHTML = b.passages.map(p => `
+    <div class="source-card">
+      <div class="source-card-ref">📍 ${b.title} — ${p.ref}</div>
+      <div class="source-card-text">${p.text}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// STUDY TOOLS (Quiz / FAQ / Audio Overview)
+// ═══════════════════════════════════════════════════════════
+function buildStudyToolsRow(b) {
+  const row = document.getElementById('study-tools-row');
+  const hasAccess = currentMember && (currentMember.tier === 'scholar' || currentMember.tier === 'minister');
+  if (!hasAccess) {
+    row.innerHTML = `<div style="font-size:.78rem;color:var(--brown);padding:.4rem 0;">🔒 <a href="#" onclick="showPage('subscribe',document.querySelectorAll('.nl')[4]);closeReader();return false" style="color:var(--gold);font-weight:700;">Subscribe (Scholar+)</a> to unlock Quiz, FAQ &amp; Audio Overview generators.</div>`;
+    return;
+  }
+  row.innerHTML = `
+    <button class="study-btn" onclick="generateStudyTool('quiz','${b.id}')">🧠 Quiz</button>
+    <button class="study-btn" onclick="generateStudyTool('faq','${b.id}')">❓ FAQ</button>
+    <button class="study-btn" onclick="generateStudyTool('audio_overview','${b.id}')">🎙 Audio Overview</button>`;
+}
+
+async function generateStudyTool(type, bookId) {
+  const b = BOOKS.find(x => x.id === parseInt(bookId));
+  if (!b) return;
+  const output = document.getElementById('study-output');
+  const labels = { quiz: '🧠 Quiz', faq: '❓ FAQ', audio_overview: '🎙 Audio Overview Script' };
+  output.innerHTML = `<div class="study-output-head">${labels[type]}</div><div class="spinner" style="margin:1rem auto"></div>`;
+  output.classList.add('show');
+
+  const systemPrompts = {
+    quiz: `You are a Christian theological educator. Generate a quiz based on the provided book. Respond ONLY with valid JSON (no markdown, no backticks): {"questions":[{"q":"...","options":["A)...","B)...","C)...","D)..."],"answer":0}]} — answer is the 0-based index of the correct option. Generate exactly 4 questions.`,
+    faq: `You are a knowledgeable Christian librarian. Generate a FAQ based on the provided book. Respond ONLY with valid JSON: {"faqs":[{"q":"...","a":"..."}]} — generate 5 questions.`,
+    audio_overview: `You are a Christian podcast host. Write a 3-minute audio overview / podcast-style script for the provided book. Make it warm, engaging, and faith-edifying. Respond ONLY with valid JSON: {"title":"...","script":"..."}`
+  };
+
+  const bookCtx = `Title: "${b.title}" by ${b.author}. ${b.description} Key themes: ${b.keywords.join(', ')}. Passages: ${(b.passages || []).map(p => `[${p.ref}] ${p.text}`).join(' | ')}`;
+
+  try {
+    const raw = await callAI({ system: systemPrompts[type], userMessage: `Book: ${bookCtx}`, maxTokens: 1200 });
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const data = JSON.parse(clean);
+
+    if (type === 'quiz') renderQuiz(data.questions, output);
+    else if (type === 'faq') renderFAQ(data.faqs, output);
+    else if (type === 'audio_overview') renderAudioOverview(data, output);
+  } catch (e) {
+    output.innerHTML = `<div class="study-output-head">${labels[type]}</div><p style="color:var(--crimson);font-size:.85rem">Generation failed — please try again.</p>`;
+  }
+}
+
+function renderQuiz(questions, el) {
+  el.innerHTML = `<div class="study-output-head">🧠 Quiz</div>` +
+    questions.map((q, qi) => `
+      <div class="quiz-q">
+        <div class="quiz-q-text">${qi + 1}. ${q.q}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, oi) => `
+            <div class="quiz-opt" onclick="answerQuiz(this,${oi === q.answer})">${opt}</div>`).join('')}
+        </div>
+      </div>`).join('');
+}
+function answerQuiz(el, correct) {
+  const siblings = el.parentElement.querySelectorAll('.quiz-opt');
+  siblings.forEach(s => s.style.pointerEvents = 'none');
+  el.classList.add(correct ? 'correct' : 'wrong');
+  el.textContent += correct ? ' ✓' : ' ✗';
+}
+
+function renderFAQ(faqs, el) {
+  el.innerHTML = `<div class="study-output-head">❓ FAQ</div>` +
+    faqs.map(f => `
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">${f.q} <span style="opacity:.4">▼</span></div>
+        <div class="faq-a">${f.a}</div>
+      </div>`).join('');
+}
+
+function renderAudioOverview(data, el) {
+  el.innerHTML = `
+    <div class="study-output-head">🎙 ${data.title}</div>
+    <div class="audio-script-text">${data.script}</div>
+    <button class="passage-speak" style="margin-top:.85rem" onclick="speakString(document.querySelector('.audio-script-text').textContent)">▶ Listen to Overview</button>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// REFERENCES
+// ═══════════════════════════════════════════════════════════
+function buildRef(b) {
+  document.getElementById('ref-book-title').textContent = b.title;
+  document.getElementById('ref-book-author').textContent = b.author + ' · ' + b.category;
+  document.getElementById('ref-book-desc').textContent = b.description;
+  const thumb = document.getElementById('ref-thumb');
+  thumb.style.background = b.gradient;
+  thumb.textContent = b.emoji;
+  document.getElementById('ref-tags').innerHTML = b.keywords.slice(0, 7).map(k => `<span class="ref-tag">${k}</span>`).join('');
+  document.getElementById('toc-list').innerHTML = (b.toc || []).map((item, i) => `
+    <div class="toc-item" onclick="toast('Add Drive URL to enable direct chapter links.')">
+      <div class="toc-item-title">${item}</div><div class="toc-item-num">${i + 1}</div>
+    </div>`).join('');
+  document.getElementById('idx-grid').innerHTML = b.keywords.map(k => `
+    <div class="idx-item" onclick="quickRef('${k}')">
+      <span>${k}</span><span class="idx-count">${Math.floor(Math.random() * 20) + 3}</span>
+    </div>`).join('');
+  document.getElementById('passage-box').classList.remove('show');
+  document.getElementById('ref-search').value = '';
+  buildStudyToolsRow(b);
+}
+
+function refSearch() {
+  const q = document.getElementById('ref-search').value.trim().toLowerCase();
+  if (!q || !curBook) return;
+  const match = curBook.passages?.find(p => p.text.toLowerCase().includes(q) || p.ref.toLowerCase().includes(q)) || curBook.passages?.[0];
+  if (match) showPassage(match, q);
+  else toast('No indexed passage for "' + q + '" — add more passages to BOOKS data.');
+}
+function quickRef(kw) { document.getElementById('ref-search').value = kw; refSearch(); }
+function showPassage(p, q) {
+  document.getElementById('passage-ref').textContent = '📍 ' + curBook.title + ' — ' + p.ref;
+  let txt = p.text;
+  if (q) txt = txt.replace(new RegExp('(' + q + ')', 'gi'), '<mark style="background:rgba(184,136,42,.22);border-radius:2px;padding:0 2px">$1</mark>');
+  document.getElementById('passage-text').innerHTML = txt;
+  document.getElementById('passage-box').classList.add('show');
+}
+function speakPassage() {
+  const txt = document.getElementById('passage-text').innerText;
+  if (txt) { document.getElementById('tts-ta').value = txt; switchTab('audio'); setTimeout(speakText, 300); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// TTS
+// ═══════════════════════════════════════════════════════════
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+  const sel = document.getElementById('tts-voice');
+  if (!voices.length) return;
+  sel.innerHTML = voices.map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`).join('');
+  const ei = voices.findIndex(v => v.lang.startsWith('en'));
+  if (ei > -1) sel.value = ei;
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+// Consolidated range input listeners
+document.getElementById('tts-speed').addEventListener('input', e =>
+  document.getElementById('sv').textContent = parseFloat(e.target.value).toFixed(1) + '×');
+document.getElementById('tts-pitch').addEventListener('input', e =>
+  document.getElementById('pv').textContent = parseFloat(e.target.value).toFixed(1));
+
+function speakText() {
+  stopSpeech();
+  const text = document.getElementById('tts-ta').value.trim();
+  if (!text) { toast('Paste some text first, then press Listen.'); return; }
+  _speak(text, parseFloat(document.getElementById('tts-speed').value), parseFloat(document.getElementById('tts-pitch').value));
+}
+function speakString(text) { stopSpeech(); _speak(text, 0.95, 1); }
+function _speak(text, rate, pitch) {
+  utt = new SpeechSynthesisUtterance(text);
+  const vi = parseInt(document.getElementById('tts-voice').value || 0);
+  if (voices[vi]) utt.voice = voices[vi];
+  utt.rate = rate;
+  utt.pitch = pitch;
+  const playBtn = document.getElementById('play-btn');
+  const spkEl = document.getElementById('spk');
+  utt.onstart = () => { if (playBtn) playBtn.firstChild.nodeValue = '⏸ Playing '; if (spkEl) spkEl.classList.add('on'); };
+  utt.onend = utt.onerror = () => { if (playBtn) playBtn.firstChild.nodeValue = '▶ Listen '; if (spkEl) spkEl.classList.remove('on'); };
+  speechSynthesis.speak(utt);
+}
+function stopSpeech() {
+  speechSynthesis.cancel();
+  const playBtn = document.getElementById('play-btn');
+  const spkEl = document.getElementById('spk');
+  if (playBtn) playBtn.firstChild.nodeValue = '▶ Listen ';
+  if (spkEl) spkEl.classList.remove('on');
+}
+
+// ═══════════════════════════════════════════════════════════
+// KJV BIBLE
+// ═══════════════════════════════════════════════════════════
+function showTestament(t, el) {
+  curTestament = t;
+  document.querySelectorAll('.bible-testament-tab').forEach(x => x.classList.remove('on'));
+  el.classList.add('on');
+  renderBibleBookList();
+}
+function renderBibleBookList() {
+  const books = curTestament === 'ot' ? OT_BOOKS : NT_BOOKS;
+  document.getElementById('bible-book-list').innerHTML = books.map(b =>
+    `<button class="bible-book-item${b === curBibleBook ? ' on' : ''}" onclick="selectBibleBook('${b}')">${b}</button>`
+  ).join('');
+  renderChapterNums();
+}
+function selectBibleBook(book) { curBibleBook = book; curBibleChapter = 1; renderBibleBookList(); loadBibleChapter(); }
+function renderChapterNums() {
+  const total = BOOK_CHAPTERS[curBibleBook] || 1;
+  document.getElementById('bible-chapter-nums').innerHTML = Array.from({ length: Math.min(total, 50) }, (_, i) =>
+    `<button class="bible-ch-btn${(i + 1) === curBibleChapter ? ' on' : ''}" onclick="selectChapter(${i + 1})">${i + 1}</button>`
+  ).join('');
+}
+function selectChapter(n) { curBibleChapter = n; renderChapterNums(); loadBibleChapter(); }
+function prevChapter() { if (curBibleChapter > 1) { curBibleChapter--; renderChapterNums(); loadBibleChapter(); } }
+function nextChapter() { if (curBibleChapter < (BOOK_CHAPTERS[curBibleBook] || 1)) { curBibleChapter++; renderChapterNums(); loadBibleChapter(); } }
+
+function loadBibleChapter() {
+  document.getElementById('bible-chapter-title').textContent = curBibleBook + ' Chapter ' + curBibleChapter;
+  const verses = SAMPLE_VERSES[curBibleBook]?.[curBibleChapter];
+  const el = document.getElementById('bible-verses');
+  if (verses && verses.length) {
+    el.innerHTML = verses.map(v => `
+      <div class="verse" onclick="highlightVerse(this)">
+        <span class="verse-num">${v.v}</span>
+        <span class="verse-text">${v.t}</span>
+        <button class="verse-copy" onclick="copyVerse(event,'${curBibleBook} ${curBibleChapter}:${v.v}','${v.t.replace(/'/g,"\\'")}')">Copy</button>
+      </div>`).join('');
+  } else {
+    el.innerHTML = `<div style="text-align:center;padding:2rem;color:#aaa;">
+      <p style="font-family:'EB Garamond',serif;font-size:1rem;margin-bottom:1rem">📖 ${curBibleBook} ${curBibleChapter}</p>
+      <p style="font-size:.85rem;line-height:1.7">To display the full KJV Bible, host a KJV JSON on Google Drive and load it here.<br>
+      Free source: <strong>github.com/aruljohn/Bible-kjv</strong></p>
+    </div>`;
+  }
+}
+function highlightVerse(el) {
+  document.querySelectorAll('.verse').forEach(v => v.classList.remove('highlighted'));
+  el.classList.add('highlighted');
+  const ref = curBibleBook + ' ' + curBibleChapter + ':' + el.querySelector('.verse-num').textContent;
+  toast('📖 ' + ref);
+}
+function copyVerse(e, ref, text) {
+  e.stopPropagation();
+  navigator.clipboard.writeText(ref + ' — ' + text + ' (KJV)').then(() => toast('📋 Copied: ' + ref)).catch(() => toast('Copy failed.'));
+}
+function listenChapter() {
+  const verses = SAMPLE_VERSES[curBibleBook]?.[curBibleChapter];
+  if (!verses || !verses.length) { toast('No verse data loaded for this chapter yet.'); return; }
+  const text = curBibleBook + ' Chapter ' + curBibleChapter + '. ' + verses.map(v => v.v + '. ' + v.t).join(' ');
+  speakString(text);
+  toast('🔊 Reading ' + curBibleBook + ' ' + curBibleChapter + '…');
+}
+function bibleSearch() {
+  const q = document.getElementById('bible-search').value.trim().toLowerCase();
+  if (!q) { toast('Enter a word or verse reference to search.'); return; }
+  const results = [];
+  Object.entries(SAMPLE_VERSES).forEach(([book, chapters]) => {
+    Object.entries(chapters).forEach(([ch, verses]) => {
+      verses.forEach(v => { if (v.t.toLowerCase().includes(q)) results.push({ book, ch: parseInt(ch), v: v.v, text: v.t }); });
+    });
+  });
+  const box = document.getElementById('bible-concordance-results');
+  if (!results.length) { box.style.display = 'none'; toast('No results. Full search requires a complete KJV JSON file.'); return; }
+  function hl(t) { return t.replace(new RegExp('(' + q + ')', 'gi'), '<mark style="background:rgba(184,136,42,.22)">$1</mark>'); }
+  box.style.display = 'block';
+  box.innerHTML = `<div class="sh" style="margin-bottom:1rem">🔍 ${results.length} Result${results.length !== 1 ? 's' : ''} for "${q}"</div>` +
+    results.map(r => `<div class="concordance-result" onclick="selectBibleBook('${r.book}');selectChapter(${r.ch})">
+      <div class="concordance-ref">📖 ${r.book} ${r.ch}:${r.v}</div>
+      <div class="concordance-text">${hl(r.text)}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// RESEARCH — Source-Grounded with Sidecar
+// ═══════════════════════════════════════════════════════════
+function setScope(s, el) {
+  resScope = s;
+  document.querySelectorAll('#page-research .chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+}
+
+async function doResearch() {
+  const q = document.getElementById('rsearch').value.trim();
+  if (!q) { toast('Enter a keyword or topic to search.'); return; }
+  document.getElementById('spinner').classList.add('on');
+  document.getElementById('ai-box').classList.remove('show');
+  document.getElementById('r-results').innerHTML = '';
+  document.getElementById('rs-body').innerHTML = '<div class="rs-empty">Searching…</div>';
+
+  const pool = resScope === 'all' ? BOOKS : BOOKS.filter(b => b.category === resScope);
+  const terms = q.toLowerCase().split(/\s+/);
+  const scored = pool.map(b => {
+    const hay = (b.title + ' ' + b.author + ' ' + b.description + ' ' + b.keywords.join(' ') + ' ' + (b.toc || []).join(' ')).toLowerCase();
+    return { book: b, score: terms.reduce((s, t) => s + (hay.includes(t) ? 1 : 0), 0) };
+  }).filter(x => x.score > 0).sort((a, b) => b.score - a.score);
+
+  await new Promise(r => setTimeout(r, 500));
+  document.getElementById('spinner').classList.remove('on');
+
+  lastResearchSources = scored.map(x => x.book);
+  buildResearchSidecar(scored.map(x => x.book));
+  await showAISummary(q, scored.map(x => x.book));
+  renderResResults(q, scored);
+}
+
+function buildResearchSidecar(books) {
+  const body = document.getElementById('rs-body');
+  if (!books.length) { body.innerHTML = '<div class="rs-empty">No matching sources found.</div>'; return; }
+  body.innerHTML = books.flatMap(b =>
+    (b.passages || []).map(p => `
+      <div class="rs-source-item" onclick="openReader(${b.id},'ref')">
+        <div class="rs-source-ref">${b.emoji} ${b.title} — ${p.ref}</div>
+        <div class="rs-source-text">${p.text.slice(0, 120)}…</div>
+      </div>`)
+  ).join('') || '<div class="rs-empty">No indexed passages for matched books yet.</div>';
+}
+
+async function showAISummary(q, matched) {
+  document.getElementById('ai-text').textContent = 'Generating research summary…';
+  document.getElementById('ai-reflection-block').innerHTML = '';
+  document.getElementById('ai-key-scriptures').style.display = 'none';
+  document.getElementById('ai-key-scriptures').innerHTML = '<span class="ai-ks-label">Key Scriptures:</span>';
+  document.getElementById('ai-sources').innerHTML = '';
+  document.getElementById('ai-box').classList.add('show');
+
+  // Build grounded context from library books only
+  const sourceBooks = matched.length ? matched : BOOKS.slice(0, 5);
+  const groundTruth = sourceBooks.map(b =>
+    `BOOK [${b.id}] "${b.title}" by ${b.author}: ${b.description}. Themes: ${b.keywords.join(', ')}. ` +
+    (b.passages || []).map(p => `Passage [${b.id}-${p.ref}]: "${p.text}"`).join(' ')
+  ).join('\n\n');
+
+  // KJV Bible verses as additional ground truth
+  const bibleGround = Object.entries(SAMPLE_VERSES).flatMap(([book, chs]) =>
+    Object.entries(chs).flatMap(([ch, vs]) => vs.map(v => `${book} ${ch}:${v.v} — ${v.t}`))
+  ).join('\n');
+
+  const systemPrompt = `You are a scholarly Christian research assistant for the Logos Library. You MUST ground every claim STRICTLY in the provided library books and KJV Bible verses. Do NOT invent sources or quotes not present in the context.
+
+Respond ONLY with valid JSON (no markdown, no backticks):
+{
+  "summary": "3-4 sentence faith-informed synthesis referencing specific books by their [ID]",
+  "citations": [{"bookId": 1, "bookTitle": "...", "ref": "..."}],
+  "reflectionQuestions": ["question 1", "question 2", "question 3"],
+  "keyScriptures": ["Book Chapter:verse — brief note", "Book Chapter:verse — brief note"]
+}`;
+
+  try {
+    const raw = await callAI({
+      system: systemPrompt,
+      userMessage: `Query: "${q}"\n\nLIBRARY SOURCES:\n${groundTruth}\n\nKJV BIBLE:\n${bibleGround}\n\nProvide grounded synthesis.`,
+      maxTokens: 1200
+    });
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const data = JSON.parse(clean);
+
+    // Render summary with inline citations
+    let summaryHtml = data.summary || '';
+    (data.citations || []).forEach(c => {
+      summaryHtml = summaryHtml.replace(
+        new RegExp('\\[' + c.bookId + '\\]', 'g'),
+        `<span class="ai-cite" onclick="openReader(${c.bookId},'ref')" title="${c.bookTitle}">[${c.bookTitle}]</span>`
+      );
+    });
+    document.getElementById('ai-text').innerHTML = summaryHtml;
+
+    // Reflection questions
+    if (data.reflectionQuestions?.length) {
+      document.getElementById('ai-reflection-block').innerHTML = `
+        <div class="ai-reflection">
+          <div class="ai-reflection-title">✦ Reflection Questions</div>
+          ${data.reflectionQuestions.map(rq => `<div class="ai-reflection-item">${rq}</div>`).join('')}
+        </div>`;
+    }
+
+    // Key scriptures
+    if (data.keyScriptures?.length) {
+      const ksEl = document.getElementById('ai-key-scriptures');
+      ksEl.style.display = 'flex';
+      data.keyScriptures.forEach(ks => {
+        const btn = document.createElement('span');
+        btn.className = 'ai-ks';
+        btn.textContent = '📖 ' + ks;
+        btn.onclick = () => { showPage('bible', document.querySelectorAll('.nl')[1]); toast('📖 ' + ks); };
+        ksEl.appendChild(btn);
+      });
+    }
+  } catch (e) {
+    document.getElementById('ai-text').textContent =
+      `Found ${matched.length} source(s) on "${q}" in the library. Browse below for details.`;
+  }
+
+  // Source chips
+  if (matched.length) {
+    document.getElementById('ai-sources').innerHTML =
+      '<span class="ai-src-label">Sources:</span>' +
+      matched.map(b => `<span class="ai-src" onclick="openReader(${b.id},'ref')">${b.emoji} ${b.title}</span>`).join('');
+  }
+}
+
+function renderResResults(q, scored) {
+  const el = document.getElementById('r-results');
+  if (!scored.length) { el.innerHTML = `<div class="no-res"><span>🔍</span><p>No books matched "<strong>${q}</strong>".</p></div>`; return; }
+  const terms = q.toLowerCase().split(/\s+/);
+  function hl(t) { let o = t; terms.forEach(w => { if (w.length > 2) o = o.replace(new RegExp('(' + w + ')', 'gi'), '<mark>$1</mark>'); }); return o; }
+  el.innerHTML = `<div class="sh" style="margin-bottom:1rem">${scored.length} Result${scored.length !== 1 ? 's' : ''} for "${q}"</div>` +
+    scored.map(({ book: b }, i) => `
+      <div class="ritem" style="animation-delay:${i * 0.06}s">
+        <div class="ritem-cover" style="background:${b.gradient}">${b.emoji}</div>
+        <div class="ritem-info">
+          <div class="ritem-title">${hl(b.title)}</div>
+          <div class="ritem-auth">${b.author} · <span class="ctag" style="display:inline">${b.category}</span></div>
+          <div class="ritem-snip">${hl(b.description)}</div>
+          <div class="ritem-acts">
+            <button class="bsm bsm-n" onclick="openReader(${b.id},'pdf')">📄 Read</button>
+            <button class="bsm bsm-g" onclick="openReader(${b.id},'audio')">🔊 Listen</button>
+            <button class="bsm bsm-r" onclick="openReader(${b.id},'ref')">📑 References</button>
+          </div>
+        </div>
+      </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// GLOBAL SEARCH
+// ═══════════════════════════════════════════════════════════
+let gsTimeout;
+function globalSearch(q) {
+  clearTimeout(gsTimeout);
+  const box = document.getElementById('gs-results');
+  if (!q.trim()) { box.classList.remove('open'); return; }
+  gsTimeout = setTimeout(() => {
+    const ql = q.toLowerCase();
+    const bookHits = BOOKS.filter(b => (b.title + b.author + b.description + b.keywords.join(' ')).toLowerCase().includes(ql)).slice(0, 3);
+    const bibleHits = [];
+    Object.entries(SAMPLE_VERSES).forEach(([book, chs]) => {
+      Object.entries(chs).forEach(([ch, vs]) => {
+        vs.forEach(v => { if (v.t.toLowerCase().includes(ql) && bibleHits.length < 2) bibleHits.push({ ref: `${book} ${ch}:${v.v}`, text: v.t }); });
+      });
+    });
+
+    let html = '';
+    if (bookHits.length) {
+      html += `<div class="gs-section">📚 Library</div>` +
+        bookHits.map(b => `<div class="gs-item" onclick="openReader(${b.id},'ref');closeGS()"><span>${b.emoji}</span>${b.title} — ${b.author}</div>`).join('');
+    }
+    if (bibleHits.length) {
+      html += `<div class="gs-section">📖 KJV Bible</div>` +
+        bibleHits.map(v => `<div class="gs-item" onclick="showPage('bible',document.querySelectorAll('.nl')[1]);closeGS()"><span>✝</span><span>${v.ref}</span></div>`).join('');
+    }
+    if (!html) html = `<div class="gs-empty">No results for "${q}"</div>`;
+    box.innerHTML = html;
+    box.classList.add('open');
+  }, 250);
+}
+function closeGS() {
+  document.getElementById('gs-results').classList.remove('open');
+  document.getElementById('gs-input').value = '';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.global-search-wrap')) closeGS();
+});
+
+// ═══════════════════════════════════════════════════════════
+// SUBSCRIPTION TIERS
+// ═══════════════════════════════════════════════════════════
+const TIERS = [
+  { key: 'free', icon: '📖', name: 'Free Reader', price: 'Free', priceKes: '', priceNote: '', btnClass: 'tier-btn-free', btnLabel: 'Start Reading Free',
+    desc: 'Full library & KJV Bible access, basic search.',
+    features: [
+      { icon: '✅', cls: 'tf-check', text: 'Complete book library' },
+      { icon: '✅', cls: 'tf-check', text: 'KJV Bible with concordance' },
+      { icon: '✅', cls: 'tf-check', text: 'Basic keyword research' },
+      { icon: '✅', cls: 'tf-check', text: 'New book notifications' },
+      { icon: '🔒', cls: 'tf-lock', text: 'AI Research + Audio Reader (Scholar+)' },
+      { icon: '🔒', cls: 'tf-lock', text: 'Quiz, FAQ, Audio Overview (Scholar+)' },
+      { icon: '🔒', cls: 'tf-lock', text: 'Thesis Writer (Minister+)' },
+    ]},
+  { key: 'scholar', icon: '🎓', name: 'Scholar', price: '$2.50', priceKes: 'KES 300', priceNote: '/month', featured: true, btnClass: 'tier-btn-scholar', btnLabel: 'Become a Scholar',
+    desc: 'AI Research, Audio Reader, Quiz & FAQ generators, Study Tools.',
+    features: [
+      { icon: '✅', cls: 'tf-check', text: 'Everything in Free' },
+      { icon: '✅', cls: 'tf-check', text: '🔊 Full Audio Reader' },
+      { icon: '✅', cls: 'tf-check', text: '🔬 AI Deep Research (Source-Grounded)' },
+      { icon: '✅', cls: 'tf-check', text: '🧠 Quiz, FAQ & Audio Overview' },
+      { icon: '✅', cls: 'tf-check', text: 'Advanced concordance search' },
+      { icon: '🔒', cls: 'tf-lock', text: 'Thesis & Paper Writer (Minister)' },
+    ]},
+  { key: 'minister', icon: '✝', name: 'Minister', price: '$8.00', priceKes: 'KES 1,000', priceNote: '/month', btnClass: 'tier-btn-minister', btnLabel: 'Activate Minister Access',
+    desc: 'Full access: AI thesis writer, research papers, sermon builder, .txt export.',
+    features: [
+      { icon: '✅', cls: 'tf-check', text: 'Everything in Scholar' },
+      { icon: '✅', cls: 'tf-check', text: '✍️ Thesis & Research Paper Writer' },
+      { icon: '✅', cls: 'tf-check', text: 'Scripture citation integration' },
+      { icon: '✅', cls: 'tf-check', text: 'Export papers (.txt)' },
+      { icon: '✅', cls: 'tf-check', text: 'Sermon & commentary generator' },
+      { icon: '✅', cls: 'tf-check', text: 'Dedicated ministry support' },
+    ]},
+];
+
+function renderTierCards() {
+  document.getElementById('tier-cards').innerHTML = TIERS.map(t => `
+    <div class="tier-card${t.featured ? ' featured-tier' : ''}">
+      ${t.featured ? '<div class="tier-popular">MOST POPULAR</div>' : ''}
+      <div class="tier-head">
+        <span class="tier-icon">${t.icon}</span>
+        <div class="tier-name">${t.name}</div>
+        <div class="tier-price">${t.price}<span>${t.priceNote}</span></div>
+        ${t.priceKes ? `<div class="tier-price-kes">${t.priceKes}${t.priceNote}</div>` : ''}
+        <div class="tier-desc">${t.desc}</div>
+      </div>
+      <div class="tier-features">
+        ${t.features.map(f => `<div class="tier-feature"><span class="tier-feature-icon ${f.cls}">${f.icon}</span><span>${f.text}</span></div>`).join('')}
+      </div>
+      <button class="tier-btn ${t.btnClass}" onclick="startSignup('${t.key}')">${t.btnLabel}</button>
+    </div>`).join('');
+}
+
+function startSignup(tierKey) {
+  if (currentMember) { toast('You are already signed in as ' + currentMember.name + '!'); return; }
+  selectedTierKey = tierKey;
+  const t = TIERS.find(x => x.key === tierKey);
+  document.getElementById('signup-title').textContent = 'Create Your ' + t.name + ' Account';
+  document.getElementById('signup-sub').textContent = 'Fill in your details to activate your ' + t.name + ' subscription.';
+  const wrap = document.getElementById('signup-form-wrap');
+  wrap.classList.add('show');
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function completeSignup() {
+  const fname = document.getElementById('sub-fname').value.trim();
+  const email = document.getElementById('sub-email').value.trim();
+  const privacy = document.getElementById('sub-privacy').checked;
+  if (!fname || !email) { toast('Please enter your first name and email address.'); return; }
+  if (!privacy) { toast('Please accept the privacy policy to continue.'); return; }
+  if (!/\S+@\S+\.\S+/.test(email)) { toast('Please enter a valid email address.'); return; }
+
+  currentMember = {
+    name: fname + ' ' + document.getElementById('sub-lname').value.trim(),
+    email,
+    phone: document.getElementById('sub-phone').value.trim(),
+    tier: selectedTierKey,
+    country: document.getElementById('sub-country').value,
+    ministry: document.getElementById('sub-ministry').value,
+    role: document.getElementById('sub-role').value
+  };
+  try { localStorage.setItem('logos_member', JSON.stringify(currentMember)); } catch (e) {}
+  showMemberBanner();
+  document.getElementById('signup-form-wrap').classList.remove('show');
+
+  // ── PAYMENT ROUTING ──────────────────────────────────────
+  // selectedTierKey determines which payment flow to trigger:
+  const t = TIERS.find(x => x.key === selectedTierKey);
+  if (selectedTierKey !== 'free') routePayment(selectedTierKey, currentMember);
+  // ─────────────────────────────────────────────────────────
+
+  toast('🙏 Welcome, ' + fname + '! Your ' + (t?.name || 'Free') + ' account is active.');
+  checkThesisAccess();
+}
+
+function showMemberBanner() {
+  if (!currentMember) return;
+  const tierName = TIERS.find(x => x.key === currentMember.tier)?.name || 'Free';
+  document.getElementById('member-name-display').textContent = 'Welcome, ' + currentMember.name + '!';
+  document.getElementById('member-tier-display').textContent = tierName + ' Subscriber · ' + currentMember.email;
+  document.getElementById('member-avatar').textContent = currentMember.name[0].toUpperCase();
+  document.getElementById('member-banner').classList.add('show');
+}
+
+function logout() {
+  currentMember = null;
+  try { localStorage.removeItem('logos_member'); } catch (e) {}
+  document.getElementById('member-banner').classList.remove('show');
+  toast('You have been signed out.');
+  checkThesisAccess();
+}
+
+function checkThesisAccess() {
+  const hasAccess = currentMember && (currentMember.tier === 'scholar' || currentMember.tier === 'minister');
+  document.getElementById('thesis-lock').classList.toggle('show', !hasAccess);
+  document.getElementById('thesis-form').classList.toggle('show', !!hasAccess);
+}
+
+// ═══════════════════════════════════════════════════════════
+// PAYMENT ROUTING — Dual M-Pesa / PayPal
+// ═══════════════════════════════════════════════════════════
+const PAYMENT_TIERS = {
+  scholar: { usdAmount: '2.50', kesAmount: '300', label: 'Scholar' },
+  minister: { usdAmount: '8.00', kesAmount: '1000', label: 'Minister' },
+};
+const PAYMENT_LINKS = {
+  // ── REPLACE WITH YOUR ACTUAL LINKS ──────────────────────
+  paypal: {
+    scholar: 'https://paypal.me/YOURLINK?amount=2.50',
+    minister: 'https://paypal.me/YOURLINK?amount=8.00',
+  },
+  // For M-Pesa: trigger STK Push via your Daraja API backend
+  // POST /api/mpesa/stkpush { phone, amount, accountRef }
+  mpesa_backend: '/api/mpesa/stkpush',
+  // ────────────────────────────────────────────────────────
+};
+
+function routePayment(tierKey, member) {
+  const t = PAYMENT_TIERS[tierKey];
+  if (!t) return;
+  const isKenyan = member.country === 'Kenya' || member.phone.startsWith('+254') || member.phone.startsWith('07') || member.phone.startsWith('01');
+  if (isKenyan && member.phone) {
+    initiateMpesaPayment(member.phone, t.kesAmount, tierKey, member.name);
+  } else {
+    window.open(PAYMENT_LINKS.paypal[tierKey] || '#', '_blank');
+    toast('💳 Opening PayPal for $' + t.usdAmount + ' — ' + t.label + ' tier.');
+  }
+}
+
+async function initiateMpesaPayment(phone, amount, tierKey, name) {
+  toast('📱 Initiating M-Pesa STK Push to ' + phone + ' for KES ' + amount + '…');
+  // ── BACKEND CALL (replace when Daraja API backend is ready) ──────────────
+  // try {
+  //   const res = await fetch(PAYMENT_LINKS.mpesa_backend, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ phone, amount, accountRef: 'LogosLibrary-' + tierKey, transactionDesc: 'Logos Library ' + tierKey + ' subscription' }),
+  //   });
+  //   const data = await res.json();
+  //   if (data.ResponseCode === '0') toast('✅ M-Pesa prompt sent! Check your phone to complete payment.');
+  //   else toast('⚠️ M-Pesa error: ' + (data.errorMessage || 'Please try again.'));
+  // } catch (e) {
+  //   toast('⚠️ Could not reach M-Pesa gateway. Please try PayPal or contact support.');
+  // }
+  // ── END BACKEND CALL ──────────────────────────────────────────────────────
+  console.log('[MPESA STUB] Would send STK Push:', { phone, amount, tierKey, name });
+}
+
+// ═══════════════════════════════════════════════════════════
+// THESIS WRITER
+// ═══════════════════════════════════════════════════════════
+function selectOpt(el, group, val) {
+  el.closest('.thesis-options').querySelectorAll('.thesis-opt').forEach(o => o.classList.remove('on'));
+  el.classList.add('on');
+  if (group === 'type') thesisTypeSelected = val;
+}
+
+async function generateThesis() {
+  const title = document.getElementById('thesis-title').value.trim();
+  if (!title) { toast('Please enter a paper title or topic.'); return; }
+  const ptype = thesisTypeSelected;
+  const scripture = document.getElementById('thesis-scripture').value.trim();
+  const citation = document.getElementById('thesis-citation').value;
+  const argument = document.getElementById('thesis-argument').value.trim();
+  const level = document.getElementById('thesis-level').value;
+  const length = document.getElementById('thesis-length').value;
+  const lengthStr = length === 'short' ? '3–5 pages (~900–1500 words)' : length === 'medium' ? '8–12 pages (~2400–3600 words)' : '20+ pages (~6000+ words)';
+
+  document.getElementById('thesis-output').classList.add('show');
+  document.getElementById('thesis-output-title').textContent = 'Generating: ' + title + '…';
+  document.getElementById('thesis-content').innerHTML = `<div class="thesis-generating"><div class="spinner"></div><p>AI is writing your ${ptype}. This may take a moment…</p></div>`;
+
+  const prompt = `Write a complete, well-structured Christian academic ${ptype}:
+Title: "${title}"
+Key Scripture(s): ${scripture || 'Choose appropriate KJV scriptures'}
+Main Argument: ${argument || 'Develop the strongest theological argument for this topic'}
+Citation Style: ${citation}
+Academic Level: ${level}
+Target Length: ${lengthStr}
+
+Requirements:
+- Use proper ${citation} format for all references
+- Integrate KJV scripture references throughout in parenthetical form (Book Chapter:verse, KJV)
+- Include: Title section, Abstract, Introduction with clear thesis statement, body sections with Roman numeral headings, Conclusion, Bibliography
+- Reference at least 4 theological sources (C.S. Lewis, J.I. Packer, A.W. Tozer, John Calvin, N.T. Wright, Dietrich Bonhoeffer, etc.)
+- Write at ${level} level with appropriate depth
+Write the complete paper now:`;
+
+  try {
+    const text = await callAI({
+      system: `You are a highly qualified Christian academic theologian and writer. You write scholarly, well-researched theological papers that integrate KJV scripture, cite real theological sources, and maintain academic rigour.`,
+      userMessage: prompt,
+      maxTokens: 4000
+    });
+    selectedThesisContent = text;
+    document.getElementById('thesis-output-title').textContent = title;
+    document.getElementById('thesis-content').innerHTML = formatThesisHTML(text);
+  } catch (e) {
+    document.getElementById('thesis-content').innerHTML = '<p style="color:var(--crimson)">Generation failed. Please check your connection and try again.</p>';
+  }
+}
+
+function formatThesisHTML(text) {
+  return text
+    .replace(/^(#{1,3})\s+(.+)$/gm, (_, h, t) => h.length === 1 ? `<h2>${t}</h2>` : `<h3>${t}</h3>`)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^([IVX]+\.\s+.+)$/gm, '<h2>$1</h2>')
+    .replace(/^([A-Z]\.\s+.+)$/gm, '<h3>$1</h3>')
+    .split('\n').map(line => line.trim() ? `<p>${line}</p>` : '').join('');
+}
+function listenThesis() { if (!selectedThesisContent) { toast('Generate a paper first.'); return; } speakString(selectedThesisContent.slice(0, 3000)); toast('🔊 Reading paper aloud…'); }
+function copyThesis() { if (!selectedThesisContent) { toast('Generate a paper first.'); return; } navigator.clipboard.writeText(selectedThesisContent).then(() => toast('📋 Paper copied!')).catch(() => toast('Copy failed — use Ctrl+A, Ctrl+C.')); }
+function downloadThesis() {
+  if (!selectedThesisContent) { toast('Generate a paper first.'); return; }
+  const t = document.getElementById('thesis-title').value || 'thesis';
+  const blob = new Blob([selectedThesisContent], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = t.replace(/[^a-z0-9]/gi, '_') + '.txt';
+  a.click();
+  toast('⬇ Downloaded as .txt');
+}
+
+// ═══════════════════════════════════════════════════════════
+// GIVING — Dual currency routing
+// ═══════════════════════════════════════════════════════════
+function switchCurrency(cur) {
+  giveCurrency = cur;
+  document.getElementById('curr-usd').classList.toggle('on', cur === 'usd');
+  document.getElementById('curr-kes').classList.toggle('on', cur === 'kes');
+  document.getElementById('give-curr-symbol').textContent = cur === 'usd' ? '$' : 'KES';
+  renderPaymentButtons();
+}
+
+function renderPaymentButtons() {
+  const container = document.getElementById('payment-btns');
+  if (giveCurrency === 'kes') {
+    container.innerHTML = `
+      <button class="pm-btn pm-mpesa" onclick="handleGive('M-Pesa')">📱 M-Pesa STK Push</button>
+      <button class="pm-btn" onclick="handleGive('Bank Transfer')">🏦 Bank Transfer</button>
+      <button class="pm-btn" onclick="handleGive('Cash')">💵 Cash / Cheque</button>`;
+  } else {
+    container.innerHTML = `
+      <button class="pm-btn pm-primary" onclick="handleGive('PayPal')">💳 PayPal</button>
+      <button class="pm-btn" onclick="handleGive('Bank Transfer')">🏦 Bank Transfer</button>
+      <button class="pm-btn" onclick="handleGive('Mobile Money')">📱 Mobile Money</button>
+      <button class="pm-btn" onclick="handleGive('Cash')">💵 Cash / Cheque</button>`;
+  }
+}
+
+function pickTier(el, usdAmt, kesAmt) {
+  document.querySelectorAll('.gtier').forEach(g => g.classList.remove('picked'));
+  el.classList.add('picked');
+  const amt = giveCurrency === 'kes' ? kesAmt : usdAmt;
+  document.getElementById('give-amount').value = amt;
+  toast((giveCurrency === 'kes' ? 'KES ' : '$') + amt + ' selected — choose a payment method. 🙏');
+}
+
+function handleGive(method) {
+  const amt = document.getElementById('give-amount').value;
+  const name = document.getElementById('give-name').value.trim() || 'Friend';
+  if (!amt || parseFloat(amt) <= 0) { toast('Please select or enter an amount first.'); return; }
+  const symbol = giveCurrency === 'kes' ? 'KES ' : '$';
+  if (method === 'M-Pesa') {
+    const phone = prompt('Enter M-Pesa phone number (e.g. +2547XXXXXXXX):');
+    if (!phone) return;
+    toast('📱 Sending M-Pesa STK Push to ' + phone + ' for ' + symbol + amt + '…\nReplace with Daraja API integration.');
+    // Daraja STK Push call goes here — see initiateMpesaPayment()
+  } else if (method === 'PayPal') {
+    // window.open('https://paypal.me/YOURLINK?amount=' + amt, '_blank');
+    toast('💳 Redirecting to PayPal for ' + symbol + amt + '…\nReplace payment link in script.');
+  } else {
+    toast('Thank you, ' + name + '! ' + method + ' details will be provided. 🙏');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ═══════════════════════════════════════════════════════════
+// INITIALISATION
+// ═══════════════════════════════════════════════════════════
 (function init() {
-  // We skip renderLib() for the UI but keep it for the data
+  renderLib();
   renderBibleBookList();
   loadBibleChapter();
   renderTierCards();
   renderPaymentButtons();
+  // Restore session
+  try {
+    const saved = localStorage.getItem('logos_member');
+    if (saved) { currentMember = JSON.parse(saved); showMemberBanner(); }
+  } catch (e) {}
 })();
 </script>
 </body>
