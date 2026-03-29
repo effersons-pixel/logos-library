@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Logos Library — Christian Digital Library</title>
+<meta name="description" content="A free Christian digital library — KJV Bible, commentaries, leadership, theology, AI research tools. For every believer.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Logos Library">
+<meta property="og:description" content="Free Christian books, KJV Bible, and AI-powered research for every believer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════
@@ -590,27 +595,270 @@ nav{background:var(--navy);height:64px;display:flex;align-items:center;justify-c
 footer{background:var(--navy);color:rgba(249,245,237,.4);padding:1.4rem 2rem;text-align:center;font-size:.77rem;border-top:1px solid rgba(184,136,42,.2);}
 footer a{color:var(--gold2);text-decoration:none;}
 
-/* ── MOBILE ── */
+/* ══════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE DESIGN
+   Primary target: 360px–430px phones
+   ══════════════════════════════════════════ */
+
+/* Tablet */
 @media(max-width:900px){
   .research-layout{grid-template-columns:1fr;}
   .research-sidecar{position:static;}
   .sidecar-panel{width:100%;max-height:320px;}
+  .tier-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
 }
+
+/* Mobile — everything below 700px */
 @media(max-width:700px){
-  nav{padding:0 .75rem;}
+  /* Nav: compact icon-only row */
+  nav{height:auto;padding:.4rem .75rem;flex-wrap:nowrap;gap:.3rem;overflow-x:auto;}
+  nav::-webkit-scrollbar{display:none;}
+  .logo-text{font-size:1.2rem;}
+  .logo-cross{font-size:1.1rem;}
+  .nav-links{gap:.15rem;flex-shrink:0;}
+  .nl{padding:.35rem .5rem;font-size:.72rem;white-space:nowrap;}
   .nl span{display:none;}
-  .global-search{width:130px;font-size:.72rem;}.global-search:focus{width:160px;}
-  .gs-results{right:-70px;width:280px;}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(152px,1fr));}
-  .bible-layout{grid-template-columns:1fr;}
+  .global-search-wrap{flex-shrink:1;}
+  .global-search{width:100px;font-size:.72rem;padding:.28rem .7rem .28rem 1.7rem;}
+  .global-search:focus{width:140px;}
+  .gs-results{right:0;width:260px;}
+
+  /* Hero: tighter */
+  .hero{padding:2rem 1rem 1.8rem;}
+  .hero h1{font-size:clamp(1.7rem,7vw,2.5rem);}
+  .hero p{font-size:.85rem;margin-bottom:1.2rem;}
+  .hero-stats{gap:1.2rem;}
+  .hstat-n{font-size:1.4rem;}
+  .hstat-l{font-size:.62rem;}
+  .verse-tag{font-size:.75rem;padding:.22rem .75rem;}
+  .cross-wm{font-size:10rem;}
+
+  /* Wrap: tighter padding */
+  .wrap,.wrap-sm{padding:1.2rem 1rem;}
+
+  /* Book grid: 2 columns on phone */
+  .grid{grid-template-columns:repeat(2,1fr);gap:.85rem;}
+  .cover{height:145px;}
+  .cover-emoji{font-size:1.4rem;}
+  .ct{font-size:.8rem;}
+  .card-body{padding:.65rem;}
+  .card-title{font-size:.85rem;}
+  .card-author{font-size:.65rem;}
+  .card-desc{font-size:.68rem;margin-bottom:.5rem;}
+  .cbtn{font-size:.65rem;padding:.35rem .15rem;}
+  .ctag{font-size:.6rem;}
+
+  /* Section heading */
+  .sh{font-size:1.2rem;}
+  .chips{gap:.3rem;margin-bottom:1.2rem;}
+  .chip{font-size:.7rem;padding:.25rem .65rem;}
+
+  /* Reader modal: full-screen */
+  .overlay{padding:0;align-items:flex-end;}
+  .rmodal{border-radius:16px 16px 0 0;max-height:97vh;height:97vh;}
+  .rtop{padding:.6rem 1rem;}
+  .rtitle{font-size:.88rem;}
+  .dark-toggle{font-size:.65rem;padding:.22rem .5rem;}
+  .rtabs{padding:0 .75rem;overflow-x:auto;}
+  .rtabs::-webkit-scrollbar{display:none;}
+  .rtab{font-size:.72rem;padding:.42rem .75rem;white-space:nowrap;}
+  .rfoot{padding:.6rem 1rem;gap:.4rem;flex-wrap:wrap;}
+  .btn-dl,.btn-sec{font-size:.73rem;padding:.38rem .75rem;}
+  /* PDF toolbar on mobile */
+  .pdf-toolbar{padding:.3rem .75rem;gap:.35rem;overflow-x:auto;}
+  .pdf-toolbar-title{font-size:.72rem;}
+  .pdf-tb-btn{font-size:.66rem;padding:.2rem .5rem;}
+  /* Ref pane */
+  .ref-pane{padding:1rem;}
+  .ref-book-header{flex-direction:column;gap:.75rem;}
+  .ref-cover-thumb{width:60px;height:80px;font-size:1.8rem;}
+  /* Audio pane */
+  .audio-pane{padding:1rem;}
+  .tts-row{gap:.4rem;}
+  .btn-play{margin-left:0;width:100%;}
+  .range-w{font-size:.68rem;}
+
+  /* Bible */
+  .bible-hero{padding:1.8rem 1rem 1.5rem;}
+  .bible-hero h2{font-size:1.5rem;}
+  .bible-hero p{font-size:.8rem;margin-bottom:1rem;}
+  .bible-search-row{flex-direction:column;gap:.4rem;}
+  .bible-search,.btn-bible-search{width:100%;border-radius:8px;}
+  .bible-layout{grid-template-columns:1fr;gap:.85rem;}
   .bible-nav{position:static;max-height:none;}
-  .form-grid{grid-template-columns:1fr;}
-  .thesis-options{grid-template-columns:1fr 1fr;}
+  /* Bible book list: horizontal scrollable pills on mobile */
+  .bible-book-list{display:flex;flex-direction:row;overflow-x:auto;padding:.4rem .5rem;gap:.3rem;}
+  .bible-book-list::-webkit-scrollbar{display:none;}
+  .bible-book-item{min-width:max-content;padding:.3rem .75rem;border-radius:100px;border:1px solid var(--dust);background:var(--paper);font-size:.72rem;font-weight:600;white-space:nowrap;}
+  .bible-book-item.on{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+  /* Chapter nums: smaller */
+  .bible-ch-btn{width:24px;height:24px;font-size:.65rem;}
+  .bible-reader{padding:1rem;}
+  .bible-chapter-header{padding-bottom:.6rem;margin-bottom:.85rem;}
+  .bible-chapter-title{font-size:1.15rem;}
+  .bca{font-size:.68rem;padding:.25rem .6rem;}
+  .verse-text{font-size:.97rem;line-height:1.75;}
+  .verse-num{font-size:.65rem;min-width:18px;}
+  .verse-copy{font-size:.6rem;padding:.1rem .3rem;}
+  .bible-wrap{padding:1rem;}
+
+  /* Research */
+  .research-layout{grid-template-columns:1fr;}
+  .research-sidecar{display:none;}/* hide sidecar on mobile, show inline */
+  .big-search-wrap{flex-direction:column;gap:.4rem;}
+  .big-search,.btn-research{width:100%;border-radius:8px;}
+  .ai-box .ai-head{flex-wrap:wrap;gap:.3rem;}
+  .ai-reflection{padding:.75rem;}
+
+  /* Subscribe */
+  .sub-hero{padding:2rem 1rem 1.8rem;}
+  .sub-hero h2{font-size:1.7rem;}
   .tier-grid{grid-template-columns:1fr;}
-  .overlay{padding:.25rem;}
-  .rmodal{border-radius:0;max-height:100vh;height:100%;}
-  .sidecar-panel{width:100%;border-left:none;border-top:2px solid var(--gold);max-height:280px;}
-  .research-sidecar{display:none;}
+  .form-grid{grid-template-columns:1fr;}
+  .tier-head{padding:1rem;}
+  .tier-btn{width:calc(100% - 2rem);margin:0 1rem 1rem;}
+
+  /* Thesis */
+  .thesis-hero{padding:1.8rem 1rem;}
+  .thesis-hero h2{font-size:1.5rem;}
+  .thesis-options{grid-template-columns:repeat(3,1fr);gap:.4rem;}
+  .thesis-opt{padding:.45rem .25rem;}
+  .thesis-opt-icon{font-size:1.1rem;margin-bottom:.2rem;}
+  .thesis-opt-label{font-size:.66rem;}
+  .thesis-opt-sub{font-size:.58rem;}
+  .thesis-output-head{flex-direction:column;gap:.6rem;}
+  .thesis-output-actions{width:100%;display:flex;gap:.35rem;flex-wrap:wrap;}
+  .thesis-wrap{padding:1rem;}
+  .thesis-form,.thesis-lock{padding:1.2rem;}
+  /* Studio tools: scrollable horizontal on mobile */
+  #studio-tabs{overflow-x:auto;flex-wrap:nowrap;}
+  #studio-tabs::-webkit-scrollbar{display:none;}
+  #studio-tabs .studio-tab{white-space:nowrap;min-width:max-content;}
+
+  /* Giving */
+  .giving-hero{padding:2rem 1rem;}
+  .giving-hero h2{font-size:1.7rem;}
+  .giving-wrap{padding:1rem;}
+  .giving-grid{grid-template-columns:1fr 1fr;gap:.75rem;}
+  .give-row{flex-direction:column;}
+  .give-curr{border-radius:8px 8px 0 0;border-right:1.5px solid var(--dust);border-bottom:none;padding:.45rem .95rem;}
+  .give-amount{border-radius:0 0 8px 8px;}
+  .impact-grid{grid-template-columns:1fr;}
+  .pm-grid{flex-direction:column;}
+  .pm-btn{width:100%;justify-content:center;}
+
+  /* Book Manager */
+  .bm-modal{border-radius:16px 16px 0 0;max-height:97vh;}
+  .bm-overlay{padding:0;align-items:flex-end;}
+  .bm-form-grid{grid-template-columns:1fr;}
+  .bm-field.full{grid-column:1;}
+  .bm-tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:.5rem;}
+  .bm-tabs::-webkit-scrollbar{display:none;}
+  .bm-tab{white-space:nowrap;font-size:.72rem;}
+
+  /* Sidecar panel */
+  .sidecar-panel{width:100%;border-left:none;border-top:2px solid var(--gold);max-height:250px;}
+
+  /* Toast: bottom-center */
+  .toast{left:50%;right:auto;transform:translateX(-50%) translateY(70px);bottom:1rem;max-width:90vw;text-align:center;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+
+  /* M-Pesa modal */
+  .mpesa-modal-overlay{padding:0;align-items:flex-end;}
+  .mpesa-modal{border-radius:16px 16px 0 0;}
+
+  /* Footer */
+  footer{padding:1rem;font-size:.72rem;}
+}
+
+/* ── M-PESA INLINE MODAL ── */
+.mpesa-modal-overlay{position:fixed;inset:0;background:rgba(10,18,30,.88);z-index:900;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s;}
+.mpesa-modal-overlay.open{opacity:1;pointer-events:all;}
+.mpesa-modal{background:var(--paper);width:100%;max-width:380px;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:scale(.96);transition:transform .25s;}
+.mpesa-modal-overlay.open .mpesa-modal{transform:scale(1);}
+.mpesa-head{background:#4caf50;padding:1.2rem 1.4rem;text-align:center;}
+.mpesa-head-icon{font-size:2.5rem;margin-bottom:.35rem;}
+.mpesa-head h3{font-family:'EB Garamond',serif;font-size:1.25rem;color:#fff;font-weight:700;}
+.mpesa-head p{font-size:.78rem;color:rgba(255,255,255,.8);margin-top:.2rem;}
+.mpesa-body{padding:1.4rem;}
+.mpesa-tier-info{background:#f1f8e9;border:1px solid #c8e6c9;border-radius:8px;padding:.75rem 1rem;margin-bottom:1rem;text-align:center;}
+.mpesa-tier-label{font-size:.75rem;color:#388e3c;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.mpesa-tier-amount{font-family:'EB Garamond',serif;font-size:1.8rem;font-weight:700;color:#2e7d32;}
+.mpesa-input-label{font-size:.73rem;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.35rem;display:block;}
+.mpesa-phone-input{width:100%;border:1.5px solid var(--dust);border-radius:8px;padding:.7rem 1rem;font-family:'Nunito',sans-serif;font-size:1rem;background:var(--parchment);outline:none;color:var(--ink);margin-bottom:.4rem;letter-spacing:.5px;}
+.mpesa-phone-input:focus{border-color:#4caf50;}
+.mpesa-hint{font-size:.73rem;color:#888;margin-bottom:1rem;line-height:1.5;}
+.mpesa-steps{margin-bottom:1rem;}
+.mpesa-step{display:flex;align-items:center;gap:.5rem;font-size:.77rem;color:#555;margin-bottom:.35rem;}
+.mpesa-step-num{background:#4caf50;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0;}
+.mpesa-stk-btn{width:100%;background:#4caf50;color:#fff;border:none;padding:.78rem;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:background .17s;}
+.mpesa-stk-btn:hover{background:#388e3c;}
+.mpesa-cancel{display:block;text-align:center;margin-top:.65rem;font-size:.77rem;color:#999;cursor:pointer;background:none;border:none;font-family:'Nunito',sans-serif;width:100%;}
+.mpesa-status-box{display:none;text-align:center;padding:1rem;}
+.mpesa-status-box.show{display:block;}
+.mpesa-spinner{width:36px;height:36px;border:3px solid #c8e6c9;border-top-color:#4caf50;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto .85rem;}
+
+/* ── STUDIO TOOLS (Thesis/Minister upgrade) ── */
+.studio-section{margin-top:1.4rem;}
+.studio-section-title{font-family:'EB Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
+.studio-section-title::after{content:'';flex:1;height:1px;background:var(--dust);}
+#studio-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.studio-tab{display:flex;align-items:center;gap:.38rem;padding:.4rem .85rem;border-radius:8px;border:1.5px solid var(--dust);background:var(--paper);font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .17s;color:var(--ink);}
+.studio-tab:hover{border-color:var(--gold);background:rgba(184,136,42,.07);}
+.studio-tab.active{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.studio-tab .tab-icon{font-size:1rem;}
+.studio-panel{display:none;background:var(--linen);border:1px solid var(--dust);border-radius:10px;padding:1.3rem 1.5rem;margin-top:.2rem;}
+.studio-panel.on{display:block;}
+.studio-panel-head{font-family:'EB Garamond',serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:.75rem;}
+.studio-output-box{background:var(--paper);border:1px solid var(--dust);border-radius:8px;padding:1.1rem 1.3rem;margin-top:.75rem;font-family:'EB Garamond',serif;font-size:.97rem;line-height:1.85;color:var(--ink);white-space:pre-wrap;max-height:400px;overflow-y:auto;}
+.studio-action-row{display:flex;gap:.5rem;margin-top:.85rem;flex-wrap:wrap;}
+.studio-btn{padding:.4rem .9rem;border-radius:6px;font-size:.76rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;border:none;transition:all .15s;}
+.studio-btn-primary{background:var(--navy);color:var(--parchment);}
+.studio-btn-gold{background:var(--gold);color:var(--navy);}
+.studio-btn-ghost{background:none;border:1.5px solid var(--dust);color:var(--ink);}
+.studio-btn-ghost:hover{border-color:var(--navy);}
+/* Flashcard styles */
+.flashcard-stack{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-top:.75rem;}
+.flashcard{background:var(--paper);border:1.5px solid var(--dust);border-radius:10px;padding:1rem;cursor:pointer;transition:transform .2s,box-shadow .2s;min-height:120px;position:relative;}
+.flashcard:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--shadow);}
+.flashcard.flipped{background:var(--navy);color:var(--parchment);border-color:var(--navy);}
+.flashcard-q{font-family:'EB Garamond',serif;font-size:.9rem;font-weight:700;color:var(--navy);line-height:1.45;}
+.flashcard.flipped .flashcard-q{display:none;}
+.flashcard-a{font-family:'EB Garamond',serif;font-size:.88rem;line-height:1.5;color:var(--parchment);display:none;}
+.flashcard.flipped .flashcard-a{display:block;}
+.flashcard-hint{position:absolute;bottom:.4rem;right:.6rem;font-size:.62rem;color:#bbb;}
+.flashcard.flipped .flashcard-hint{color:rgba(255,255,255,.4);}
+/* Mind map text */
+.mind-map-text{font-family:'EB Garamond',serif;font-size:.95rem;line-height:1.85;white-space:pre-wrap;color:var(--ink);}
+/* Quiz (study panel) */
+.sp-quiz-q{background:var(--paper);border:1px solid var(--dust);border-radius:8px;padding:.9rem 1rem;margin-bottom:.85rem;}
+.sp-quiz-q-text{font-family:'EB Garamond',serif;font-size:.95rem;font-weight:600;color:var(--navy);margin-bottom:.55rem;line-height:1.5;}
+.sp-quiz-opts{display:flex;flex-direction:column;gap:.35rem;}
+.sp-quiz-opt{padding:.4rem .75rem;border-radius:6px;border:1.5px solid var(--dust);cursor:pointer;font-size:.82rem;transition:all .15s;color:var(--ink);}
+.sp-quiz-opt:hover{border-color:var(--gold);}
+.sp-quiz-opt.correct{background:rgba(74,92,42,.1);border-color:var(--olive);color:var(--olive);}
+.sp-quiz-opt.wrong{background:rgba(139,26,42,.08);border-color:var(--crimson);color:var(--crimson);}
+/* Data table */
+.studio-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:.82rem;}
+.studio-table th{background:var(--navy);color:var(--parchment);padding:.5rem .75rem;text-align:left;font-family:'Nunito',sans-serif;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.studio-table td{padding:.45rem .75rem;border-bottom:1px solid var(--dust);font-family:'EB Garamond',serif;font-size:.9rem;color:var(--ink);}
+.studio-table tr:nth-child(even) td{background:rgba(242,234,216,.4);}
+/* PDF badge for Cloudinary */
+.pdf-source-badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.65rem;font-weight:700;padding:.1rem .45rem;border-radius:3px;background:rgba(74,92,42,.1);color:var(--olive);border:1px solid rgba(74,92,42,.2);margin-left:.35rem;}
+.pdf-source-badge.cloudinary{background:rgba(58,106,153,.1);color:#3a6a99;border-color:rgba(58,106,153,.2);}
+
+/* Very small phones (320px) */
+@media(max-width:380px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:.6rem;}
+  .nl{padding:.28rem .42rem;font-size:.66rem;}
+  .thesis-options{grid-template-columns:repeat(2,1fr);}
+  .hero h1{font-size:1.55rem;}
+}
+
+/* Safe area for iPhone notch */
+@supports(padding:max(0px)){
+  nav{padding-left:max(.75rem,env(safe-area-inset-left));padding-right:max(.75rem,env(safe-area-inset-right));}
+  .overlay,.bm-overlay,.mpesa-modal-overlay{padding-bottom:env(safe-area-inset-bottom);}
 }
 </style>
 </head>
@@ -630,7 +878,7 @@ footer a{color:var(--gold2);text-decoration:none;}
     <button class="nl" onclick="showPage('thesis',this)" id="thesis-nav">✍️ <span>Thesis</span></button>
     <button class="nl subscriber-glow" onclick="showPage('subscribe',this)">⭐ <span>Subscribe</span></button>
     <button class="nl" onclick="showPage('giving',this)">🙏 <span>Give</span></button>
-    <button class="nl" onclick="openBookManager()" style="border:1px solid rgba(184,136,42,.4);color:var(--gold3);" title="Add books & link PDFs">🗂 <span>Books</span></button>
+    <button id="nav-bm-btn" class="nl" onclick="openBookManager()" style="border:1px solid rgba(184,136,42,.4);color:var(--gold3);" title="Admin: Add books & link PDFs — Press Ctrl+Shift+L to toggle">🗂 <span>Admin</span></button>
   </div>
   <div class="global-search-wrap">
     <span class="gs-icon">🔍</span>
@@ -849,6 +1097,28 @@ footer a{color:var(--gold2);text-decoration:none;}
         </div>
       </div>
       <div class="thesis-content" id="thesis-content"></div>
+
+      <!-- ══ STUDIO TOOLS (Minister tier) ══ -->
+      <div class="studio-section" id="studio-section" style="display:none;">
+        <div class="studio-section-title">🎙 Studio — Generate from your paper</div>
+        <div id="studio-tabs">
+          <button class="studio-tab" onclick="studioGenerate('audio','this')"><span class="tab-icon">🎙</span> Audio Overview</button>
+          <button class="studio-tab" onclick="studioGenerate('slides','this')"><span class="tab-icon">📊</span> Slide Deck</button>
+          <button class="studio-tab" onclick="studioGenerate('mindmap','this')"><span class="tab-icon">🗺</span> Mind Map</button>
+          <button class="studio-tab" onclick="studioGenerate('flashcards','this')"><span class="tab-icon">🃏</span> Flashcards</button>
+          <button class="studio-tab" onclick="studioGenerate('quiz','this')"><span class="tab-icon">🎯</span> Quiz</button>
+          <button class="studio-tab" onclick="studioGenerate('faq','this')"><span class="tab-icon">❓</span> FAQ</button>
+          <button class="studio-tab" onclick="studioGenerate('report','this')"><span class="tab-icon">📋</span> Report</button>
+          <button class="studio-tab" onclick="studioGenerate('infographic','this')"><span class="tab-icon">📌</span> Infographic</button>
+          <button class="studio-tab" onclick="studioGenerate('datatable','this')"><span class="tab-icon">📊</span> Data Table</button>
+          <button class="studio-tab" onclick="studioGenerate('video','this')"><span class="tab-icon">🎬</span> Video Script</button>
+        </div>
+        <div id="studio-output-panel">
+          <div class="studio-panel on" id="studio-placeholder" style="text-align:center;padding:1.5rem;color:#aaa;font-family:'EB Garamond',serif;font-size:.95rem;font-style:italic;">
+            Select a Studio tool above to generate content from your paper.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1127,7 +1397,15 @@ footer a{color:var(--gold2);text-decoration:none;}
           <div class="bm-field"><label class="bm-label">Emoji Icon</label><input class="bm-input" id="bm-emoji" placeholder="e.g. 📖" maxlength="4" style="font-size:1.3rem;"></div>
           <div class="bm-field full"><label class="bm-label">Description (1–2 sentences)</label><textarea class="bm-textarea" id="bm-desc" placeholder="Brief description of what this book is about…"></textarea></div>
           <div class="bm-field full">
-            <label class="bm-label">Google Drive PDF URL</label>
+            <label class="bm-label">☁️ Cloudinary PDF URL <span style="font-weight:400;color:#999;">(recommended — no embed issues)</span></label>
+            <input class="bm-input" id="bm-cloudinary-url" placeholder="https://res.cloudinary.com/YOUR_CLOUD/raw/upload/v.../book.pdf" oninput="previewCloudinaryUrl(this.value)">
+            <div class="url-preview" id="cld-preview" style="display:none;background:rgba(58,106,153,.12);border:1px solid rgba(58,106,153,.25);border-radius:6px;padding:.4rem .75rem;margin-top:.3rem;font-size:.75rem;color:#3a6a99;"></div>
+            <div style="margin-top:.35rem;font-size:.74rem;color:#888;line-height:1.6;">
+              Upload your PDF to <a href="https://cloudinary.com" target="_blank" style="color:var(--gold);">Cloudinary</a> (free tier) → Delivery URL → paste the direct <code>.pdf</code> link here. Native embed, no iframe restrictions.
+            </div>
+          </div>
+          <div class="bm-field full">
+            <label class="bm-label">📁 Google Drive URL <span style="font-weight:400;color:#999;">(fallback — may have embed issues)</span></label>
             <input class="bm-input" id="bm-url" placeholder="Paste any Google Drive link — all formats accepted" oninput="previewDriveUrl(this.value)">
             <div class="url-preview" id="url-preview">
               <span class="url-status" id="url-status">✓</span>
@@ -1188,6 +1466,40 @@ footer a{color:var(--gold2);text-decoration:none;}
           <p><strong>Alternative: use Archive.org or your own host:</strong><br>
           Public domain books (Tozer, Sanders, old commentaries) can be uploaded to <a href="https://archive.org" target="_blank" style="color:var(--gold);">archive.org</a> for free and embedded with no restrictions whatsoever.</p>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ M-PESA PAYMENT MODAL ══ -->
+<div class="mpesa-modal-overlay" id="mpesa-modal-overlay" onclick="if(event.target===this)closeMpesaModal()">
+  <div class="mpesa-modal">
+    <div class="mpesa-head">
+      <div class="mpesa-head-icon">📱</div>
+      <h3>M-Pesa Payment</h3>
+      <p id="mpesa-head-sub">Secure mobile payment via Safaricom</p>
+    </div>
+    <div class="mpesa-body">
+      <div class="mpesa-tier-info">
+        <div class="mpesa-tier-label" id="mpesa-tier-label">Scholar Plan</div>
+        <div class="mpesa-tier-amount" id="mpesa-tier-amount">KES 300</div>
+        <div style="font-size:.72rem;color:#555;margin-top:.15rem;">per month</div>
+      </div>
+      <div id="mpesa-form-content">
+        <label class="mpesa-input-label">Your Safaricom Number</label>
+        <input class="mpesa-phone-input" id="mpesa-phone-input" type="tel" placeholder="07XX XXX XXX" maxlength="13">
+        <div class="mpesa-hint">Enter your M-Pesa registered number. You will receive a payment prompt on your phone.</div>
+        <div class="mpesa-steps">
+          <div class="mpesa-step"><span class="mpesa-step-num">1</span>Enter your M-Pesa number above</div>
+          <div class="mpesa-step"><span class="mpesa-step-num">2</span>Tap "Send Payment Request"</div>
+          <div class="mpesa-step"><span class="mpesa-step-num">3</span>Enter your M-Pesa PIN on your phone</div>
+        </div>
+        <button class="mpesa-stk-btn" onclick="submitMpesaSTK()">📲 Send Payment Request</button>
+        <button class="mpesa-cancel" onclick="closeMpesaModal()">Cancel</button>
+      </div>
+      <div class="mpesa-status-box" id="mpesa-status-box">
+        <div class="mpesa-spinner"></div>
+        <p style="font-size:.85rem;color:#555;" id="mpesa-status-text">Sending payment request to your phone…</p>
       </div>
     </div>
   </div>
@@ -1265,38 +1577,201 @@ const BOOKS = [
     passages:[{ref:"Letter VIII",text:"Humans live in time but our Enemy destines them to eternity. Our business is to distract them from the present, either into the past or future."}]},
 ];
 
-// Sample KJV verses
+// ═══════════════════════════════════════════════════════════
+// ADMIN LOCK — CMS hidden from public visitors
+// Access via: ?mode=admin  OR  Ctrl+Shift+L
+// ═══════════════════════════════════════════════════════════
+const IS_ADMIN = new URLSearchParams(location.search).has('mode') &&
+                 new URLSearchParams(location.search).get('mode') === 'admin';
+let adminUnlocked = IS_ADMIN;
+
+document.addEventListener('keydown', e => {
+  // Ctrl+Shift+L unlocks admin
+  if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+    adminUnlocked = !adminUnlocked;
+    const bmBtn = document.getElementById('nav-bm-btn');
+    if (bmBtn) bmBtn.style.display = adminUnlocked ? '' : 'none';
+    toast(adminUnlocked ? '🔓 Admin mode enabled' : '🔒 Admin mode disabled');
+  }
+  if (e.key === 'Escape') { closeReader(); closeBookManager(); closeMpesaModal(); }
+});
+
+// ═══════════════════════════════════════════════════════════
+// books.json ARCHITECTURE
+// ═══════════════════════════════════════════════════════════
+// GitHub repo structure:
+//   /index.html          ← this file
+//   /books.json          ← your book data (JSON array)
+//
+// books.json format (array of objects):
+//   [{ "id":1, "title":"...", "author":"...", "category":"...",
+//      "emoji":"📖", "gradient":"linear-gradient(...)",
+//      "cloudinaryUrl":"https://res.cloudinary.com/.../book.pdf",
+//      "driveUrl":"https://drive.google.com/file/d/.../view",
+//      "description":"...", "keywords":["faith","prayer"],
+//      "toc":["Chapter 1","Chapter 2"], "passages":[{"ref":"Ch.1","text":"..."}]
+//   }, ...]
+//
+// Workflow: Edit books via the 📚 Admin panel → Export JSON →
+//   paste into books.json on GitHub → site updates automatically.
+// ═══════════════════════════════════════════════════════════
+
+// Fallback books (used if books.json is not yet deployed or fetch fails)
+const FALLBACK_BOOKS = [
+  {id:1,title:"Mere Christianity",author:"C.S. Lewis",category:"Theology",emoji:"✝",gradient:"linear-gradient(135deg,#0e1b2e,#1a3a5c)",cloudinaryUrl:"",driveUrl:"",
+    description:"A reasoned defence of the Christian faith — belief, morality, and the nature of Christ explained with brilliant clarity.",
+    keywords:["faith","morality","trinity","christ","belief","reason","sin","virtue","pride","charity"],
+    toc:["Book I: Right and Wrong","Book II: What Christians Believe","Book III: Christian Behaviour","Book IV: Beyond Personality"],
+    passages:[{ref:"Book II, Ch.2",text:"A man who was merely a man and said the sort of things Jesus said would not be a great moral teacher. He would either be a lunatic or else he would be the Devil of Hell. You must make your choice."},{ref:"Book III, Ch.8",text:"Pride is the great sin — the sin that was the beginning of evil. Pride is essentially competitive — it is not having things that pleases the proud, but having more than the next person."}]},
+  {id:2,title:"Halley's Bible Handbook",author:"Henry H. Halley",category:"Commentary",emoji:"📖",gradient:"linear-gradient(135deg,#3a1a08,#7a3a14)",cloudinaryUrl:"",driveUrl:"",
+    description:"The authoritative guide to every book of the Bible — history, archaeology, maps and detailed notes on every passage.",
+    keywords:["commentary","scripture","old testament","new testament","archaeology","genesis","revelation","prophecy","context"],
+    toc:["The Old Testament","The Pentateuch","Historical Books","The Psalms","The Prophets","The New Testament","The Gospels","The Epistles","Revelation"],
+    passages:[{ref:"Introduction",text:"The Bible is the most wonderful book in the world. It is God's Word — His revealed will for mankind. To understand it is to know God Himself."}]},
+  {id:3,title:"Spiritual Leadership",author:"J. Oswald Sanders",category:"Leadership",emoji:"🦅",gradient:"linear-gradient(135deg,#1a2e14,#2e5c1e)",cloudinaryUrl:"",driveUrl:"",
+    description:"The classic text on leading God's way — humility, prayer, discipline and sacrifice as the hallmarks of the servant leader.",
+    keywords:["leadership","servant","humility","prayer","discipline","influence","character","vision","sacrifice","calling"],
+    toc:["The Master and His Men","Natural and Spiritual Leadership","The Leader and Prayer","Essential Qualities","The Cost of Leadership","The Leader and Time"],
+    passages:[{ref:"Chapter 3",text:"The spiritual leader of today is not one who simply manages people — he is one who has heard from God and leads others into God's purposes. Prayer is not preparation for the work; prayer is the work."}]},
+  {id:4,title:"The Purpose Driven Church",author:"Rick Warren",category:"Leadership",emoji:"⛪",gradient:"linear-gradient(135deg,#2e2040,#4e3a70)",cloudinaryUrl:"",driveUrl:"",
+    description:"How to grow a healthy church built on five New Testament purposes that every congregation must fulfil.",
+    keywords:["church","purpose","mission","evangelism","worship","fellowship","discipleship","ministry","growth","vision"],
+    toc:["Seeing the Big Picture","Starting with Purpose","Building on Purpose","Deepening Your Church","Measuring Health"],
+    passages:[{ref:"Chapter 1",text:"The issue is church health, not church growth. If your church is healthy, growth will occur naturally."}]},
+  {id:5,title:"The Pursuit of God",author:"A.W. Tozer",category:"Devotional",emoji:"🕊",gradient:"linear-gradient(135deg,#0a2030,#124060)",cloudinaryUrl:"",driveUrl:"",
+    description:"A burning call to deeper intimacy with God — perhaps the most beloved devotional classic of the twentieth century.",
+    keywords:["intimacy","presence","devotion","worship","soul","seeking","heart","holiness","hunger","thirst"],
+    toc:["Following Hard After God","The Blessedness of Possessing Nothing","Removing the Veil","Apprehending God","The Universal Presence","The Gaze of the Soul"],
+    passages:[{ref:"Chapter 1",text:"We pursue God because and only because He has first put an urge within us that spurs us to the pursuit. Before a man can seek God, God must first have sought him."}]},
+  {id:6,title:"Knowing God",author:"J.I. Packer",category:"Theology",emoji:"✨",gradient:"linear-gradient(135deg,#2a1810,#5a3020)",cloudinaryUrl:"",driveUrl:"",
+    description:"One of the greatest books of modern Christianity — a transforming exploration of the character and ways of God.",
+    keywords:["theology","god","attributes","sovereignty","grace","love","holiness","wisdom","father","knowledge"],
+    toc:["The Study of God","The People Who Know Their God","God Incarnate","The Loving God","God's Sovereignty"],
+    passages:[{ref:"Chapter 1",text:"We are cruel to ourselves if we try to live in this world without knowing about the God whose world it is. The world becomes a strange, mad, painful place to those who do not know about God."}]},
+  {id:7,title:"Prayer: Awe and Intimacy",author:"Timothy Keller",category:"Prayer",emoji:"🙏",gradient:"linear-gradient(135deg,#1c2a10,#3a5520)",cloudinaryUrl:"",driveUrl:"",
+    description:"A deeply practical and theological guide to prayer, weaving together Augustine, Luther, Calvin and the Psalms.",
+    keywords:["prayer","psalms","meditation","intercession","praise","confession","petition","contemplation","adoration"],
+    toc:["The Neglected Defence","The Fathomless Depths","The Language of Prayer","The Secret of the Psalms","Praying Through Suffering"],
+    passages:[{ref:"Chapter 4",text:"Prayer is the only entryway into genuine self-knowledge. It is also the main way we experience deep change — the reordering of our loves."}]},
+  {id:8,title:"Evidence That Demands a Verdict",author:"Josh McDowell",category:"Evangelism",emoji:"⚡",gradient:"linear-gradient(135deg,#30180a,#602e14)",cloudinaryUrl:"",driveUrl:"",
+    description:"The definitive apologetics handbook — historical, legal and scientific evidence for Scripture and the resurrection.",
+    keywords:["apologetics","evidence","resurrection","historical","scripture","reliability","jesus","proof","prophecy"],
+    toc:["Is the Bible Reliable?","The Uniqueness of the Bible","The Deity of Jesus Christ","The Resurrection","Prophecy"],
+    passages:[{ref:"Part Two, Ch.10",text:"The resurrection is either the greatest miracle or the greatest delusion history records. The evidence demands a verdict."}]},
+  {id:9,title:"Experiencing God",author:"Henry Blackaby",category:"Devotional",emoji:"🌅",gradient:"linear-gradient(135deg,#1a2010,#3a4a20)",cloudinaryUrl:"",driveUrl:"",
+    description:"Knowing and doing the will of God — a transformative study of how to recognise God's activity and join Him in it.",
+    keywords:["will","calling","obedience","relationship","faith","activity","invitation","transformation","purpose"],
+    toc:["God's Will and Your Life","Looking Through God's Eyes","God Speaks — How?","Adjusting Your Life","Experiencing God Through Obedience"],
+    passages:[{ref:"Unit 3",text:"Watch to see where God is working and join Him there. When you see the Father at work — that is your invitation."}]},
+  {id:10,title:"The Christian Family",author:"Larry Christenson",category:"Family",emoji:"👨‍👩‍👧",gradient:"linear-gradient(135deg,#2a1030,#5a2060)",cloudinaryUrl:"",driveUrl:"",
+    description:"A practical, scripture-grounded guide to building a God-centred home — marriage, parenting, authority and love.",
+    keywords:["family","marriage","parenting","children","discipline","love","authority","home","covenant"],
+    toc:["The Design of the Family","Husband and Wife","Parents and Children","The Family and the Church"],
+    passages:[{ref:"Chapter 2",text:"A Christian home is not an accident — it is a work of deliberate construction. The husband is the foundation stone, the wife the warm interior, and the children the growing life within those walls."}]},
+  {id:11,title:"End Times Made Simple",author:"Samuel Waldron",category:"Prophecy",emoji:"🔥",gradient:"linear-gradient(135deg,#300a0a,#6a1414)",cloudinaryUrl:"",driveUrl:"",
+    description:"A clear, balanced introduction to biblical eschatology — the second coming, the millennium, judgment and the new creation.",
+    keywords:["eschatology","second coming","millennium","rapture","tribulation","judgment","revelation","prophecy","kingdom"],
+    toc:["What Does the Bible Say?","The Second Coming","The Millennium","The Final Judgment","The New Creation"],
+    passages:[{ref:"Chapter 1",text:"The purpose of prophecy is not to satisfy our curiosity about dates and events, but to purify our lives in the light of eternity."}]},
+  {id:12,title:"The Screwtape Letters",author:"C.S. Lewis",category:"Theology",emoji:"📜",gradient:"linear-gradient(135deg,#141c08,#2a3c10)",cloudinaryUrl:"",driveUrl:"",
+    description:"A brilliant satirical masterpiece — advice from a senior demon to a junior one on how to tempt a human soul away from God.",
+    keywords:["temptation","spiritual warfare","devil","demons","pride","distraction","sin","habit","heaven"],
+    toc:["Letter I","Letters II–V: The New Convert","Letters VI–XII: Wartime","Letters XIII–XXII: Love","Letters XXIII–XXXI: Finale"],
+    passages:[{ref:"Letter VIII",text:"Humans live in time but our Enemy destines them to eternity. Our business is to distract them from the present, either into the past or future."}]},
+];
+
+// Live BOOKS array — populated by loadBooks()
+let BOOKS = [];
+
+// ── fetch books.json on startup; fall back to FALLBACK_BOOKS ──
+async function loadBooks() {
+  try {
+    const res = await fetch('./books.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('not found');
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      BOOKS = data.map(sanitizeBook);
+      console.log(`[Logos] Loaded ${BOOKS.length} books from books.json`);
+    } else {
+      throw new Error('empty');
+    }
+  } catch {
+    console.log('[Logos] books.json not found — using fallback data');
+    BOOKS = FALLBACK_BOOKS.map(sanitizeBook);
+  }
+  // Merge any localStorage overrides (Drive/Cloudinary URLs added via admin)
+  applyStoredOverrides();
+  renderLib();
+  document.getElementById('s-books').textContent = BOOKS.length;
+  document.getElementById('s-cats').textContent = new Set(BOOKS.map(b => b.category)).size;
+}
+
+// XSS-safe: strip any HTML from book fields
+function sanitizeBook(b) {
+  const safe = s => (typeof s === 'string' ? s.replace(/</g,'&lt;').replace(/>/g,'&gt;') : s || '');
+  return {
+    ...b,
+    title:       safe(b.title),
+    author:      safe(b.author),
+    description: safe(b.description),
+    category:    safe(b.category),
+    // URLs and emoji kept as-is; gradient is trusted (admin-set only)
+  };
+}
+
+// ═══════════════════════════════════════════════════════════
+// KJV BIBLE — full book lists + chapter counts
+// Verses loaded from CDN (bible-api.com) on demand
+// ═══════════════════════════════════════════════════════════
 const OT_BOOKS=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"];
 const NT_BOOKS=["Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"];
 const BOOK_CHAPTERS={"Genesis":50,"Exodus":40,"Leviticus":27,"Numbers":36,"Deuteronomy":34,"Joshua":24,"Judges":21,"Ruth":4,"1 Samuel":31,"2 Samuel":24,"1 Kings":22,"2 Kings":25,"1 Chronicles":29,"2 Chronicles":36,"Ezra":10,"Nehemiah":13,"Esther":10,"Job":42,"Psalms":150,"Proverbs":31,"Ecclesiastes":12,"Song of Solomon":8,"Isaiah":66,"Jeremiah":52,"Lamentations":5,"Ezekiel":48,"Daniel":12,"Hosea":14,"Joel":3,"Amos":9,"Obadiah":1,"Jonah":4,"Micah":7,"Nahum":3,"Habakkuk":3,"Zephaniah":3,"Haggai":2,"Zechariah":14,"Malachi":4,"Matthew":28,"Mark":16,"Luke":24,"John":21,"Acts":28,"Romans":16,"1 Corinthians":16,"2 Corinthians":13,"Galatians":6,"Ephesians":6,"Philippians":4,"Colossians":4,"1 Thessalonians":5,"2 Thessalonians":3,"1 Timothy":6,"2 Timothy":4,"Titus":3,"Philemon":1,"Hebrews":13,"James":5,"1 Peter":5,"2 Peter":3,"1 John":5,"2 John":1,"3 John":1,"Jude":1,"Revelation":22};
-const SAMPLE_VERSES={
-  "John":{3:[{v:1,t:"There was a man of the Pharisees, named Nicodemus, a ruler of the Jews:"},{v:2,t:"The same came to Jesus by night, and said unto him, Rabbi, we know that thou art a teacher come from God: for no man can do these miracles that thou doest, except God be with him."},{v:3,t:"Jesus answered and said unto him, Verily, verily, I say unto thee, Except a man be born again, he cannot see the kingdom of God."},{v:16,t:"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."},{v:17,t:"For God sent not his Son into the world to condemn the world; but that the world through him might be saved."}]},
-  "Psalms":{23:[{v:1,t:"The LORD is my shepherd; I shall not want."},{v:2,t:"He maketh me to lie down in green pastures: he leadeth me beside the still waters."},{v:3,t:"He restoreth my soul: he leadeth me in the paths of righteousness for his name's sake."},{v:4,t:"Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me."},{v:5,t:"Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over."},{v:6,t:"Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever."}]},
-  "Romans":{8:[{v:1,t:"There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the Spirit, but after the flesh."},{v:28,t:"And we know that all things work together for good to them that love God, to them who are the called according to his purpose."},{v:38,t:"For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, nor things present, nor things to come,"},{v:39,t:"Nor height, nor depth, nor any other creature, shall be able to separate us from the love of God, which is in Christ Jesus our Lord."}]},
-  "Proverbs":{3:[{v:5,t:"Trust in the LORD with all thine heart; and lean not unto thine own understanding."},{v:6,t:"In all thy ways acknowledge him, and he shall direct thy paths."},{v:7,t:"Be not wise in thine own eyes: fear the LORD, and depart from evil."}]},
-  "Isaiah":{40:[{v:28,t:"Hast thou not known? hast thou not heard, that the everlasting God, the LORD, the Creator of the ends of the earth, fainteth not, neither is weary? there is no searching of his understanding."},{v:29,t:"He giveth power to the faint; and to them that have no might he increaseth strength."},{v:31,t:"But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint."}]},
-  "Philippians":{4:[{v:4,t:"Rejoice in the Lord alway: and again I say, Rejoice."},{v:6,t:"Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God."},{v:7,t:"And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus."},{v:13,t:"I can do all things through Christ which strengtheneth me."}]},
-  "Matthew":{5:[{v:3,t:"Blessed are the poor in spirit: for theirs is the kingdom of heaven."},{v:4,t:"Blessed are they that mourn: for they shall be comforted."},{v:5,t:"Blessed are the meek: for they shall inherit the earth."},{v:6,t:"Blessed are they which do hunger and thirst after righteousness: for they shall be filled."},{v:7,t:"Blessed are the merciful: for they shall obtain mercy."},{v:8,t:"Blessed are the pure in heart: for they shall see God."},{v:9,t:"Blessed are the peacemakers: for they shall be called the children of God."}]},
-  "Genesis":{1:[{v:1,t:"In the beginning God created the heaven and the earth."},{v:2,t:"And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."},{v:3,t:"And God said, Let there be light: and there was light."}]},
-};
+
+// Verse cache so we don't re-fetch the same chapter
+const verseCache = {};
+
+// Fetch a chapter from bible-api.com (free, KJV, no key needed)
+async function fetchBibleChapter(book, chapter) {
+  const key = `${book}_${chapter}`;
+  if (verseCache[key]) return verseCache[key];
+  // bible-api.com returns full chapters; handles book name encoding
+  const url = `https://bible-api.com/${encodeURIComponent(book)}+${chapter}?translation=kjv`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    // Normalise to [{v, t}] format
+    const verses = (data.verses || []).map(v => ({ v: v.verse, t: v.text.trim() }));
+    verseCache[key] = verses;
+    return verses;
+  } catch {
+    return null; // will show offline message
+  }
+}
+
+// Concordance search across bible-api.com
+async function searchBibleOnline(query) {
+  // bible-api.com does not have search; we search our cached verses only
+  const hits = [];
+  Object.entries(verseCache).forEach(([key, verses]) => {
+    const [book, ch] = key.split('_');
+    (verses || []).forEach(v => {
+      if (v.t && v.t.toLowerCase().includes(query.toLowerCase()))
+        hits.push({ book, ch: +ch, v: v.v, t: v.t });
+    });
+  });
+  return hits;
+}
 
 // ═══════════════════════════════════════════════════════════
 // API HELPER — BACKEND PROXY PATTERN
-// Replace API_ENDPOINT with your own backend proxy URL
-// to avoid exposing Anthropic API keys in the frontend.
-//
-// Your proxy should:
-//   POST /api/ai  { system, userMessage, maxTokens }
-//   → { text: "…" }
-//
-// Until your backend is ready, a direct call is used as
-// a fallback (requires browser API key injection).
 // ═══════════════════════════════════════════════════════════
-const API_ENDPOINT = '/api/ai'; // ← Replace with your backend proxy URL
+// Replace API_ENDPOINT with your backend proxy URL.
+// Your proxy: POST /api/ai { system, userMessage, maxTokens } → { text }
+const API_ENDPOINT = '/api/ai';
 
 async function callAI({ system, userMessage, maxTokens = 1000 }) {
-  // ── OPTION A: Backend Proxy (RECOMMENDED for production) ──────────────────
-  // Uncomment when your proxy is live:
+  // ── OPTION A: Backend Proxy (RECOMMENDED for production) ──
   // const res = await fetch(API_ENDPOINT, {
   //   method: 'POST',
   //   headers: { 'Content-Type': 'application/json' },
@@ -1306,9 +1781,7 @@ async function callAI({ system, userMessage, maxTokens = 1000 }) {
   // const data = await res.json();
   // return data.text;
 
-  // ── OPTION B: Direct Anthropic call (Dev/Demo only — no API key in frontend!) ──
-  // This is safe only when the API key is injected by a build tool or server-side
-  // env var, NEVER hardcode a key here.
+  // ── OPTION B: Direct call (dev/demo only — never ship with a hardcoded key) ──
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1343,6 +1816,7 @@ let readerDarkMode = false;
 let bibleDarkMode = false;
 let giveCurrency = 'usd';
 let lastResearchSources = [];
+let mpesaPendingTier = null;
 
 // ═══════════════════════════════════════════════════════════
 // PAGE NAVIGATION
@@ -1357,29 +1831,61 @@ function showPage(id, el) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// LIBRARY
+// LIBRARY RENDER — XSS-safe (textContent for user data)
 // ═══════════════════════════════════════════════════════════
 function renderLib() {
   const list = libFilter === 'all' ? BOOKS : BOOKS.filter(b => b.category === libFilter);
-  document.getElementById('book-grid').innerHTML = list.map((b, i) => `
-    <div class="card" style="animation-delay:${i * 0.05}s">
+  const grid = document.getElementById('book-grid');
+  grid.innerHTML = ''; // clear safely
+
+  list.forEach((b, i) => {
+    // Build card via DOM — textContent for user-supplied fields prevents XSS
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = `${i * 0.05}s`;
+
+    const hasPdf = !!(b.cloudinaryUrl || b.driveUrl);
+    const sourceTag = b.cloudinaryUrl
+      ? '<span class="pdf-source-badge cloudinary">☁ Cloudinary</span>'
+      : b.driveUrl ? '<span class="pdf-source-badge">📁 Drive</span>' : '';
+
+    // Safe HTML shell — only gradient (admin-controlled) goes into style
+    card.innerHTML = `
       <div class="cover" style="background:${b.gradient}">
         <div class="cover-spine"></div><div class="cover-glow"></div>
-        <span class="cover-emoji">${b.emoji}</span>
-        <div class="cover-text"><div class="ct">${b.title}</div><div class="ca">${b.author}</div></div>
+        <span class="cover-emoji"></span>
+        <div class="cover-text"><div class="ct"></div><div class="ca"></div></div>
       </div>
       <div class="card-body">
-        <div class="card-title">${b.title}</div>
-        <div class="card-author">${b.author}</div>
-        <div class="card-desc">${b.description.slice(0, 88)}…</div>
-        <div class="card-foot"><span class="ctag">${b.category}</span></div>
+        <div class="card-title"></div>
+        <div class="card-author"></div>
+        <div class="card-desc"></div>
+        <div class="card-foot"><span class="ctag"></span>${sourceTag}</div>
         <div class="card-btns">
-          <button class="cbtn cbtn-read" onclick="openReader(${b.id},'pdf')">📄 Read</button>
-          <button class="cbtn cbtn-listen" onclick="openReader(${b.id},'audio')">🔊 Listen</button>
-          <button class="cbtn cbtn-ref" onclick="openReader(${b.id},'ref')">📑 Ref</button>
+          <button class="cbtn cbtn-read">📄 Read</button>
+          <button class="cbtn cbtn-listen">🔊 Listen</button>
+          <button class="cbtn cbtn-ref">📑 Ref</button>
         </div>
-      </div>
-    </div>`).join('');
+      </div>`;
+
+    // Set text safely via textContent
+    card.querySelector('.cover-emoji').textContent = b.emoji;
+    card.querySelector('.ct').textContent = b.title;
+    card.querySelector('.ca').textContent = b.author;
+    card.querySelector('.card-title').textContent = b.title;
+    card.querySelector('.card-author').textContent = b.author;
+    card.querySelector('.card-desc').textContent = (b.description || '').slice(0, 88) + '…';
+    card.querySelector('.ctag').textContent = b.category;
+
+    // Wire up buttons
+    const [readBtn, listenBtn, refBtn] = card.querySelectorAll('.cbtn');
+    readBtn.addEventListener('click', () => openReader(b.id, 'pdf'));
+    listenBtn.addEventListener('click', () => openReader(b.id, 'audio'));
+    refBtn.addEventListener('click', () => openReader(b.id, 'ref'));
+
+    grid.appendChild(card);
+  });
+
   document.getElementById('s-books').textContent = BOOKS.length;
   document.getElementById('s-cats').textContent = new Set(BOOKS.map(b => b.category)).size;
 }
@@ -1390,6 +1896,7 @@ function filterLib(cat, el) {
   el.classList.add('on');
   renderLib();
 }
+
 
 // ═══════════════════════════════════════════════════════════
 // READER MODAL
@@ -1479,10 +1986,57 @@ function loadPdfPane(book) {
   const active  = document.getElementById('pdf-active');
   const errBox  = document.getElementById('pdf-error');
   const loading = document.getElementById('pdf-loading');
+  const frameWrap = document.getElementById('pdf-frame-wrap');
   const frame   = document.getElementById('pdf-frame');
 
+  // ── CLOUDINARY: native <embed> — no iframe restrictions ──────────────
+  if (book.cloudinaryUrl) {
+    ph.style.display = 'none';
+    active.style.display = 'flex';
+    errBox.classList.remove('show');
+    loading.classList.add('hidden'); // embed loads instantly
+    document.getElementById('pdf-toolbar-title').textContent = book.title;
+    _setPdfViewerBtns('cloudinary');
+
+    // Remove old embed if present
+    const oldEmbed = frameWrap.querySelector('.cloudinary-embed');
+    if (oldEmbed) oldEmbed.remove();
+    frame.style.display = 'none';
+
+    // Create native embed — works everywhere, no X-Frame-Options issues
+    const embedWrap = document.createElement('div');
+    embedWrap.className = 'cloudinary-embed';
+    embedWrap.style.cssText = 'flex:1;position:relative;';
+
+    const embedEl = document.createElement('embed');
+    embedEl.setAttribute('src', book.cloudinaryUrl + '#toolbar=1&navpanes=0');
+    embedEl.setAttribute('type', 'application/pdf');
+    embedEl.style.cssText = 'width:100%;height:100%;position:absolute;inset:0;border:none;';
+
+    // Fallback for browsers that block embed
+    const objEl = document.createElement('object');
+    objEl.setAttribute('data', book.cloudinaryUrl);
+    objEl.setAttribute('type', 'application/pdf');
+    objEl.style.cssText = 'width:100%;height:100%;position:absolute;inset:0;border:none;';
+    objEl.innerHTML = `<p style="color:rgba(255,255,255,.6);text-align:center;padding:2rem;">
+      Your browser cannot embed PDFs. 
+      <a href="${book.cloudinaryUrl}" target="_blank" style="color:var(--gold);">Click here to open the PDF ↗</a>
+    </p>`;
+
+    embedWrap.appendChild(embedEl);
+    frameWrap.appendChild(embedWrap);
+    return;
+  }
+
+  // ── Remove cloudinary embed if switching away ──
+  const oldEmbed = frameWrap.querySelector('.cloudinary-embed');
+  if (oldEmbed) oldEmbed.remove();
+  frame.style.display = '';
+
+  // ── GOOGLE DRIVE: iframe with triple-viewer fallback ─────────────────
   if (!book.driveUrl) {
     ph.style.display = 'flex'; active.style.display = 'none';
+    // Use textContent for safety
     document.getElementById('pdf-ph-title').textContent = book.title;
     return;
   }
@@ -1502,16 +2056,12 @@ function loadPdfPane(book) {
     return;
   }
 
-  // Set iframe src — listen for load event
   frame.src = urls.gdrive;
 
-  // Detect load failure: iframe fires load even on error pages,
-  // so we use a timeout + try a health-check heuristic
   let loadTimer = setTimeout(() => {
-    // If still loading after 12 s, show fallback options
     if (!loading.classList.contains('hidden')) {
       showPdfError(
-        'Google Drive took too long to load. This is usually caused by a <strong>Workspace domain restriction</strong> or a large file. Try the PDF.js or Office viewers.',
+        'Google Drive took too long to load. This is usually caused by a <strong>Workspace domain restriction</strong> or a large file. Trying PDF.js viewer…',
         book.driveUrl
       );
     }
@@ -1520,23 +2070,14 @@ function loadPdfPane(book) {
   frame.onload = () => {
     clearTimeout(loadTimer);
     loading.classList.add('hidden');
-    // Try to detect Drive's own "sorry" error page via title
-    // (we can't read cross-origin content, but we can check for blank src)
     try {
       const inner = frame.contentDocument || frame.contentWindow?.document;
       if (inner && inner.title && inner.title.toLowerCase().includes('sorry')) {
-        showPdfError(
-          'Google Drive returned an error page. This file may have <strong>Workspace sharing restrictions</strong> or is private. Try another viewer.',
-          book.driveUrl
-        );
+        showPdfError('Google Drive returned an error page. This file may have <strong>Workspace sharing restrictions</strong>. Trying PDF.js…', book.driveUrl);
       }
-    } catch { /* cross-origin — that's fine, means it loaded */ }
+    } catch { /* cross-origin — loaded fine */ }
   };
-
-  frame.onerror = () => {
-    clearTimeout(loadTimer);
-    showPdfError('The iframe could not load this PDF.', book.driveUrl);
-  };
+  frame.onerror = () => { clearTimeout(loadTimer); showPdfError('The iframe could not load this PDF.', book.driveUrl); };
 }
 
 function showPdfError(msg, rawUrl) {
@@ -1839,61 +2380,131 @@ function selectChapter(n) { curBibleChapter = n; renderChapterNums(); loadBibleC
 function prevChapter() { if (curBibleChapter > 1) { curBibleChapter--; renderChapterNums(); loadBibleChapter(); } }
 function nextChapter() { if (curBibleChapter < (BOOK_CHAPTERS[curBibleBook] || 1)) { curBibleChapter++; renderChapterNums(); loadBibleChapter(); } }
 
-function loadBibleChapter() {
-  document.getElementById('bible-chapter-title').textContent = curBibleBook + ' Chapter ' + curBibleChapter;
-  const verses = SAMPLE_VERSES[curBibleBook]?.[curBibleChapter];
+async function loadBibleChapter() {
+  const titleEl = document.getElementById('bible-chapter-title');
   const el = document.getElementById('bible-verses');
+  titleEl.textContent = curBibleBook + ' Chapter ' + curBibleChapter;
+
+  // Show loading state
+  el.innerHTML = `<div style="text-align:center;padding:2rem;color:#bbb;">
+    <div class="spinner" style="margin:0 auto 1rem;border-color:rgba(184,136,42,.2);border-top-color:var(--gold);"></div>
+    <p style="font-family:'EB Garamond',serif;font-size:.95rem;">Loading ${curBibleBook} ${curBibleChapter}…</p>
+  </div>`;
+
+  const verses = await fetchBibleChapter(curBibleBook, curBibleChapter);
+
   if (verses && verses.length) {
-    el.innerHTML = verses.map(v => `
-      <div class="verse" onclick="highlightVerse(this)">
-        <span class="verse-num">${v.v}</span>
-        <span class="verse-text">${v.t}</span>
-        <button class="verse-copy" onclick="copyVerse(event,'${curBibleBook} ${curBibleChapter}:${v.v}','${v.t.replace(/'/g,"\\'")}')">Copy</button>
-      </div>`).join('');
+    el.innerHTML = ''; // clear
+    verses.forEach(v => {
+      const row = document.createElement('div');
+      row.className = 'verse';
+      row.addEventListener('click', () => highlightVerse(row));
+
+      const numSpan = document.createElement('span');
+      numSpan.className = 'verse-num';
+      numSpan.textContent = v.v;
+
+      const textSpan = document.createElement('span');
+      textSpan.className = 'verse-text';
+      textSpan.textContent = v.t; // textContent = XSS safe
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'verse-copy';
+      copyBtn.textContent = 'Copy';
+      copyBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const ref = `${curBibleBook} ${curBibleChapter}:${v.v}`;
+        navigator.clipboard.writeText(`${ref} — "${v.t}" (KJV)`)
+          .then(() => toast('📋 Copied: ' + ref))
+          .catch(() => toast('Copy failed.'));
+      });
+
+      row.appendChild(numSpan);
+      row.appendChild(textSpan);
+      row.appendChild(copyBtn);
+      el.appendChild(row);
+    });
   } else {
     el.innerHTML = `<div style="text-align:center;padding:2rem;color:#aaa;">
-      <p style="font-family:'EB Garamond',serif;font-size:1rem;margin-bottom:1rem">📖 ${curBibleBook} ${curBibleChapter}</p>
-      <p style="font-size:.85rem;line-height:1.7">To display the full KJV Bible, host a KJV JSON on Google Drive and load it here.<br>
-      Free source: <strong>github.com/aruljohn/Bible-kjv</strong></p>
+      <div style="font-size:2rem;margin-bottom:.75rem">📖</div>
+      <p style="font-family:'EB Garamond',serif;font-size:1rem;margin-bottom:.5rem">${curBibleBook} ${curBibleChapter}</p>
+      <p style="font-size:.82rem;line-height:1.7;max-width:340px;margin:0 auto;">
+        Could not load this chapter. Check your internet connection — the Bible is fetched live from 
+        <a href="https://bible-api.com" target="_blank" style="color:var(--gold);">bible-api.com</a> (KJV, free).
+      </p>
     </div>`;
   }
 }
+
 function highlightVerse(el) {
   document.querySelectorAll('.verse').forEach(v => v.classList.remove('highlighted'));
   el.classList.add('highlighted');
   const ref = curBibleBook + ' ' + curBibleChapter + ':' + el.querySelector('.verse-num').textContent;
   toast('📖 ' + ref);
 }
-function copyVerse(e, ref, text) {
-  e.stopPropagation();
-  navigator.clipboard.writeText(ref + ' — ' + text + ' (KJV)').then(() => toast('📋 Copied: ' + ref)).catch(() => toast('Copy failed.'));
-}
-function listenChapter() {
-  const verses = SAMPLE_VERSES[curBibleBook]?.[curBibleChapter];
-  if (!verses || !verses.length) { toast('No verse data loaded for this chapter yet.'); return; }
-  const text = curBibleBook + ' Chapter ' + curBibleChapter + '. ' + verses.map(v => v.v + '. ' + v.t).join(' ');
+
+async function listenChapter() {
+  let verses = verseCache[`${curBibleBook}_${curBibleChapter}`];
+  if (!verses) verses = await fetchBibleChapter(curBibleBook, curBibleChapter);
+  if (!verses || !verses.length) { toast('No verse data loaded yet — please wait for the chapter to load.'); return; }
+  const text = curBibleBook + ' Chapter ' + curBibleChapter + '. ' + verses.map(v => 'Verse ' + v.v + '. ' + v.t).join(' ');
   speakString(text);
   toast('🔊 Reading ' + curBibleBook + ' ' + curBibleChapter + '…');
 }
-function bibleSearch() {
-  const q = document.getElementById('bible-search').value.trim().toLowerCase();
+
+async function bibleSearch() {
+  const q = document.getElementById('bible-search').value.trim();
   if (!q) { toast('Enter a word or verse reference to search.'); return; }
-  const results = [];
-  Object.entries(SAMPLE_VERSES).forEach(([book, chapters]) => {
-    Object.entries(chapters).forEach(([ch, verses]) => {
-      verses.forEach(v => { if (v.t.toLowerCase().includes(q)) results.push({ book, ch: parseInt(ch), v: v.v, text: v.t }); });
-    });
-  });
   const box = document.getElementById('bible-concordance-results');
-  if (!results.length) { box.style.display = 'none'; toast('No results. Full search requires a complete KJV JSON file.'); return; }
-  function hl(t) { return t.replace(new RegExp('(' + q + ')', 'gi'), '<mark style="background:rgba(184,136,42,.22)">$1</mark>'); }
   box.style.display = 'block';
-  box.innerHTML = `<div class="sh" style="margin-bottom:1rem">🔍 ${results.length} Result${results.length !== 1 ? 's' : ''} for "${q}"</div>` +
-    results.map(r => `<div class="concordance-result" onclick="selectBibleBook('${r.book}');selectChapter(${r.ch})">
+  box.innerHTML = `<div style="text-align:center;padding:1.5rem;color:#888;font-size:.85rem;">
+    <div class="spinner" style="margin:0 auto .75rem;width:24px;height:24px;border-width:2px;border-color:var(--dust);border-top-color:var(--gold);"></div>
+    Searching cached chapters for "${q}"…
+  </div>`;
+
+  // Search already-cached chapters first (instant)
+  const ql = q.toLowerCase();
+  const results = await searchBibleOnline(ql);
+
+  // Also do a direct reference lookup (e.g. "John 3:16")
+  const refMatch = q.match(/^(\d?\s*[a-zA-Z]+)\s+(\d+):(\d+)$/);
+  if (refMatch) {
+    const [,book,ch,v] = refMatch;
+    const bookName = [...OT_BOOKS,...NT_BOOKS].find(b => b.toLowerCase().startsWith(book.toLowerCase().trim()));
+    if (bookName) {
+      const chNum = parseInt(ch);
+      const vNum = parseInt(v);
+      const verses = await fetchBibleChapter(bookName, chNum);
+      if (verses) {
+        const found = verses.find(vv => vv.v === vNum);
+        if (found && !results.find(r => r.book===bookName && r.ch===chNum && r.v===vNum)) {
+          results.unshift({ book: bookName, ch: chNum, v: vNum, t: found.t });
+        }
+        // Navigate there
+        curBibleBook = bookName; curBibleChapter = chNum;
+        renderBibleBookList(); loadBibleChapter();
+      }
+    }
+  }
+
+  if (!results.length) {
+    box.innerHTML = `<div class="sh" style="margin-bottom:.75rem">🔍 Concordance Search — "${q}"</div>
+      <p style="font-size:.82rem;color:#888;line-height:1.65;">No matches in currently loaded chapters. Navigate to a chapter to load it, then search again — or use a reference like <strong>John 3:16</strong> to jump directly.</p>`;
+    return;
+  }
+
+  const esc = s => s.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  function hl(t) {
+    return esc(t).replace(new RegExp('(' + esc(ql).replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<mark style="background:rgba(184,136,42,.22)">$1</mark>');
+  }
+
+  box.innerHTML = `<div class="sh" style="margin-bottom:1rem">🔍 ${results.length} Result${results.length!==1?'s':''} for "${esc(q)}"</div>` +
+    results.map(r => `<div class="concordance-result" onclick="curBibleBook='${r.book}';curBibleChapter=${r.ch};renderBibleBookList();loadBibleChapter()">
       <div class="concordance-ref">📖 ${r.book} ${r.ch}:${r.v}</div>
-      <div class="concordance-text">${hl(r.text)}</div>
+      <div class="concordance-text">${hl(r.t)}</div>
     </div>`).join('');
 }
+
 
 // ═══════════════════════════════════════════════════════════
 // RESEARCH — Source-Grounded with Sidecar
@@ -2154,6 +2765,7 @@ function startSignup(tierKey) {
 function completeSignup() {
   const fname = document.getElementById('sub-fname').value.trim();
   const email = document.getElementById('sub-email').value.trim();
+  const phone = document.getElementById('sub-phone').value.trim();
   const privacy = document.getElementById('sub-privacy').checked;
   if (!fname || !email) { toast('Please enter your first name and email address.'); return; }
   if (!privacy) { toast('Please accept the privacy policy to continue.'); return; }
@@ -2161,25 +2773,62 @@ function completeSignup() {
 
   currentMember = {
     name: fname + ' ' + document.getElementById('sub-lname').value.trim(),
-    email,
-    phone: document.getElementById('sub-phone').value.trim(),
+    email, phone,
     tier: selectedTierKey,
     country: document.getElementById('sub-country').value,
     ministry: document.getElementById('sub-ministry').value,
     role: document.getElementById('sub-role').value
   };
-  try { localStorage.setItem('logos_member', JSON.stringify(currentMember)); } catch (e) {}
+  try { localStorage.setItem('logos_member', JSON.stringify(currentMember)); } catch {}
   showMemberBanner();
   document.getElementById('signup-form-wrap').classList.remove('show');
 
-  // ── PAYMENT ROUTING ──────────────────────────────────────
-  // selectedTierKey determines which payment flow to trigger:
   const t = TIERS.find(x => x.key === selectedTierKey);
-  if (selectedTierKey !== 'free') routePayment(selectedTierKey, currentMember);
-  // ─────────────────────────────────────────────────────────
-
-  toast('🙏 Welcome, ' + fname + '! Your ' + (t?.name || 'Free') + ' account is active.');
+  if (selectedTierKey === 'free') {
+    toast('🙏 Welcome, ' + fname + '! Your free account is active.');
+  } else {
+    // Show payment — detect Kenyan phone = M-Pesa, otherwise PayPal
+    const isKenyan = phone.startsWith('+254') || phone.startsWith('07') || phone.startsWith('01') || currentMember.country === 'Kenya';
+    if (isKenyan) {
+      openMpesaModal(selectedTierKey, phone);
+    } else {
+      const paypalUrl = PAYMENT_LINKS.paypal[selectedTierKey];
+      if (paypalUrl && !paypalUrl.includes('YOURLINK')) window.open(paypalUrl, '_blank');
+      toast('💳 ' + fname + ', redirecting to PayPal for $' + t.usdAmount + '/month — ' + t.name);
+    }
+  }
   checkThesisAccess();
+}
+
+// ── M-PESA MODAL ──────────────────────────────────────────
+function openMpesaModal(tierKey, prefillPhone) {
+  const t = PAYMENT_TIERS[tierKey];
+  if (!t) return;
+  mpesaPendingTier = tierKey;
+  document.getElementById('mpesa-tier-label').textContent = t.label + ' Plan';
+  document.getElementById('mpesa-tier-amount').textContent = 'KES ' + t.kesAmount;
+  document.getElementById('mpesa-head-sub').textContent = 'Secure payment via Safaricom M-Pesa';
+  if (prefillPhone) document.getElementById('mpesa-phone-input').value = prefillPhone;
+  document.getElementById('mpesa-form-content').style.display = 'block';
+  document.getElementById('mpesa-status-box').classList.remove('show');
+  document.getElementById('mpesa-modal-overlay').classList.add('open');
+}
+
+function closeMpesaModal() {
+  document.getElementById('mpesa-modal-overlay').classList.remove('open');
+  mpesaPendingTier = null;
+}
+
+async function submitMpesaSTK() {
+  const phone = document.getElementById('mpesa-phone-input').value.trim();
+  if (!phone || phone.replace(/\D/g,'').length < 9) {
+    toast('Please enter a valid Safaricom number.'); return;
+  }
+  document.getElementById('mpesa-form-content').style.display = 'none';
+  document.getElementById('mpesa-status-box').classList.add('show');
+  document.getElementById('mpesa-status-text').textContent = 'Sending payment request to ' + phone + '…';
+
+  await initiateMpesaPayment(phone, PAYMENT_TIERS[mpesaPendingTier]?.kesAmount, mpesaPendingTier, currentMember?.name);
 }
 
 function showMemberBanner() {
@@ -2237,22 +2886,33 @@ function routePayment(tierKey, member) {
 }
 
 async function initiateMpesaPayment(phone, amount, tierKey, name) {
-  toast('📱 Initiating M-Pesa STK Push to ' + phone + ' for KES ' + amount + '…');
-  // ── BACKEND CALL (replace when Daraja API backend is ready) ──────────────
+  // ── PRODUCTION: Uncomment and point to your Daraja API backend ───────
   // try {
   //   const res = await fetch(PAYMENT_LINKS.mpesa_backend, {
   //     method: 'POST',
   //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ phone, amount, accountRef: 'LogosLibrary-' + tierKey, transactionDesc: 'Logos Library ' + tierKey + ' subscription' }),
+  //     body: JSON.stringify({ phone, amount, accountRef: 'LogosLib-' + tierKey,
+  //                           transactionDesc: 'Logos Library ' + tierKey }),
   //   });
   //   const data = await res.json();
-  //   if (data.ResponseCode === '0') toast('✅ M-Pesa prompt sent! Check your phone to complete payment.');
-  //   else toast('⚠️ M-Pesa error: ' + (data.errorMessage || 'Please try again.'));
-  // } catch (e) {
-  //   toast('⚠️ Could not reach M-Pesa gateway. Please try PayPal or contact support.');
+  //   if (data.ResponseCode === '0') {
+  //     document.getElementById('mpesa-status-text').textContent =
+  //       '✅ M-Pesa prompt sent! Enter your PIN on your phone.';
+  //     setTimeout(closeMpesaModal, 5000);
+  //   } else { throw new Error(data.errorMessage || 'STK push failed'); }
+  // } catch(e) {
+  //   document.getElementById('mpesa-status-text').textContent = '⚠️ ' + e.message + '. Try PayPal.';
+  //   setTimeout(() => {
+  //     document.getElementById('mpesa-form-content').style.display = 'block';
+  //     document.getElementById('mpesa-status-box').classList.remove('show');
+  //   }, 3000);
   // }
-  // ── END BACKEND CALL ──────────────────────────────────────────────────────
-  console.log('[MPESA STUB] Would send STK Push:', { phone, amount, tierKey, name });
+  // ── DEMO MODE (active until backend is wired) ─────────────────────────
+  await new Promise(r => setTimeout(r, 2000));
+  document.getElementById('mpesa-status-text').textContent =
+    '✅ Demo: STK Push sent to ' + phone + '! Add PAYMENT_LINKS.mpesa_backend to go live.';
+  setTimeout(closeMpesaModal, 4000);
+  console.log('[MPESA DEMO]', { phone, amount, tierKey, name });
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2396,38 +3056,163 @@ function toast(msg) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// BOOK MANAGER — add/edit books + Drive URL management
-// Books are stored in localStorage so changes survive reload.
-// Use Export tab to get the updated BOOKS array for permanent
-// saving into your index.html.
+// STUDIO TOOLS — Minister tier: 10 content generators
+// ═══════════════════════════════════════════════════════════
+async function studioGenerate(type, btnEl) {
+  if (!selectedThesisContent) { toast('Generate a paper first, then use Studio tools.'); return; }
+  if (currentMember?.tier !== 'minister') { toast('🔒 Studio tools require the Minister subscription.'); return; }
+
+  // Highlight active tab
+  document.querySelectorAll('.studio-tab').forEach(t => t.classList.remove('active'));
+  // Find clicked button by type
+  const tabs = document.querySelectorAll('.studio-tab');
+  tabs.forEach(t => { if (t.getAttribute('onclick')?.includes(`'${type}'`)) t.classList.add('active'); });
+
+  const panel = document.getElementById('studio-output-panel');
+  panel.innerHTML = `<div class="studio-panel on" style="text-align:center;padding:2rem;">
+    <div class="spinner" style="margin:0 auto .75rem;"></div>
+    <p style="font-size:.85rem;color:#888;">Generating ${type}…</p>
+  </div>`;
+
+  const bookCtx = `Title: "${document.getElementById('thesis-title')?.value || 'Paper'}"
+Content (first 2000 chars): ${selectedThesisContent.slice(0, 2000)}`;
+
+  const PROMPTS = {
+    audio: `Create a 400-word podcast-style audio overview script for two hosts (Host A and Host B) discussing this theological paper. Make it engaging, academically grounded, and end with a practical takeaway for believers.\n\n${bookCtx}`,
+    slides: `Create a 10-slide presentation outline for this paper. For each slide include: slide number, title, 3 bullet points, and a speaker note (1 sentence). Format clearly.\n\n${bookCtx}`,
+    mindmap: `Create a hierarchical mind map in text format for this paper. Use indentation to show hierarchy. Central topic → Main branches → Sub-branches. Include scripture references where relevant.\n\n${bookCtx}`,
+    flashcards: `Create 12 study flashcards from this paper. Format each as:\nQ: [question]\nA: [answer]\n\nMix definition, application, and scripture-based questions.\n\n${bookCtx}`,
+    quiz: `Create a 6-question multiple-choice quiz on this paper. For each question provide 4 options (A-D), mark the correct answer, and give a brief explanation. Format clearly.\n\n${bookCtx}`,
+    faq: `Create 8 frequently asked questions (with detailed answers) that readers might have after reading this paper. Ground answers in scripture and theological sources.\n\n${bookCtx}`,
+    report: `Write a 300-word executive summary report of this paper suitable for a church board or ministry leadership team. Use clear section headers: Overview, Key Arguments, Scripture Foundation, Practical Applications, Conclusion.\n\n${bookCtx}`,
+    infographic: `Describe a detailed infographic for this paper in text format. Include: Title, 5 key statistics or facts, 3 scripture references as callouts, a central theme visual description, and a key takeaway quote.\n\n${bookCtx}`,
+    datatable: `Create a comparative data table from this paper. Identify 4-6 key theological concepts/themes and compare them across at least 3 dimensions (e.g. Scripture basis, Historical view, Practical application). Format as a clear table using pipes.\n\n${bookCtx}`,
+    video: `Write a 5-minute video script for a YouTube teaching based on this paper. Include: Hook (30 sec), Introduction (1 min), Main Teaching with 3 points (2.5 min), Practical Application (45 sec), Call to Action (15 sec). Include on-screen text suggestions in brackets.\n\n${bookCtx}`,
+  };
+
+  try {
+    const text = await callAI({
+      system: 'You are a Christian academic content creator. Produce clear, well-structured, biblically grounded content. Be concise and practical.',
+      userMessage: PROMPTS[type] || `Summarize this paper as a ${type}:\n\n${bookCtx}`,
+      maxTokens: 1500,
+    });
+
+    if (type === 'flashcards') {
+      renderFlashcards(panel, text);
+    } else if (type === 'quiz') {
+      renderStudioQuiz(panel, text);
+    } else if (type === 'datatable') {
+      renderDataTable(panel, text);
+    } else {
+      panel.innerHTML = `<div class="studio-panel on">
+        <div class="studio-panel-head">${studioIcon(type)} ${studioLabel(type)}</div>
+        <div class="studio-output-box">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="studio-action-row">
+          <button class="studio-btn studio-btn-gold" onclick="speakString(this.closest('.studio-panel').querySelector('.studio-output-box').innerText.slice(0,3000))">🔊 Listen</button>
+          <button class="studio-btn studio-btn-primary" onclick="navigator.clipboard.writeText(this.closest('.studio-panel').querySelector('.studio-output-box').innerText).then(()=>toast('📋 Copied!'))">📋 Copy</button>
+        </div>
+      </div>`;
+    }
+  } catch {
+    panel.innerHTML = `<div class="studio-panel on"><p style="color:var(--crimson);font-size:.85rem;">Generation failed. Please try again.</p></div>`;
+  }
+}
+
+function studioIcon(t) { return {audio:'🎙',slides:'📊',mindmap:'🗺',flashcards:'🃏',quiz:'🎯',faq:'❓',report:'📋',infographic:'📌',datatable:'📊',video:'🎬'}[t]||'✨'; }
+function studioLabel(t) { return {audio:'Audio Overview',slides:'Slide Deck',mindmap:'Mind Map',flashcards:'Flashcards',quiz:'Quiz',faq:'FAQ',report:'Report',infographic:'Infographic',datatable:'Data Table',video:'Video Script'}[t]||t; }
+
+function renderFlashcards(panel, text) {
+  const cards = [];
+  const pairs = text.split(/\n(?=Q:)/g);
+  pairs.forEach(p => {
+    const qm = p.match(/Q:\s*(.+)/); const am = p.match(/A:\s*(.+)/);
+    if (qm && am) cards.push({ q: qm[1].trim(), a: am[1].trim() });
+  });
+  if (!cards.length) { panel.innerHTML = `<div class="studio-panel on"><div class="studio-output-box">${text}</div></div>`; return; }
+  panel.innerHTML = `<div class="studio-panel on">
+    <div class="studio-panel-head">🃏 Flashcards — click to flip</div>
+    <div class="flashcard-stack">${cards.map((c,i) => `
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-q">${c.q.replace(/</g,'&lt;')}</div>
+        <div class="flashcard-a">${c.a.replace(/</g,'&lt;')}</div>
+        <div class="flashcard-hint">tap to flip</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderStudioQuiz(panel, text) {
+  const questions = [];
+  const blocks = text.split(/\n(?=\d+\.)/g);
+  blocks.forEach(b => {
+    const qm = b.match(/\d+\.\s+(.+?)(?:\n|$)/);
+    const opts = [...b.matchAll(/([A-D])\.\s+(.+?)(?:\n|$)/g)].map(m => ({ l: m[1], t: m[2] }));
+    const cm = b.match(/(?:Answer|Correct)[:\s]+([A-D])/i);
+    const em = b.match(/(?:Explanation|Note)[:\s]+(.+?)(?:\n|$)/i);
+    if (qm && opts.length >= 2) questions.push({ q: qm[1].trim(), opts, correct: cm?.[1]||'A', exp: em?.[1]||'' });
+  });
+  if (!questions.length) { panel.innerHTML = `<div class="studio-panel on"><div class="studio-output-box">${text}</div></div>`; return; }
+  panel.innerHTML = `<div class="studio-panel on">
+    <div class="studio-panel-head">🎯 Quiz — ${questions.length} Questions</div>
+    ${questions.map((q, qi) => `
+      <div class="sp-quiz-q">
+        <div class="sp-quiz-q-text">${qi+1}. ${q.q.replace(/</g,'&lt;')}</div>
+        <div class="sp-quiz-opts">${q.opts.map(o => `
+          <div class="sp-quiz-opt" onclick="
+            this.closest('.sp-quiz-opts').querySelectorAll('.sp-quiz-opt').forEach(x=>{x.onclick=null;x.style.cursor='default';});
+            const correct='${q.correct}';
+            this.classList.add(this.textContent.trim()[0]==='${o.l}'&&'${o.l}'===correct?'correct':'wrong');
+            this.closest('.sp-quiz-opts').querySelector('[data-l=\\'${q.correct}\\']').classList.add('correct');
+            ${q.exp ? `toast('${q.exp.replace(/'/g,"\\'")}');` : ''}
+          " data-l="${o.l}">${o.l}. ${o.t.replace(/</g,'&lt;')}</div>`).join('')}
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderDataTable(panel, text) {
+  // Try to parse pipe-separated table
+  const lines = text.split('\n').filter(l => l.includes('|'));
+  if (lines.length < 2) { panel.innerHTML = `<div class="studio-panel on"><div class="studio-output-box">${text}</div></div>`; return; }
+  const rows = lines.map(l => l.split('|').map(c => c.trim()).filter(Boolean));
+  const [header, , ...body] = rows;
+  panel.innerHTML = `<div class="studio-panel on">
+    <div class="studio-panel-head">📊 Data Table</div>
+    <div style="overflow-x:auto;margin-top:.5rem;">
+      <table class="studio-table">
+        <thead><tr>${(header||[]).map(h=>`<th>${h.replace(/</g,'&lt;')}</th>`).join('')}</tr></thead>
+        <tbody>${body.map(r=>`<tr>${r.map(c=>`<td>${c.replace(/</g,'&lt;')}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>
+    <div class="studio-action-row">
+      <button class="studio-btn studio-btn-primary" onclick="
+        const rows=[...this.closest('.studio-panel').querySelectorAll('tr')];
+        const csv=rows.map(r=>[...r.querySelectorAll('th,td')].map(c=>c.textContent).join(',')).join('\\n');
+        navigator.clipboard.writeText(csv).then(()=>toast('📋 CSV copied!'));
+      ">📋 Copy as CSV</button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// BOOK MANAGER — updated with Cloudinary + JSON export
+// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// BOOK MANAGER HELPERS
 // ═══════════════════════════════════════════════════════════
 const BM_STORE_KEY = 'logos_books_overrides';
-let bmEditingId = null; // null = adding new, number = editing
-
-// Merge stored Drive URLs into BOOKS on startup
-function applyStoredOverrides() {
-  try {
-    const overrides = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
-    BOOKS.forEach(b => {
-      if (overrides[b.id] !== undefined) b.driveUrl = overrides[b.id];
-    });
-    // Also restore any user-added books
-    const userBooks = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
-    userBooks.forEach(ub => {
-      if (!BOOKS.find(b => b.id === ub.id)) BOOKS.push(ub);
-    });
-  } catch {}
-}
+let bmEditingId = null;
 
 function persistDriveUrl(bookId, url) {
   try {
-    const overrides = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
-    overrides[bookId] = url;
-    localStorage.setItem(BM_STORE_KEY, JSON.stringify(overrides));
+    const o = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
+    o[bookId] = url;
+    localStorage.setItem(BM_STORE_KEY, JSON.stringify(o));
   } catch {}
 }
 
 function openBookManager(focusId) {
+  if (!adminUnlocked) { toast('Press Ctrl+Shift+L to enable admin mode.'); return; }
   document.getElementById('bm-overlay').classList.add('open');
   bmTab('list', document.querySelector('.bm-tab'));
   renderBmList();
@@ -2438,64 +3223,127 @@ function closeBookManager() { document.getElementById('bm-overlay').classList.re
 function bmTab(name, el) {
   document.querySelectorAll('.bm-section').forEach(s => s.classList.remove('on'));
   document.querySelectorAll('.bm-tab').forEach(t => t.classList.remove('on'));
-  document.getElementById('bm-' + name).classList.add('on');
+  const sec = document.getElementById('bm-' + name);
+  if (sec) sec.classList.add('on');
   if (el) el.classList.add('on');
   if (name === 'export') renderBmExport();
 }
 
 function renderBmList() {
   const list = document.getElementById('bm-book-list');
-  list.innerHTML = BOOKS.map(b => `
-    <div class="bm-book-row">
-      <div class="bm-book-cover" style="background:${b.gradient}">${b.emoji}</div>
+  if (!list) return;
+  list.innerHTML = '';
+  BOOKS.forEach(b => {
+    const row = document.createElement('div');
+    row.className = 'bm-book-row';
+    const hasPdf = !!(b.cloudinaryUrl || b.driveUrl);
+    const sourceLabel = b.cloudinaryUrl ? '☁ Cloudinary' : b.driveUrl ? '📁 Drive' : '⚠ No PDF';
+    row.innerHTML = `
+      <div class="bm-book-cover" style="background:${b.gradient}"></div>
       <div class="bm-book-info">
-        <div class="bm-book-name">${b.title}</div>
-        <div class="bm-book-meta">${b.author} · ${b.category}
-          <span class="bm-book-url-badge ${b.driveUrl ? 'has-url' : 'no-url'}" style="margin-left:.4rem;">
-            ${b.driveUrl ? '✓ PDF linked' : '⚠ No PDF'}
-          </span>
-        </div>
+        <div class="bm-book-name"></div>
+        <div class="bm-book-meta"></div>
       </div>
       <div class="bm-book-actions">
-        ${b.driveUrl ? `<button class="bm-btn bm-btn-test" onclick="bmTestUrl(${b.id})" title="Test PDF viewer">▶ Test</button>` : ''}
-        <button class="bm-btn bm-btn-edit" onclick="bmEditBook(${b.id})">✏ Edit</button>
-        ${b.isUserAdded ? `<button class="bm-btn bm-btn-del" onclick="bmDeleteBook(${b.id})">🗑</button>` : ''}
-      </div>
-    </div>`).join('');
-}
-
-function bmEditBook(id) {
-  const b = BOOKS.find(x => x.id === id);
-  if (!b) return;
-  bmEditingId = id;
-  bmTab('add', document.querySelectorAll('.bm-tab')[1]);
-  document.getElementById('bm-title').value  = b.title;
-  document.getElementById('bm-author').value = b.author;
-  document.getElementById('bm-category').value = b.category;
-  document.getElementById('bm-emoji').value  = b.emoji;
-  document.getElementById('bm-desc').value   = b.description || '';
-  document.getElementById('bm-url').value    = b.driveUrl || '';
-  previewDriveUrl(b.driveUrl || '');
-  document.getElementById('bm-edit-banner').style.display = 'block';
-  document.getElementById('bm-edit-banner').textContent = `✏ Editing: "${b.title}"`;
-  document.getElementById('bm-cancel-btn').style.display = 'inline-block';
-  document.getElementById('bm-save-btn').textContent = '✅ Save Changes';
-  document.getElementById('bm-title').focus();
+        ${hasPdf ? `<button class="bm-btn bm-btn-test">▶ Test</button>` : ''}
+        <button class="bm-btn bm-btn-edit">✏ Edit</button>
+        ${b.isUserAdded ? `<button class="bm-btn bm-btn-del">🗑</button>` : ''}
+      </div>`;
+    row.querySelector('.bm-book-cover').textContent = b.emoji;
+    row.querySelector('.bm-book-name').textContent = b.title;
+    row.querySelector('.bm-book-meta').textContent = b.author + ' · ' + b.category + ' · ' + sourceLabel;
+    const btns = row.querySelectorAll('.bm-btn');
+    let bi = 0;
+    if (hasPdf) { btns[bi++].addEventListener('click', () => { openReader(b.id,'pdf'); closeBookManager(); }); }
+    btns[bi++].addEventListener('click', () => bmEditBook(b.id));
+    if (b.isUserAdded && btns[bi]) btns[bi].addEventListener('click', () => bmDeleteBook(b.id));
+    list.appendChild(row);
+  });
 }
 
 function bmCancelEdit() {
   bmEditingId = null;
-  document.getElementById('bm-edit-banner').style.display = 'none';
-  document.getElementById('bm-cancel-btn').style.display = 'none';
-  document.getElementById('bm-save-btn').textContent = '✅ Save Book';
-  ['bm-title','bm-author','bm-url','bm-desc','bm-emoji'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('url-preview').classList.remove('show');
+  const banner = document.getElementById('bm-edit-banner');
+  if (banner) banner.style.display = 'none';
+  const cancelBtn = document.getElementById('bm-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = 'none';
+  const saveBtn = document.getElementById('bm-save-btn');
+  if (saveBtn) saveBtn.textContent = '✅ Save Book';
+  ['bm-title','bm-author','bm-url','bm-cloudinary-url','bm-desc','bm-emoji'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const prev = document.getElementById('url-preview');
+  if (prev) prev.classList.remove('show');
+  const cldPrev = document.getElementById('cld-preview');
+  if (cldPrev) cldPrev.style.display = 'none';
+}
+
+function bmDeleteBook(id) {
+  const b = BOOKS.find(x => x.id === id);
+  if (!b || !b.isUserAdded) return;
+  if (!confirm('Delete "' + b.title + '" from the library?')) return;
+  BOOKS.splice(BOOKS.indexOf(b), 1);
+  try {
+    const stored = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
+    localStorage.setItem('logos_user_books', JSON.stringify(stored.filter(x => x.id !== id)));
+  } catch {}
+  renderLib(); renderBmList();
+  toast('"' + b.title + '" removed.');
+}
+
+function previewDriveUrl(val) {
+  const box = document.getElementById('url-preview');
+  const status = document.getElementById('url-status');
+  const text = document.getElementById('url-preview-text');
+  if (!box) return;
+  if (!val) { box.classList.remove('show'); return; }
+  box.classList.add('show');
+  const id = getDriveFileId(val);
+  if (id) {
+    status.textContent = '✓ Valid'; status.style.background='rgba(74,92,42,.3)'; status.style.color='#8bc34a';
+    text.textContent = 'File ID: ' + id;
+  } else {
+    status.textContent = '⚠ Check URL'; status.style.background='rgba(184,136,42,.2)'; status.style.color='var(--gold2)';
+    text.textContent = 'Could not extract a Drive file ID — double check the link';
+  }
+}
+
+function testDriveUrl() {
+  const url = document.getElementById('bm-url')?.value.trim();
+  if (!url) { toast('Paste a Drive URL first.'); return; }
+  const urls = getViewerUrls(url);
+  if (!urls) { toast('Invalid Drive URL.'); return; }
+  window.open(urls.gdrive, '_blank');
+}
+
+function bmImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      let data = ev.target.result.replace(/^const\s+BOOKS\s*=\s*/,'').replace(/;\s*$/,'');
+      const imported = JSON.parse(data);
+      if (!Array.isArray(imported)) throw new Error('Not an array');
+      imported.forEach(ib => {
+        const existing = BOOKS.find(b => b.id === ib.id);
+        if (existing) {
+          if (ib.driveUrl) { existing.driveUrl = ib.driveUrl; persistDriveUrl(ib.id, ib.driveUrl); }
+          if (ib.cloudinaryUrl) existing.cloudinaryUrl = ib.cloudinaryUrl;
+        } else BOOKS.push({ ...ib, isUserAdded: true });
+      });
+      renderLib(); renderBmList();
+      toast('✅ Imported ' + imported.length + ' book entries.');
+    } catch (err) { toast('Import failed: ' + err.message); }
+  };
+  reader.readAsText(file);
 }
 
 function bmSaveBook() {
   const title  = document.getElementById('bm-title').value.trim();
   const author = document.getElementById('bm-author').value.trim();
-  const url    = document.getElementById('bm-url').value.trim();
+  const cloudUrl = document.getElementById('bm-cloudinary-url')?.value.trim() || '';
+  const driveUrl = document.getElementById('bm-url').value.trim();
   const desc   = document.getElementById('bm-desc').value.trim();
   const emoji  = document.getElementById('bm-emoji').value.trim() || '📖';
   const cat    = document.getElementById('bm-category').value;
@@ -2503,155 +3351,149 @@ function bmSaveBook() {
   if (!title) { toast('Please enter a book title.'); return; }
 
   if (bmEditingId !== null) {
-    // Update existing
     const b = BOOKS.find(x => x.id === bmEditingId);
     if (b) {
       b.title = title; b.author = author; b.description = desc;
       b.emoji = emoji; b.category = cat;
-      b.driveUrl = url;
-      persistDriveUrl(b.id, url);
+      b.cloudinaryUrl = cloudUrl;
+      b.driveUrl = driveUrl;
+      // Persist URL overrides
+      try {
+        const overrides = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
+        overrides['cld_' + b.id] = cloudUrl;
+        overrides[b.id] = driveUrl;
+        localStorage.setItem(BM_STORE_KEY, JSON.stringify(overrides));
+      } catch {}
     }
-    toast(`✅ "${title}" updated!`);
+    toast('✅ "' + title + '" updated!');
   } else {
-    // Add new book
     const newId = Math.max(...BOOKS.map(b => b.id), 100) + 1;
-    const GRADIENTS = [
-      'linear-gradient(135deg,#0e1b2e,#1a3a5c)',
-      'linear-gradient(135deg,#3a1a08,#7a3a14)',
-      'linear-gradient(135deg,#1a2e14,#2e5c1e)',
-      'linear-gradient(135deg,#2e2040,#4e3a70)',
-      'linear-gradient(135deg,#0a2030,#124060)',
-    ];
-    const newBook = {
-      id: newId, title, author, category: cat, emoji,
+    const GRADIENTS = ['linear-gradient(135deg,#0e1b2e,#1a3a5c)','linear-gradient(135deg,#3a1a08,#7a3a14)','linear-gradient(135deg,#1a2e14,#2e5c1e)','linear-gradient(135deg,#2e2040,#4e3a70)','linear-gradient(135deg,#0a2030,#124060)'];
+    const newBook = { id: newId, title, author, category: cat, emoji,
       gradient: GRADIENTS[newId % GRADIENTS.length],
-      driveUrl: url, description: desc,
+      cloudinaryUrl: cloudUrl, driveUrl, description: desc,
       keywords: [cat.toLowerCase(), author.split(' ').pop().toLowerCase()],
-      toc: [], passages: [], isUserAdded: true,
-    };
+      toc: [], passages: [], isUserAdded: true };
     BOOKS.unshift(newBook);
-    persistDriveUrl(newId, url);
-    // Persist user-added books
     try {
+      const overrides = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
+      overrides['cld_' + newId] = cloudUrl; overrides[newId] = driveUrl;
+      localStorage.setItem(BM_STORE_KEY, JSON.stringify(overrides));
       const stored = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
       stored.push(newBook);
       localStorage.setItem('logos_user_books', JSON.stringify(stored));
     } catch {}
-    toast(`✅ "${title}" added to the library!`);
+    toast('✅ "' + title + '" added to the library!');
   }
 
-  renderLib();
-  renderBmList();
-  bmCancelEdit();
-  // If this was a focused edit from reader, auto-open reader
-  if (bmEditingId !== null && url) setTimeout(() => openReader(bmEditingId, 'pdf'), 400);
+  renderLib(); renderBmList(); bmCancelEdit();
   bmEditingId = null;
 }
 
-function bmDeleteBook(id) {
+// Updated bmEditBook to also fill Cloudinary field
+function bmEditBook(id) {
   const b = BOOKS.find(x => x.id === id);
-  if (!b || !b.isUserAdded) return;
-  if (!confirm(`Delete "${b.title}" from the library?`)) return;
-  BOOKS.splice(BOOKS.indexOf(b), 1);
-  try {
-    const stored = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
-    localStorage.setItem('logos_user_books', JSON.stringify(stored.filter(x => x.id !== id)));
-  } catch {}
-  renderLib();
-  renderBmList();
-  toast(`"${b.title}" removed.`);
+  if (!b) return;
+  bmEditingId = id;
+  bmTab('add', document.querySelectorAll('.bm-tab')[1]);
+  document.getElementById('bm-title').value   = b.title;
+  document.getElementById('bm-author').value  = b.author;
+  document.getElementById('bm-category').value = b.category;
+  document.getElementById('bm-emoji').value   = b.emoji;
+  document.getElementById('bm-desc').value    = b.description || '';
+  document.getElementById('bm-url').value     = b.driveUrl || '';
+  const cldInp = document.getElementById('bm-cloudinary-url');
+  if (cldInp) cldInp.value = b.cloudinaryUrl || '';
+  previewDriveUrl(b.driveUrl || '');
+  document.getElementById('bm-edit-banner').style.display = 'block';
+  document.getElementById('bm-edit-banner').textContent = '✏ Editing: "' + b.title + '"';
+  document.getElementById('bm-cancel-btn').style.display = 'inline-block';
+  document.getElementById('bm-save-btn').textContent = '✅ Save Changes';
+  document.getElementById('bm-title').focus();
 }
 
-function bmTestUrl(id) {
-  const b = BOOKS.find(x => x.id === id);
-  if (b?.driveUrl) { openReader(b.id, 'pdf'); closeBookManager(); }
+// Cloudinary URL preview
+function previewCloudinaryUrl(val) {
+  const box = document.getElementById('cld-preview');
+  if (!box) return;
+  if (!val) { box.style.display = 'none'; return; }
+  box.style.display = 'flex';
+  const isPdf = val.toLowerCase().endsWith('.pdf') || val.includes('/raw/upload/');
+  box.textContent = isPdf ? '✓ Looks like a valid Cloudinary PDF URL' : '⚠ URL should end in .pdf or contain /raw/upload/';
+  box.style.color = isPdf ? '#3a6a99' : 'var(--brown)';
 }
 
-// Drive URL preview / validator
-function previewDriveUrl(val) {
-  const box    = document.getElementById('url-preview');
-  const status = document.getElementById('url-status');
-  const text   = document.getElementById('url-preview-text');
-  if (!val) { box.classList.remove('show'); return; }
-  box.classList.add('show');
-  const id = getDriveFileId(val);
-  if (id) {
-    status.textContent = '✓ Valid'; status.style.background = 'rgba(74,92,42,.3)'; status.style.color = '#8bc34a';
-    text.textContent = `File ID: ${id}`;
-  } else {
-    status.textContent = '⚠ Check URL'; status.style.background = 'rgba(184,136,42,.2)'; status.style.color = 'var(--gold2)';
-    text.textContent = 'Could not extract a Drive file ID — double check the link';
-  }
-}
-
-function testDriveUrl() {
-  const url = document.getElementById('bm-url').value.trim();
-  if (!url) { toast('Paste a Drive URL first.'); return; }
-  const urls = getViewerUrls(url);
-  if (!urls) { toast('Invalid Drive URL — could not extract file ID.'); return; }
-  window.open(urls.gdrive, '_blank');
-}
-
-// Export
+// Updated Export — now exports clean JSON (not JS) for books.json
 function renderBmExport() {
-  const code = 'const BOOKS = ' + JSON.stringify(BOOKS, null, 2) + ';';
-  document.getElementById('bm-export-code').textContent = code;
+  // Clean export: remove isUserAdded flag, produce pure JSON
+  const exportData = BOOKS.map(({ isUserAdded, ...rest }) => rest);
+  const json = JSON.stringify(exportData, null, 2);
+  document.getElementById('bm-export-code').textContent = json;
 }
 function bmCopyExport() {
   renderBmExport();
-  const code = document.getElementById('bm-export-code').textContent;
-  navigator.clipboard.writeText(code).then(() => toast('📋 BOOKS array copied — paste it into your index.html script section.')).catch(() => toast('Copy failed — select the code manually.'));
+  const json = document.getElementById('bm-export-code').textContent;
+  navigator.clipboard.writeText(json)
+    .then(() => toast('📋 books.json copied! Paste it into your GitHub books.json file.'))
+    .catch(() => toast('Copy failed — select the text manually.'));
 }
 function bmDownloadExport() {
   renderBmExport();
-  const code = document.getElementById('bm-export-code').textContent;
+  const json = document.getElementById('bm-export-code').textContent;
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([code], { type: 'text/javascript' }));
-  a.download = 'logos-books.js';
+  a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+  a.download = 'books.json';
   a.click();
-  toast('⬇ Downloaded logos-books.js');
+  toast('⬇ Downloaded books.json — upload this to your GitHub repo root.');
 }
-function bmImport(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      let data = ev.target.result;
-      // Strip "const BOOKS = " prefix if present
-      data = data.replace(/^const\s+BOOKS\s*=\s*/, '').replace(/;\s*$/, '');
-      const imported = JSON.parse(data);
-      if (!Array.isArray(imported)) throw new Error('Not an array');
-      imported.forEach(ib => {
-        const existing = BOOKS.find(b => b.id === ib.id);
-        if (existing) { if (ib.driveUrl) { existing.driveUrl = ib.driveUrl; persistDriveUrl(ib.id, ib.driveUrl); } }
-        else { BOOKS.push({ ...ib, isUserAdded: true }); }
-      });
-      renderLib(); renderBmList();
-      toast(`✅ Imported ${imported.length} book entries.`);
-    } catch (err) { toast('Import failed: ' + err.message); }
-  };
-  reader.readAsText(file);
+
+// Updated applyStoredOverrides to also restore Cloudinary URLs
+function applyStoredOverrides() {
+  try {
+    const overrides = JSON.parse(localStorage.getItem(BM_STORE_KEY) || '{}');
+    BOOKS.forEach(b => {
+      if (overrides[b.id] !== undefined) b.driveUrl = overrides[b.id];
+      if (overrides['cld_' + b.id] !== undefined) b.cloudinaryUrl = overrides['cld_' + b.id];
+    });
+    const userBooks = JSON.parse(localStorage.getItem('logos_user_books') || '[]');
+    userBooks.forEach(ub => { if (!BOOKS.find(b => b.id === ub.id)) BOOKS.push(ub); });
+  } catch {}
+}
+
+// Updated footer anonymously
+function updateFooter() {
+  const footer = document.querySelector('footer');
+  if (footer) {
+    footer.innerHTML = '✝ Logos Library — Free Christian Resources for Every Believer &nbsp;·&nbsp; <a href="#" onclick="showPage(\'giving\',document.querySelectorAll(\'.nl\')[5]);return false">Support this ministry 🙏</a>';
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
 // INITIALISATION
 // ═══════════════════════════════════════════════════════════
 (function init() {
-  applyStoredOverrides(); // Restore saved Drive URLs first
-  renderLib();
-  renderBibleBookList();
-  loadBibleChapter();
-  renderTierCards();
-  renderPaymentButtons();
-  // Restore session
-  try {
-    const saved = localStorage.getItem('logos_member');
-    if (saved) { currentMember = JSON.parse(saved); showMemberBanner(); }
-  } catch (e) {}
-  // Keyboard shortcuts
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeReader(); closeBookManager(); }
+  // Admin button: only show if admin mode is active
+  const bmBtn = document.getElementById('nav-bm-btn');
+  if (bmBtn) bmBtn.style.display = adminUnlocked ? '' : 'none';
+
+  // Load books from books.json (or fallback)
+  loadBooks().then(() => {
+    // Bible starts at John 3 (already set in state)
+    renderBibleBookList();
+    loadBibleChapter(); // async, fine
+    renderTierCards();
+    renderPaymentButtons();
+    updateFooter();
+
+    // Restore session
+    try {
+      const saved = localStorage.getItem('logos_member');
+      if (saved) {
+        currentMember = JSON.parse(saved);
+        showMemberBanner();
+        checkThesisAccess();
+      }
+    } catch {}
   });
 })();
 </script>
