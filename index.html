@@ -111,6 +111,20 @@ nav{background:var(--navy);height:64px;display:flex;align-items:center;justify-c
 .cbtn-listen{background:var(--gold);color:var(--navy);}.cbtn-listen:hover{background:var(--gold2);}
 .cbtn-ref{background:var(--linen);color:var(--brown);border:1px solid var(--dust);}.cbtn-ref:hover{background:var(--brown);color:var(--parchment);}
 
+/* Admin edit button — overlays top-left of cover, only visible in admin mode */
+.card-edit-btn{
+  position:absolute;top:.45rem;left:.55rem;z-index:10;
+  background:rgba(14,27,46,.82);color:var(--gold2);
+  border:1px solid rgba(184,136,42,.5);border-radius:5px;
+  padding:.22rem .5rem;font-size:.7rem;font-weight:700;
+  cursor:pointer;font-family:'Nunito',sans-serif;
+  backdrop-filter:blur(4px);
+  opacity:0;transition:opacity .18s,background .18s;
+  line-height:1.2;
+}
+.card:hover .card-edit-btn{opacity:1;}
+.card-edit-btn:hover{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
 /* ── READER MODAL ── */
 .overlay{position:fixed;inset:0;background:rgba(10,18,30,.92);z-index:600;display:flex;align-items:center;justify-content:center;padding:.75rem;opacity:0;pointer-events:none;transition:opacity .25s;}
 .overlay.open{opacity:1;pointer-events:all;}
@@ -1508,49 +1522,33 @@ footer a{color:var(--gold2);text-decoration:none;}
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// BOOK DATA — set driveUrl per book for PDF preview/download
-// ═══════════════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════════════
-// ADMIN LOCK — CMS hidden from public visitors
-// Access via: ?mode=admin  OR  Ctrl+Shift+L
-// ═══════════════════════════════════════════════════════════
-const IS_ADMIN = new URLSearchParams(location.search).has('mode') &&
-                 new URLSearchParams(location.search).get('mode') === 'admin';
+const IS_ADMIN = new URLSearchParams(location.search).has('mode') && new URLSearchParams(location.search).get('mode') === 'admin';
 let adminUnlocked = IS_ADMIN;
 
+// ═══════════════════════════════════════════════════════════
+// ADMIN LOCK — must be declared first; used by renderLib()
+// Unlock via URL:  ?mode=admin
+// Unlock via keys: Ctrl + Shift + L  (toggles on/off)
+// ═══════════════════════════════════════════════════════════
+
 document.addEventListener('keydown', e => {
-  // Ctrl+Shift+L unlocks admin
   if (e.ctrlKey && e.shiftKey && e.key === 'L') {
     adminUnlocked = !adminUnlocked;
     const bmBtn = document.getElementById('nav-bm-btn');
     if (bmBtn) bmBtn.style.display = adminUnlocked ? '' : 'none';
     toast(adminUnlocked ? '🔓 Admin mode enabled' : '🔒 Admin mode disabled');
+    renderLib(); // re-render cards so edit buttons appear/disappear
   }
-  if (e.key === 'Escape') { closeReader(); closeBookManager(); closeMpesaModal(); }
+  if (e.key === 'Escape') {
+    closeReader?.();
+    closeBookManager?.();
+    closeMpesaModal?.();
+  }
 });
 
 // ═══════════════════════════════════════════════════════════
-// books.json ARCHITECTURE
+// BOOK DATA — set driveUrl per book for PDF preview/download
 // ═══════════════════════════════════════════════════════════
-// GitHub repo structure:
-//   /index.html          ← this file
-//   /books.json          ← your book data (JSON array)
-//
-// books.json format (array of objects):
-//   [{ "id":1, "title":"...", "author":"...", "category":"...",
-//      "emoji":"📖", "gradient":"linear-gradient(...)",
-//      "cloudinaryUrl":"https://res.cloudinary.com/.../book.pdf",
-//      "driveUrl":"https://drive.google.com/file/d/.../view",
-//      "description":"...", "keywords":["faith","prayer"],
-//      "toc":["Chapter 1","Chapter 2"], "passages":[{"ref":"Ch.1","text":"..."}]
-//   }, ...]
-//
-// Workflow: Edit books via the 📚 Admin panel → Export JSON →
-//   paste into books.json on GitHub → site updates automatically.
-// ═══════════════════════════════════════════════════════════
-
-// Fallback books (used if books.json is not yet deployed or fetch fails)
 const FALLBACK_BOOKS = [
   {id:1,title:"Mere Christianity",author:"C.S. Lewis",category:"Theology",emoji:"✝",gradient:"linear-gradient(135deg,#0e1b2e,#1a3a5c)",cloudinaryUrl:"",driveUrl:"",
     description:"A reasoned defence of the Christian faith — belief, morality, and the nature of Christ explained with brilliant clarity.",
@@ -1770,7 +1768,7 @@ function showPage(id, el) {
 function renderLib() {
   const list = libFilter === 'all' ? BOOKS : BOOKS.filter(b => b.category === libFilter);
   const grid = document.getElementById('book-grid');
-  grid.innerHTML = ''; // clear safely
+  grid.innerHTML = '';
 
   list.forEach((b, i) => {
     // Build card via DOM — textContent for user-supplied fields prevents XSS
@@ -1778,15 +1776,20 @@ function renderLib() {
     card.className = 'card';
     card.style.animationDelay = `${i * 0.05}s`;
 
-    const hasPdf = !!(b.cloudinaryUrl || b.driveUrl);
     const sourceTag = b.cloudinaryUrl
       ? '<span class="pdf-source-badge cloudinary">☁ Cloudinary</span>'
       : b.driveUrl ? '<span class="pdf-source-badge">📁 Drive</span>' : '';
 
-    // Safe HTML shell — only gradient (admin-controlled) goes into style
+    // Admin edit button only rendered when adminUnlocked is true
+    const editBtnHTML = adminUnlocked
+      ? '<button class="card-edit-btn" title="Edit this book (admin)">✏️ Edit</button>'
+      : '';
+
+    // Safe HTML shell — only gradient (admin-controlled) and trusted HTML go into innerHTML
     card.innerHTML = `
       <div class="cover" style="background:${b.gradient}">
         <div class="cover-spine"></div><div class="cover-glow"></div>
+        ${editBtnHTML}
         <span class="cover-emoji"></span>
         <div class="cover-text"><div class="ct"></div><div class="ca"></div></div>
       </div>
@@ -1802,20 +1805,61 @@ function renderLib() {
         </div>
       </div>`;
 
-    // Set text safely via textContent
+    // Set all user-supplied text safely via textContent
     card.querySelector('.cover-emoji').textContent = b.emoji;
     card.querySelector('.ct').textContent = b.title;
     card.querySelector('.ca').textContent = b.author;
     card.querySelector('.card-title').textContent = b.title;
     card.querySelector('.card-author').textContent = b.author;
-    card.querySelector('.card-desc').textContent = (b.description || '').slice(0, 88) + '…';
+    card.querySelector('.card-desc').textContent = (b.description || '').slice(0, 88) + '\u2026';
     card.querySelector('.ctag').textContent = b.category;
 
-    // Wire up buttons
+    // ── MAIN CARD CLICK: open PDF directly in new tab ─────────────────────
+    // Fires for ALL users. Clicking anywhere on the card (except buttons)
+    // opens the Cloudinary or Drive URL in a new tab.
+    card.addEventListener('click', () => {
+      const pdfUrl = b.cloudinaryUrl || b.driveUrl;
+      if (pdfUrl) {
+        window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        // No PDF linked yet — show the reader placeholder so user knows
+        openReader(b.id, 'pdf');
+      }
+    });
+
+    // ── BOTTOM ACTION BUTTONS ─────────────────────────────────────────────
+    // Each calls stopPropagation() so the card's main click does NOT also fire.
     const [readBtn, listenBtn, refBtn] = card.querySelectorAll('.cbtn');
-    readBtn.addEventListener('click', () => openReader(b.id, 'pdf'));
-    listenBtn.addEventListener('click', () => openReader(b.id, 'audio'));
-    refBtn.addEventListener('click', () => openReader(b.id, 'ref'));
+
+    readBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const pdfUrl = b.cloudinaryUrl || b.driveUrl;
+      if (pdfUrl) window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+      else openReader(b.id, 'pdf');
+    });
+
+    listenBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      openReader(b.id, 'audio');
+    });
+
+    refBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      openReader(b.id, 'ref');
+    });
+
+    // ── ADMIN EDIT BUTTON ─────────────────────────────────────────────────
+    // Only rendered when adminUnlocked === true.
+    // stopPropagation() prevents the card's PDF-open click from also firing.
+    if (adminUnlocked) {
+      const editBtn = card.querySelector('.card-edit-btn');
+      if (editBtn) {
+        editBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          openBookManager(b.id);
+        });
+      }
+    }
 
     grid.appendChild(card);
   });
