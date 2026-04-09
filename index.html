@@ -1814,28 +1814,20 @@ function renderLib() {
     card.querySelector('.card-desc').textContent = (b.description || '').slice(0, 88) + '\u2026';
     card.querySelector('.ctag').textContent = b.category;
 
-    // ── MAIN CARD CLICK: open PDF directly in new tab ─────────────────────
-    // Fires for ALL users. Clicking anywhere on the card (except buttons)
-    // opens the Cloudinary or Drive URL in a new tab.
+    // ── MAIN CARD CLICK: open the built-in reader modal ─────────────────
+    // Clicking anywhere on the card opens the reader modal on the PDF tab.
+    // The modal handles Cloudinary (native embed) and Drive (iframe) itself.
     card.addEventListener('click', () => {
-      const pdfUrl = b.cloudinaryUrl || b.driveUrl;
-      if (pdfUrl) {
-        window.open(pdfUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        // No PDF linked yet — show the reader placeholder so user knows
-        openReader(b.id, 'pdf');
-      }
+      openReader(b.id, 'pdf');
     });
 
     // ── BOTTOM ACTION BUTTONS ─────────────────────────────────────────────
-    // Each calls stopPropagation() so the card's main click does NOT also fire.
+    // stopPropagation() stops the card click above from also firing.
     const [readBtn, listenBtn, refBtn] = card.querySelectorAll('.cbtn');
 
     readBtn.addEventListener('click', e => {
       e.stopPropagation();
-      const pdfUrl = b.cloudinaryUrl || b.driveUrl;
-      if (pdfUrl) window.open(pdfUrl, '_blank', 'noopener,noreferrer');
-      else openReader(b.id, 'pdf');
+      openReader(b.id, 'pdf');
     });
 
     listenBtn.addEventListener('click', e => {
@@ -1925,7 +1917,9 @@ function getDriveDirectLink(rawUrl) {
 }
 
 function openDriveTab() {
-  if (curBook?.driveUrl) window.open(getDriveDirectLink(curBook.driveUrl), '_blank');
+  if (!curBook) return;
+  const url = curBook.cloudinaryUrl || (curBook.driveUrl ? getDriveDirectLink(curBook.driveUrl) : null);
+  if (url) window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1941,7 +1935,9 @@ function openReader(id, tab) {
   thumb.style.background = curBook.gradient;
   thumb.textContent = curBook.emoji;
   document.getElementById('r-dl').onclick = () => {
-    if (curBook.driveUrl) window.open(getDriveDirectLink(curBook.driveUrl), '_blank');
+    // Cloudinary: direct PDF link opens natively in new tab for download
+    if (curBook.cloudinaryUrl) window.open(curBook.cloudinaryUrl, '_blank', 'noopener,noreferrer');
+    else if (curBook.driveUrl) window.open(getDriveDirectLink(curBook.driveUrl), '_blank', 'noopener,noreferrer');
     else openBookManager(curBook.id);
   };
   switchTab(tab || 'pdf');
