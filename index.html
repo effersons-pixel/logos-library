@@ -144,7 +144,7 @@ nav{background:var(--navy);height:64px;display:flex;align-items:center;justify-c
 
 /* ── SIDECAR LAYOUT ── */
 .sidecar-wrap{display:flex;flex:1;overflow:hidden;min-height:0;}
-.sidecar-main{flex:1;overflow-y:auto;min-width:0;}
+.sidecar-main{flex:1;overflow:hidden;min-width:0;display:flex;flex-direction:column;}
 .sidecar-panel{width:340px;flex-shrink:0;background:var(--navy2);border-left:2px solid var(--gold);overflow-y:auto;display:none;transition:width .25s;}
 .sidecar-panel.open{display:flex;flex-direction:column;}
 .sidecar-head{padding:.75rem 1rem;background:var(--navy);border-bottom:1px solid rgba(184,136,42,.3);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
@@ -157,35 +157,52 @@ nav{background:var(--navy);height:64px;display:flex;align-items:center;justify-c
 .sidecar-toggle-btn{background:var(--gold);color:var(--navy);border:none;padding:.3rem .75rem;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
 
 /* ── PDF PANE ── */
-.pdf-pane{flex:1;background:#2a2520;display:none;flex-direction:column;align-items:stretch;justify-content:flex-start;}
+/* ══════════════════════════════════════════
+   PDF VIEWER — Google Books style
+   Uses PDF.js for Cloudinary (canvas render)
+   Uses iframe fallback for Google Drive
+   ══════════════════════════════════════════ */
+.pdf-pane{flex:1;background:#1e1a16;display:none;flex-direction:column;align-items:stretch;min-height:0;}
 .pdf-pane.on{display:flex;}
-/* PDF toolbar */
-.pdf-toolbar{background:#1a1510;border-bottom:1px solid rgba(184,136,42,.25);padding:.4rem 1rem;display:flex;align-items:center;gap:.6rem;flex-shrink:0;}
-.pdf-toolbar-title{font-family:'EB Garamond',serif;font-size:.82rem;color:rgba(249,245,237,.7);flex:1;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pdf-tb-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(249,245,237,.75);padding:.25rem .65rem;border-radius:5px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap;}
+
+/* Toolbar */
+.pdf-toolbar{background:#141210;border-bottom:1px solid rgba(184,136,42,.2);padding:.38rem .85rem;display:flex;align-items:center;gap:.5rem;flex-shrink:0;flex-wrap:nowrap;}
+.pdf-toolbar-title{font-family:'EB Garamond',serif;font-size:.8rem;color:rgba(249,245,237,.65);flex:1;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.pdf-tb-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(249,245,237,.7);padding:.24rem .6rem;border-radius:5px;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .pdf-tb-btn:hover{background:rgba(184,136,42,.2);border-color:var(--gold);color:var(--parchment);}
 .pdf-tb-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
-/* The iframe viewer */
-.pdf-frame-wrap{flex:1;position:relative;overflow:hidden;}
-.pdf-pane iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-/* Loading overlay */
-.pdf-loading{position:absolute;inset:0;background:#2a2520;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;transition:opacity .4s;}
+.pdf-tb-sep{width:1px;height:18px;background:rgba(255,255,255,.12);flex-shrink:0;}
+.pdf-page-info{font-size:.72rem;color:rgba(249,245,237,.5);white-space:nowrap;flex-shrink:0;}
+
+/* Canvas viewer (PDF.js) */
+.pdf-canvas-wrap{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:1rem .5rem;gap:.75rem;background:#1e1a16;min-height:0;}
+.pdf-canvas-wrap.dark-bg{background:#0d0b08;}
+.pdf-page-canvas{display:block;box-shadow:0 4px 24px rgba(0,0,0,.5);max-width:100%;border-radius:2px;}
+
+/* Iframe viewer (Drive fallback) */
+.pdf-frame-wrap{flex:1;position:relative;overflow:hidden;min-height:0;}
+.pdf-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+
+/* Loading */
+.pdf-loading{position:absolute;inset:0;background:#1e1a16;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;transition:opacity .3s;}
 .pdf-loading.hidden{opacity:0;pointer-events:none;}
-.pdf-loading .spinner{width:32px;height:32px;border:3px solid rgba(184,136,42,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin-bottom:.75rem;}
+.pdf-loading .spinner{width:36px;height:36px;border:3px solid rgba(184,136,42,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:.85rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.pdf-loading p{font-size:.82rem;color:rgba(255,255,255,.5);}
-/* Error / placeholder */
-.no-pdf{text-align:center;color:rgba(255,255,255,.6);padding:2.5rem 2rem;max-width:520px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.pdf-loading p{font-size:.82rem;color:rgba(255,255,255,.45);}
+
+/* No-PDF placeholder */
+.no-pdf{text-align:center;color:rgba(255,255,255,.55);padding:2.5rem 2rem;max-width:480px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .no-pdf .icon{font-size:3rem;margin-bottom:1rem;}
 .no-pdf h3{font-family:'EB Garamond',serif;color:#fff;margin-bottom:.6rem;font-size:1.3rem;}
 .no-pdf p{font-size:.82rem;line-height:1.75;}
 .no-pdf code{background:rgba(255,255,255,.1);padding:.15rem .45rem;border-radius:3px;font-size:.73rem;color:var(--gold3);}
-/* Drive error state */
+
+/* Error state */
 .pdf-error{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:2.5rem;text-align:center;color:rgba(255,255,255,.65);}
 .pdf-error.show{display:flex;}
 .pdf-error .err-icon{font-size:2.5rem;margin-bottom:.85rem;}
 .pdf-error h3{font-family:'EB Garamond',serif;color:#fff;font-size:1.2rem;margin-bottom:.5rem;}
-.pdf-error p{font-size:.8rem;line-height:1.7;max-width:440px;}
+.pdf-error p{font-size:.8rem;line-height:1.7;max-width:420px;}
 .pdf-error .err-actions{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;justify-content:center;}
 .pdf-err-btn{padding:.42rem 1rem;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;border:none;transition:all .15s;}
 .pdf-err-open{background:var(--gold);color:var(--navy);}
@@ -1256,47 +1273,68 @@ footer a{color:var(--gold2);text-decoration:none;}
     <div class="rbody">
       <div class="sidecar-wrap" id="main-sidecar-wrap">
         <div class="sidecar-main">
-          <!-- PDF pane -->
+          <!-- PDF pane — Google Books style reader -->
           <div class="pdf-pane on" id="pdf-pane">
-            <!-- No-URL placeholder -->
+
+            <!-- ① No PDF linked yet -->
             <div class="no-pdf" id="pdf-ph">
               <div class="icon">📖</div>
               <h3 id="pdf-ph-title">Book Title</h3>
-              <p>No PDF linked yet.<br><br>
-              Click <strong>📚 Manage Books</strong> in the nav, find this book, and paste the Google Drive URL — or use the <strong>Book Manager</strong> to add any PDF link instantly.</p>
+              <p>No PDF linked yet. Open <strong>🗂 Admin</strong>, find this book, and paste the Cloudinary URL to enable reading.</p>
             </div>
-            <!-- Active viewer -->
-            <div id="pdf-active" style="display:none;flex-direction:column;width:100%;flex:1;">
-              <!-- Toolbar -->
-              <div class="pdf-toolbar">
+
+            <!-- ② Active reader (shown when a URL is available) -->
+            <div id="pdf-active" style="display:none;flex-direction:column;flex:1;min-height:0;">
+
+              <!-- Toolbar: title | prev | page X of Y | next | zoom | dark | open -->
+              <div class="pdf-toolbar" id="pdf-toolbar">
                 <span class="pdf-toolbar-title" id="pdf-toolbar-title">Loading…</span>
-                <button class="pdf-tb-btn" id="pdf-btn-viewer" onclick="switchPdfViewer('gdrive')" title="Google Drive viewer">📄 Drive</button>
-                <button class="pdf-tb-btn" id="pdf-btn-pdfjs" onclick="switchPdfViewer('pdfjs')" title="PDF.js viewer (best for blocked files)">🔍 PDF.js</button>
-                <button class="pdf-tb-btn" id="pdf-btn-office" onclick="switchPdfViewer('office')" title="Office Online viewer">🌐 Office</button>
+                <div class="pdf-tb-sep"></div>
+                <button class="pdf-tb-btn" id="pdf-btn-prev"  onclick="pdfPrevPage()"  title="Previous page">‹ Prev</button>
+                <span  class="pdf-page-info"  id="pdf-page-info">—</span>
+                <button class="pdf-tb-btn" id="pdf-btn-next"  onclick="pdfNextPage()"  title="Next page">Next ›</button>
+                <div class="pdf-tb-sep"></div>
+                <button class="pdf-tb-btn" id="pdf-btn-zout"  onclick="pdfZoom(-0.15)" title="Zoom out">−</button>
+                <button class="pdf-tb-btn" id="pdf-btn-zin"   onclick="pdfZoom(+0.15)" title="Zoom in">+</button>
+                <button class="pdf-tb-btn" id="pdf-btn-fit"   onclick="pdfFit()"       title="Fit to width">↔</button>
+                <div class="pdf-tb-sep"></div>
+                <!-- Drive fallback buttons — hidden when using PDF.js -->
+                <button class="pdf-tb-btn" id="pdf-btn-pdfjs"   onclick="switchPdfViewer('pdfjs')"   title="PDF.js viewer"    style="display:none">🔍 PDF.js</button>
+                <button class="pdf-tb-btn" id="pdf-btn-office"  onclick="switchPdfViewer('office')"  title="Office viewer"    style="display:none">🌐 Office</button>
+                <button class="pdf-tb-btn" id="pdf-btn-viewer"  onclick="switchPdfViewer('gdrive')"  title="Google Drive"     style="display:none">📄 Drive</button>
                 <button class="pdf-tb-btn" onclick="openDriveTab()" title="Open in new tab">↗ Open</button>
               </div>
-              <!-- Frame wrapper -->
-              <div class="pdf-frame-wrap" id="pdf-frame-wrap">
-                <iframe id="pdf-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"></iframe>
-                <!-- Loading spinner -->
+
+              <!-- ③ PDF.js canvas scroll area (Cloudinary) -->
+              <div class="pdf-canvas-wrap" id="pdf-canvas-wrap" style="display:none;">
+                <!-- pages rendered as <canvas> elements go here by renderAllPages() -->
+              </div>
+
+              <!-- ④ Iframe fallback (Google Drive) -->
+              <div class="pdf-frame-wrap" id="pdf-frame-wrap" style="display:none;flex:1;position:relative;">
+                <iframe id="pdf-frame" allowfullscreen
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation">
+                </iframe>
                 <div class="pdf-loading" id="pdf-loading">
                   <div class="spinner"></div>
                   <p>Loading PDF…</p>
                 </div>
               </div>
-              <!-- Error fallback -->
+
+              <!-- ⑤ Error state -->
               <div class="pdf-error" id="pdf-error">
                 <div class="err-icon">⚠️</div>
-                <h3>PDF Preview Unavailable</h3>
-                <p id="pdf-error-msg">Google Drive couldn't embed this file. This usually means the file is in a <strong>Google Workspace account</strong> with embedding disabled, or the file is too large (&gt;25 MB). Try a different viewer below.</p>
+                <h3>Could Not Load PDF</h3>
+                <p id="pdf-error-msg">The file could not be displayed. Try opening it directly.</p>
                 <div class="err-actions">
-                  <button class="pdf-err-btn pdf-err-open" onclick="openDriveTab()">↗ Open in New Tab</button>
-                  <button class="pdf-err-btn pdf-err-retry" onclick="switchPdfViewer('pdfjs')">🔍 Try PDF.js Viewer</button>
+                  <button class="pdf-err-btn pdf-err-open" onclick="openDriveTab()">↗ Open PDF in New Tab</button>
+                  <button class="pdf-err-btn pdf-err-retry" onclick="switchPdfViewer('pdfjs')">🔍 Try PDF.js</button>
                   <button class="pdf-err-btn pdf-err-retry" onclick="switchPdfViewer('office')">🌐 Try Office Viewer</button>
                 </div>
               </div>
-            </div>
-          </div>
+
+            </div><!-- /#pdf-active -->
+          </div><!-- /.pdf-pane -->
           <!-- Ref pane -->
           <div class="ref-pane" id="ref-pane">
             <div class="ref-book-header">
@@ -1955,167 +1993,283 @@ function switchTab(tab) {
   if (tab === 'ref' && curBook) buildRef(curBook);
 }
 
+// ═══════════════════════════════════════════════════════════
+// PDF.js READER — Google Books style
+// Cloudinary PDFs → rendered via PDF.js (canvas, no iframe)
+// Google Drive PDFs → iframe with triple-viewer fallback
+// ═══════════════════════════════════════════════════════════
+
+// PDF.js state
+let pdfDoc        = null;
+let pdfCurrentPage = 1;
+let pdfTotalPages  = 0;
+let pdfScale       = 1.0;
+let pdfFitScale    = 1.0;
+let pdfRendering   = false;
+let pdfRenderQueue = null;
+
+// Load PDF.js from CDN (only once)
+function ensurePdfJs() {
+  return new Promise((resolve, reject) => {
+    if (window.pdfjsLib) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    s.onload = () => {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      resolve();
+    };
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
 function loadPdfPane(book) {
-  const ph      = document.getElementById('pdf-ph');
-  const active  = document.getElementById('pdf-active');
-  const errBox  = document.getElementById('pdf-error');
-  const loading = document.getElementById('pdf-loading');
+  const ph        = document.getElementById('pdf-ph');
+  const active    = document.getElementById('pdf-active');
+  const errBox    = document.getElementById('pdf-error');
+  const canvasWrap= document.getElementById('pdf-canvas-wrap');
   const frameWrap = document.getElementById('pdf-frame-wrap');
-  const frame   = document.getElementById('pdf-frame');
 
-  // ── CLOUDINARY: native <embed> — no iframe restrictions ──────────────
-  if (book.cloudinaryUrl) {
-    ph.style.display = 'none';
-    active.style.display = 'flex';
-    errBox.classList.remove('show');
-    loading.classList.add('hidden'); // embed loads instantly
-    document.getElementById('pdf-toolbar-title').textContent = book.title;
-    _setPdfViewerBtns('cloudinary');
+  // Reset previous state
+  pdfDoc = null; pdfCurrentPage = 1; pdfTotalPages = 0;
+  canvasWrap.innerHTML = '';
+  canvasWrap.style.display = 'none';
+  frameWrap.style.display  = 'none';
+  errBox.classList.remove('show');
 
-    // Remove old embed if present
-    const oldEmbed = frameWrap.querySelector('.cloudinary-embed');
-    if (oldEmbed) oldEmbed.remove();
-    frame.style.display = 'none';
-
-    // Create native embed — works everywhere, no X-Frame-Options issues
-    const embedWrap = document.createElement('div');
-    embedWrap.className = 'cloudinary-embed';
-    embedWrap.style.cssText = 'flex:1;position:relative;';
-
-    const embedEl = document.createElement('embed');
-    embedEl.setAttribute('src', book.cloudinaryUrl + '#toolbar=1&navpanes=0');
-    embedEl.setAttribute('type', 'application/pdf');
-    embedEl.style.cssText = 'width:100%;height:100%;position:absolute;inset:0;border:none;';
-
-    // Fallback for browsers that block embed
-    const objEl = document.createElement('object');
-    objEl.setAttribute('data', book.cloudinaryUrl);
-    objEl.setAttribute('type', 'application/pdf');
-    objEl.style.cssText = 'width:100%;height:100%;position:absolute;inset:0;border:none;';
-    objEl.innerHTML = `<p style="color:rgba(255,255,255,.6);text-align:center;padding:2rem;">
-      Your browser cannot embed PDFs. 
-      <a href="${book.cloudinaryUrl}" target="_blank" style="color:var(--gold);">Click here to open the PDF ↗</a>
-    </p>`;
-
-    embedWrap.appendChild(embedEl);
-    frameWrap.appendChild(embedWrap);
-    return;
-  }
-
-  // ── Remove cloudinary embed if switching away ──
-  const oldEmbed = frameWrap.querySelector('.cloudinary-embed');
-  if (oldEmbed) oldEmbed.remove();
-  frame.style.display = '';
-
-  // ── GOOGLE DRIVE: iframe with triple-viewer fallback ─────────────────
-  if (!book.driveUrl) {
-    ph.style.display = 'flex'; active.style.display = 'none';
-    // Use textContent for safety
+  if (!book.cloudinaryUrl && !book.driveUrl) {
+    ph.style.display = 'flex';
+    active.style.display = 'none';
     document.getElementById('pdf-ph-title').textContent = book.title;
     return;
   }
 
   ph.style.display = 'none';
   active.style.display = 'flex';
-  errBox.classList.remove('show');
-  loading.classList.remove('hidden');
   document.getElementById('pdf-toolbar-title').textContent = book.title;
-  currentDriveUrl = book.driveUrl;
-  currentViewerMode = 'gdrive';
-  _setPdfViewerBtns('gdrive');
 
-  const urls = getViewerUrls(book.driveUrl);
-  if (!urls) {
-    showPdfError('The URL provided does not appear to be a valid Google Drive link.', book.driveUrl);
-    return;
+  // Show/hide toolbar controls based on source
+  const driveControls = ['pdf-btn-pdfjs','pdf-btn-office','pdf-btn-viewer'];
+  const pdfJsControls = ['pdf-btn-prev','pdf-btn-next','pdf-btn-zout','pdf-btn-zin','pdf-btn-fit'];
+  driveControls.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+  pdfJsControls.forEach(id => { const el=document.getElementById(id); if(el) el.style.display=''; });
+  updatePageInfo();
+
+  if (book.cloudinaryUrl) {
+    loadWithPdfJs(book.cloudinaryUrl);
+  } else {
+    // Google Drive — iframe fallback
+    pdfJsControls.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+    driveControls.forEach(id => { const el=document.getElementById(id); if(el) el.style.display=''; });
+    loadDriveIframe(book.driveUrl);
+  }
+}
+
+async function loadWithPdfJs(url) {
+  const canvasWrap = document.getElementById('pdf-canvas-wrap');
+  const errBox     = document.getElementById('pdf-error');
+
+  // Show loading state in canvas area
+  canvasWrap.style.display = 'flex';
+  canvasWrap.innerHTML = `<div style="text-align:center;padding:3rem;color:rgba(255,255,255,.45);">
+    <div class="pdf-loading" style="position:static;background:none;display:flex;flex-direction:column;align-items:center;">
+      <div class="spinner" style="position:static;"></div>
+      <p style="margin-top:.75rem;">Loading book…</p>
+    </div>
+  </div>`;
+
+  try {
+    await ensurePdfJs();
+    const loadingTask = pdfjsLib.getDocument({
+      url,
+      cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+      cMapPacked: true,
+    });
+    pdfDoc = await loadingTask.promise;
+    pdfTotalPages  = pdfDoc.numPages;
+    pdfCurrentPage = 1;
+
+    // Calculate fit-to-width scale using page 1
+    const firstPage = await pdfDoc.getPage(1);
+    const vp = firstPage.getViewport({ scale: 1 });
+    const availW = canvasWrap.clientWidth - 32; // padding
+    pdfFitScale = availW / vp.width;
+    pdfScale    = pdfFitScale;
+
+    updatePageInfo();
+    await renderAllPages();
+
+  } catch (err) {
+    console.error('[PDF.js]', err);
+    canvasWrap.style.display = 'none';
+    document.getElementById('pdf-error-msg').textContent =
+      'Could not load the PDF. Make sure the Cloudinary URL is correct and the file is public. (' + err.message + ')';
+    errBox.classList.add('show');
+  }
+}
+
+async function renderAllPages() {
+  const canvasWrap = document.getElementById('pdf-canvas-wrap');
+  if (!pdfDoc) return;
+
+  canvasWrap.innerHTML = ''; // clear previous
+
+  for (let pageNum = 1; pageNum <= pdfTotalPages; pageNum++) {
+    const page = await pdfDoc.getPage(pageNum);
+    const vp   = page.getViewport({ scale: pdfScale });
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'pdf-page-canvas';
+    canvas.width  = vp.width;
+    canvas.height = vp.height;
+    canvas.dataset.page = pageNum;
+    canvasWrap.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
   }
 
-  frame.src = urls.gdrive;
+  // Scroll to current page
+  scrollToPage(pdfCurrentPage);
+}
 
-  let loadTimer = setTimeout(() => {
-    if (!loading.classList.contains('hidden')) {
-      showPdfError(
-        'Google Drive took too long to load. This is usually caused by a <strong>Workspace domain restriction</strong> or a large file. Trying PDF.js viewer…',
-        book.driveUrl
-      );
+async function renderPage(pageNum) {
+  if (!pdfDoc) return;
+  const canvas = document.querySelector(`.pdf-page-canvas[data-page="${pageNum}"]`);
+  if (!canvas) return;
+
+  const page = await pdfDoc.getPage(pageNum);
+  const vp   = page.getViewport({ scale: pdfScale });
+  canvas.width  = vp.width;
+  canvas.height = vp.height;
+
+  const ctx = canvas.getContext('2d');
+  await page.render({ canvasContext: ctx, viewport: vp }).promise;
+}
+
+function scrollToPage(pageNum) {
+  const canvas = document.querySelector(`.pdf-page-canvas[data-page="${pageNum}"]`);
+  if (canvas) canvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updatePageInfo() {
+  const el = document.getElementById('pdf-page-info');
+  if (el) el.textContent = pdfTotalPages ? `${pdfCurrentPage} / ${pdfTotalPages}` : '—';
+}
+
+function pdfPrevPage() {
+  if (!pdfDoc || pdfCurrentPage <= 1) return;
+  pdfCurrentPage--;
+  updatePageInfo();
+  scrollToPage(pdfCurrentPage);
+}
+
+function pdfNextPage() {
+  if (!pdfDoc || pdfCurrentPage >= pdfTotalPages) return;
+  pdfCurrentPage++;
+  updatePageInfo();
+  scrollToPage(pdfCurrentPage);
+}
+
+// Track current page via scroll (wired in init after DOM is ready)
+function initPdfScrollTracker() {
+  const wrap = document.getElementById('pdf-canvas-wrap');
+  if (!wrap) return;
+  wrap.addEventListener('scroll', function() {
+    if (!pdfDoc) return;
+    const midY = this.scrollTop + this.clientHeight / 2;
+    let closest = 1;
+    this.querySelectorAll('.pdf-page-canvas').forEach(cv => {
+      if (cv.offsetTop <= midY) closest = parseInt(cv.dataset.page);
+    });
+    if (closest !== pdfCurrentPage) {
+      pdfCurrentPage = closest;
+      updatePageInfo();
     }
-  }, 12000);
-
-  frame.onload = () => {
-    clearTimeout(loadTimer);
-    loading.classList.add('hidden');
-    try {
-      const inner = frame.contentDocument || frame.contentWindow?.document;
-      if (inner && inner.title && inner.title.toLowerCase().includes('sorry')) {
-        showPdfError('Google Drive returned an error page. This file may have <strong>Workspace sharing restrictions</strong>. Trying PDF.js…', book.driveUrl);
-      }
-    } catch { /* cross-origin — loaded fine */ }
-  };
-  frame.onerror = () => { clearTimeout(loadTimer); showPdfError('The iframe could not load this PDF.', book.driveUrl); };
-}
-
-function showPdfError(msg, rawUrl) {
-  document.getElementById('pdf-loading').classList.add('hidden');
-  document.getElementById('pdf-error-msg').innerHTML = msg;
-  document.getElementById('pdf-error').classList.add('show');
-  // Auto-try PDF.js after 1.5 s
-  setTimeout(() => switchPdfViewer('pdfjs'), 1500);
-}
-
-function switchPdfViewer(mode) {
-  const book = curBook;
-  if (!book?.driveUrl) return;
-  const urls = getViewerUrls(book.driveUrl);
-  if (!urls) return;
-
-  const frame   = document.getElementById('pdf-frame');
-  const loading = document.getElementById('pdf-loading');
-  const errBox  = document.getElementById('pdf-error');
-
-  currentViewerMode = mode;
-  _setPdfViewerBtns(mode);
-  errBox.classList.remove('show');
-  loading.classList.remove('hidden');
-  frame.src = urls[mode];
-
-  let t = setTimeout(() => {
-    if (!loading.classList.contains('hidden')) {
-      loading.classList.add('hidden');
-      // If PDF.js also fails show final message
-      if (mode !== 'gdrive') {
-        document.getElementById('pdf-error-msg').innerHTML =
-          `The <strong>${mode === 'pdfjs' ? 'PDF.js' : 'Office'}</strong> viewer also couldn't embed this file. ` +
-          `The most reliable solution is to <strong>upload the PDF to a personal gmail.com account</strong> (not a Workspace account) and re-share. Then click "↗ Open" to read it directly.`;
-        errBox.classList.add('show');
-      }
-    }
-  }, 15000);
-
-  frame.onload = () => { clearTimeout(t); loading.classList.add('hidden'); };
-}
-
-function _setPdfViewerBtns(active) {
-  ['gdrive','pdfjs','office'].forEach(m => {
-    const el = document.getElementById(`pdf-btn-${m === 'gdrive' ? 'viewer' : m}`);
-    if (el) el.classList.toggle('active', m === active);
   });
 }
 
+async function pdfZoom(delta) {
+  if (!pdfDoc) return;
+  pdfScale = Math.min(3.0, Math.max(0.4, pdfScale + delta));
+  await renderAllPages();
+}
+
+async function pdfFit() {
+  if (!pdfDoc) return;
+  pdfScale = pdfFitScale;
+  await renderAllPages();
+}
+
+function loadDriveIframe(driveUrl) {
+  const frameWrap = document.getElementById('pdf-frame-wrap');
+  const frame     = document.getElementById('pdf-frame');
+  const loading   = document.getElementById('pdf-loading');
+
+  frameWrap.style.display = 'block';
+  loading.classList.remove('hidden');
+
+  const urls = getViewerUrls(driveUrl);
+  if (!urls) { showPdfError('Invalid Google Drive URL.'); return; }
+
+  currentDriveUrl  = driveUrl;
+  currentViewerMode = 'gdrive';
+  frame.src = urls.gdrive;
+
+  let timer = setTimeout(() => {
+    if (!loading.classList.contains('hidden'))
+      showPdfError('Google Drive took too long. Try PDF.js or Office viewer below.');
+  }, 12000);
+
+  frame.onload  = () => { clearTimeout(timer); loading.classList.add('hidden'); };
+  frame.onerror = () => { clearTimeout(timer); showPdfError('Could not load Drive PDF.'); };
+}
+
+function showPdfError(msg) {
+  document.getElementById('pdf-error-msg').textContent = msg;
+  document.getElementById('pdf-error').classList.add('show');
+}
+
+function switchPdfViewer(mode) {
+  if (!curBook?.driveUrl) return;
+  const urls = getViewerUrls(curBook.driveUrl);
+  if (!urls) return;
+  const frame   = document.getElementById('pdf-frame');
+  const loading = document.getElementById('pdf-loading');
+  const errBox  = document.getElementById('pdf-error');
+  currentViewerMode = mode;
+  errBox.classList.remove('show');
+  loading.classList.remove('hidden');
+  frame.src = urls[mode] || urls.gdrive;
+  let t = setTimeout(() => { loading.classList.add('hidden'); }, 15000);
+  frame.onload = () => { clearTimeout(t); loading.classList.add('hidden'); };
+}
+
+function _setPdfViewerBtns() {} // no-op, toolbar handled by loadPdfPane
+
 function closeReader() {
   document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
   stopSpeech();
-  // Clear iframe to stop network requests
+  // Stop PDF.js
+  pdfDoc = null; pdfCurrentPage = 1; pdfTotalPages = 0;
+  document.getElementById('pdf-canvas-wrap').innerHTML = '';
+  document.getElementById('pdf-canvas-wrap').style.display = 'none';
+  // Clear iframe
   const fr = document.getElementById('pdf-frame');
   fr.src = 'about:blank';
-  document.getElementById('pdf-loading').classList.remove('hidden');
+  document.getElementById('pdf-frame-wrap').style.display = 'none';
   document.getElementById('pdf-error').classList.remove('show');
   document.getElementById('pdf-ph').style.display = 'flex';
   document.getElementById('pdf-active').style.display = 'none';
+  updatePageInfo();
   document.getElementById('passage-box').classList.remove('show');
   document.getElementById('study-output').classList.remove('show');
-  closeSidecar();
+  closeSidecar?.();
 }
 function maybeClose(e) { if (e.target === document.getElementById('overlay')) closeReader(); }
+
 
 // Dark mode for reader
 function toggleReaderDark() {
