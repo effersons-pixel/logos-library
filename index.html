@@ -1828,15 +1828,19 @@ function buildGoogleBooksReader(book) {
 
   // Check for saved reading position
   const savedPos = loadReadingPosition(book.id);
+  
   if (savedPos !== null && savedPos < gbrChapters.length) {
-    // Show resume banner
+    // Show resume banner if position exists
     showResumeBanner(book.id, savedPos);
+    // We still render the first chapter as a background state
+    renderGbrChapter(0); 
   } else {
     clearResumeBanner();
+    // CRITICAL FIX: Explicitly render the first chapter if no resume position exists
+    renderGbrChapter(0);
   }
 
   buildGbrNav(book);
-  renderGbrChapter(gbrCurrentChapter);
   initHighlightSystem();
 }
 
